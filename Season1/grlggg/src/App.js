@@ -147,7 +147,7 @@ function Box(props) {
 
 
 const MODELS = {
-  Beech: 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/tree-beech/model.gltf',
+  Moof: 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/tree-beech/model.gltf',
   // Lime: 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/tree-lime/model.gltf',
   // Spruce: 'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/tree-spruce/model.gltf'
 }
@@ -166,26 +166,29 @@ function Model({ url, ...props }) {
 
 export default function App() {
   
-  const { model } = useControls({ model: { value: 'Beech', options: Object.keys(MODELS) } })
+  const { model } = useControls({ model: { value: 'Moof', options: Object.keys(MODELS) } })
 
 
   return (
     <>
     <header>Tacos {model.toLowerCase()} like</header>
 
-    <Canvas>
+    <div style={{ width: "100vw", height: "100vh" }}>
+
+    <Canvas camera={{ fov: 25, position: [-1, 50, 80]}}>
       <ambientLight intensity={Math.PI / 2} />
       <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
       <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      <Box position={[-1.2, 0, 0]} />
       <Box position={[1.2, 0, 0]} />
 
 {/*
+  <Box position={[-1.2, 0, 0]} />
   */}
       <Model position={[0, 0.25, 0]} url={MODELS[model]} />
 
       <OrbitControls />
     </Canvas>
+    </div>
     </>
   )
 }
