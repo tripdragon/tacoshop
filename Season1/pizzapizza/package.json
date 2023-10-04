@@ -1,0 +1,16 @@
+{
+  "name": "pizzapizza",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "three": "^0.157.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node narf.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
