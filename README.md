@@ -19,3 +19,5 @@ it should launch http://localhost:3000/
 
 
 npm i leva
+
+npm install gh-pages --save-dev
