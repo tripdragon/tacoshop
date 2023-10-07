@@ -243,10 +243,11 @@ function init() {
   function onSelect() {
     if (reticle.visible && flowersGltf) {
       //pick random child from flowersGltf
-      const flower =
-        flowersGltf.children[
-          Math.floor(Math.random() * flowersGltf.children.length)
-        ];
+      // const flower =
+      //   flowersGltf.children[
+      //     Math.floor(Math.random() * flowersGltf.children.length)
+      //   ];
+			const flower = flowersGltf;
       const mesh = flower.clone();
 
       reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
