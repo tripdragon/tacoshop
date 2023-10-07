@@ -1,6 +1,7 @@
 
 import * as THREE from 'three';
 import { ARButton } from 'three/addons/webxr/ARButton.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 let container;
 let camera, scene, renderer;
@@ -71,15 +72,28 @@ function init() {
 
 	//
   {
-  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-  const cube = new THREE.Mesh( geometry, material );
-  cube.position.set(0,0,-10);
-  cube.rotation.y = 1.1;
-  cube.rotation.z = 0.4;
-  scene.add( cube );
+	  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+	  const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+	  const cube = new THREE.Mesh( geometry, material );
+	  cube.position.set(0,0,-10);
+	  cube.rotation.y = 1.1;
+	  cube.rotation.z = 0.4;
+	  scene.add( cube );
   }
   
+	
+	{
+		const loader = new GLTFLoader().setPath( 'models/' );
+		loader.load( 'horsey2.glb', function ( gltf ) {
+			
+			gltf.scene.position.set(0,4,-10);
+			scene.add( gltf.scene );
+
+			render();
+
+		} );
+	}
+	
 	window.addEventListener( 'resize', onWindowResize );
 
 }

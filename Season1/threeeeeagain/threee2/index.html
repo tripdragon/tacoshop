@@ -15,29 +15,42 @@
     
     <script src="https://launchar.app/sdk/v1?key=jRhpJS4XjxGGES1muiAIJYd7gbsf4zBx&redirect=true"></script>
     
+    <link rel="stylesheet" href="main.css">
+    <style media="screen">
+      #notes{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <!-- <div id="root"></div> -->
 
+
+    <div id="notes">
+      <h1>Naaarrrff 2222</h1>
+
+  		<div id="info">
+  			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - hit test<br/>(Chrome Android 81+)
+  		</div>
+    </div>
+
+		<script type="importmap">
+      {
+				"imports": {
+					"three": "./three/build/three.module.js",
+					"three/addons/": "./three/jsm/"
+				}
+			}
+		</script>
     
-    		<div id="info">
-    			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - hit test<br/>(Chrome Android 81+)
-    		</div>
+    
+    <script type="module" src="/main.js"></script>
 
-    		<script type="importmap">
-          {
-    				"imports": {
-    					"three": "./three/build/three.module.js",
-    					"three/addons/": "./three/jsm/"
-    				}
-    			}
-    		</script>
-        
-        
-        <script type="module" src="/main.js"></script>
-
-    		<!-- <script type="module"></script> -->
-        
+		<!-- <script type="module"></script> -->
+    
   </body>
 </html>
