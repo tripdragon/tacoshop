@@ -291,11 +291,11 @@ function render(timestamp, frame) {
   }
 
 	
-  // let mixerUpdateDelta = clock.getDelta();
-  // // mixer.update( mixerUpdateDelta );
-  // for (var i = 0; i < horseys.length; i++) {
-  //   horseys[i].mixer.update( mixerUpdateDelta );
-  // }
-	// 
+  let mixerUpdateDelta = clock.getDelta();
+  // mixer.update( mixerUpdateDelta );
+  for (var i = 0; i < horseys.length; i++) {
+    horseys[i].mixer.update( mixerUpdateDelta );
+  }
+	
   renderer.render(scene, camera);
 }
