@@ -35,9 +35,9 @@ if ("xr" in navigator) {
   });
 }
 
-// run these here to debug otherwise run them in the above if
-init();
-animate();
+// // run these here to debug otherwise run them in the above if
+// init();
+// animate();
 
 
 function sessionStart() {
@@ -280,11 +280,11 @@ function render(timestamp, frame) {
   }
 
 	
-  let mixerUpdateDelta = clock.getDelta();
-  // mixer.update( mixerUpdateDelta );
-  for (var i = 0; i < horseys.length; i++) {
-    horseys[i].mixer.update( mixerUpdateDelta );
-  }
-	
+  // let mixerUpdateDelta = clock.getDelta();
+  // // mixer.update( mixerUpdateDelta );
+  // for (var i = 0; i < horseys.length; i++) {
+  //   horseys[i].mixer.update( mixerUpdateDelta );
+  // }
+	// 
   renderer.render(scene, camera);
 }
