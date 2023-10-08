@@ -205,8 +205,8 @@ if ("xr" in navigator) {
 }
 
 // run these here to debug otherwise run them in the above if
-// init();
-// animate();
+init();
+animate();
 
 
 function sessionStart() {
@@ -228,7 +228,7 @@ function init() {
     20
   );
 
-  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3.4);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
 
@@ -308,11 +308,50 @@ function init() {
 
 			gltf.scene.position.set(0,1,-10);
 			scene.add( gltf.scene );
-			
-			var ss = 0.08;
+			debugger
+			var ss = 0.4;
 			gltf.scene.scale.set(ss,ss,ss);
 			
 			flowersGltf = gltf.scene;
+
+			// const animationGroup = new THREE.AnimationObjectGroup;
+			// const mixer = mixer;
+			// const animationObject = Scene.find( o => o.animationClips);
+			// var mixer;
+			// gltf.animations.forEach( clip => {
+			// 	mixer = new THREE.AnimationMixer();
+			//   const action = mixer.clipAction(clip));
+			//   // action.clampWhenFinished = true;
+			//   // action.loop = THREE.LoopOnce;
+			//   action.play();
+			// });
+			// 
+			// gltf.animations.forEach((item, i) => {
+			// 	var mixer = new THREE.AnimationMixer( gltf.scene );
+			// 	console.log("¿¿¿¿");
+			// 	var action = mixer.clipAction( item );
+			// 	action.loop = THREE.LoopRepeat;
+			// 	action.play();
+			// });
+			// 
+			
+			var mixer = new THREE.AnimationMixer( gltf.scene );
+
+					// idleAction = mixer.clipAction( animations[ 0 ] );
+					// walkAction = mixer.clipAction( animations[ 3 ] );
+					// runAction = mixer.clipAction( animations[ 1 ] );
+					var actions = [];
+					for (var i = 0; i < gltf.animations.length; i++) {
+						actions.push( mixer.clipAction( gltf.animations[ i ] ) );
+					}
+
+
+				actions.forEach( function ( action ) {
+
+						action.play();
+
+					} );
+			
 
 			//render();
 
@@ -340,6 +379,7 @@ function animate() {
 }
 
 function render(timestamp, frame) {
+	// console.log("1121212");
   if (frame) {
     const referenceSpace = renderer.xr.getReferenceSpace();
     const session = renderer.xr.getSession();
