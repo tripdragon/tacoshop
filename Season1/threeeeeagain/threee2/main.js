@@ -144,53 +144,68 @@ function init() {
 
 			// gltf.scene.position.set(0,1,-10);
 			// debugger
-			// var ss = 0.4;
-			// gltf.scene.scale.set(ss,ss,ss);
+			var ss = 0.4;
+			gltf.scene.scale.set(ss,ss,ss);
 			
-			// flowersGltf = gltf.scene;
+			flowersGltf = gltf.scene;
 
-			// scene.add( gltf.scene );
+		
+
+			horseys.push(gltf.scene);
 
 
+			// gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
+			// gltf.scene.mixer = new THREE.AnimationMixer( pp );
+			gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
+			for (var i = 0; i < gltf.animations.length; i++) {
+				
+				gltf.scene.mixer.clipAction( gltf.animations[ i ] ).play();
+			}
+
+			scene.add( gltf.scene );
 
 			
 							
-							
-		          
-		          let pp = new THREE.Group();
-							pp.position.set(0,0,-10);
-							var ss = 0.4;
-							pp.scale.set(ss,ss,ss);
-		          scene.add( pp );
-							
-							pp.add(gltf.scene);
-							pp.visible = false;
-							gltf.scene.position.set(0,4.5,0);
-							
-							flowersGltf = pp;
-							window.gg = pp;
-							
-		          {
-		            const geometry = new THREE.BoxGeometry( 1,1,1 );
-		            const material = new THREE.MeshStandardMaterial( {color: 0xffff00} );
-		            const cube = new THREE.Mesh( geometry, material );
-		            // cube.visible = false;
-		            pp.add( cube );
-								cube.position.set(0,0,0);
-		          }
-		          
-		          horseys.push(pp);
+							// 
+							// 
+		          // let pp = new THREE.Group();
+							// pp.position.set(0,0,-10);
+							// var ss = 0.4;
+							// pp.scale.set(ss,ss,ss);
+		          // scene.add( pp );
+							// 
+							// pp.add(gltf.scene);
+							// pp.visible = false;
+							// gltf.scene.position.set(0,4.5,0);
+							// 
+							// flowersGltf = pp;
+							// window.gg = pp;
+							// 
+		          // {
+		          //   const geometry = new THREE.BoxGeometry( 1,1,1 );
+		          //   const material = new THREE.MeshStandardMaterial( {color: 0xffff00} );
+		          //   const cube = new THREE.Mesh( geometry, material );
+		          //   // cube.visible = false;
+		          //   pp.add( cube );
+							// 	cube.position.set(0,0,0);
+		          // }
+							// 
+		          // horseys.push(pp);
+							// 
+							// 
+		          // // gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
+		          // // gltf.scene.mixer = new THREE.AnimationMixer( pp );
+		          // pp.mixer = new THREE.AnimationMixer( gltf.scene );
+		          // for (var i = 0; i < gltf.animations.length; i++) {
+							// 
+							// 	pp.mixer.clipAction( gltf.animations[ i ] ).play();
+		          // }
+							// 
 
 
-		          // gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
-		          // gltf.scene.mixer = new THREE.AnimationMixer( pp );
-		          pp.mixer = new THREE.AnimationMixer( gltf.scene );
-		          for (var i = 0; i < gltf.animations.length; i++) {
-		            
-								pp.mixer.clipAction( gltf.animations[ i ] ).play();
-		          }
+							
 
-
+		
 
 
 
