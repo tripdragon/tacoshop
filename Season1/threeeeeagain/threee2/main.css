@@ -1,6 +1,6 @@
 body {
 	margin: 0;
-	background-color: #000;
+	/* background-color: #000; */
 	color: #fff;
 	font-family: Monospace;
 	font-size: 13px;
@@ -68,13 +68,13 @@ a, button, input, select {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	background: rgba(0,0,0,0.7);
+	/* background: rgba(0,0,0,0.7); */
 }
 
 	#overlay button {
 		background: transparent;
 		border: 0;
-		border: 1px solid rgb(255, 255, 255);
+		/* border: 1px solid rgb(255, 255, 255); */
 		border-radius: 4px;
 		color: #ffffff;
 		padding: 12px 18px;
@@ -85,7 +85,7 @@ a, button, input, select {
 #notSupported {
 	width: 50%;
 	margin: auto;
-	background-color: #f00;
+	/* background-color: #f00; */
 	margin-top: 20px;
 	padding: 10px;
 }
