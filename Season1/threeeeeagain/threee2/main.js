@@ -261,7 +261,7 @@ function init() {
 
       // animate growing via hacky setInterval then destroy it when fully grown
       const interval = setInterval(() => {
-        //mesh.scale.multiplyScalar(1.01);
+        mesh.scale.multiplyScalar(ss * 1.01);
 
         mesh.rotateY(0.03);
       }, 16);
