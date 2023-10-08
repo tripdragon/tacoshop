@@ -253,7 +253,7 @@ function init() {
       reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
       const scale = Math.random() * 0.4 + 0.25;
       //mesh.scale.set(scale, scale, scale);
-			var ss = 0.4;
+			var ss = 0.04;
 			mesh.scale.set(ss,ss,ss);
       //random rotation
       mesh.rotateY(Math.random() * Math.PI * 2);
@@ -261,7 +261,7 @@ function init() {
 
       // animate growing via hacky setInterval then destroy it when fully grown
       const interval = setInterval(() => {
-        mesh.scale.multiplyScalar(1.01);
+        //mesh.scale.multiplyScalar(1.01);
 
         mesh.rotateY(0.03);
       }, 16);
