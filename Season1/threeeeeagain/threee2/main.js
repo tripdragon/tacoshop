@@ -260,7 +260,7 @@ function init() {
       reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
       const scale = Math.random() * 0.4 + 0.25;
       //mesh.scale.set(scale, scale, scale);
-			var ss = 0.08;
+			var ss = 0.05;
 			mesh.scale.set(ss,ss,ss);
       //random rotation
       mesh.rotateY(Math.random() * Math.PI * 2);
