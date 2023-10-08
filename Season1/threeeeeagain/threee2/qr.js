@@ -15,7 +15,7 @@ async function generateQRCode(text) {
 
 async function generateLaunchCode() {
   let url = await VLaunch.getLaunchUrl(window.location.href);
-  generateQRCode(url);
+  // generateQRCode(url);
   console.log("Launch Code Generated");
 }
 
