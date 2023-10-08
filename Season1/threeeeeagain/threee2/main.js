@@ -100,6 +100,14 @@ function init() {
       mesh.rotateY(Math.random() * Math.PI * 2);
       scene.add(mesh);
 			
+			
+			mesh.mixer = new THREE.AnimationMixer( mesh );
+			for (var i = 0; i < mesh.animations.length; i++) {
+				mesh.mixer.clipAction( mesh.animations[ i ] ).play();
+			}
+
+			
+			
 			horseys.push(mesh);
 			
 			
@@ -147,19 +155,24 @@ function init() {
 			var ss = 0.4;
 			gltf.scene.scale.set(ss,ss,ss);
 			
-			flowersGltf = gltf.scene;
 
 			// horseys.push(gltf.scene);
 
 
 			// gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
 			// gltf.scene.mixer = new THREE.AnimationMixer( pp );
+			
+			// this might be too large to store
+			gltf.scene.animations = gltf.animations;
+			
 			gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
 			for (var i = 0; i < gltf.animations.length; i++) {
 				
 				gltf.scene.mixer.clipAction( gltf.animations[ i ] ).play();
 			}
 
+			flowersGltf = gltf.scene;
+			
 			// scene.add( gltf.scene );
 
 			
