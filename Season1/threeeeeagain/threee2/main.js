@@ -149,9 +149,7 @@ function init() {
 			
 			flowersGltf = gltf.scene;
 
-		
-
-			horseys.push(gltf.scene);
+			// horseys.push(gltf.scene);
 
 
 			// gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
@@ -162,7 +160,7 @@ function init() {
 				gltf.scene.mixer.clipAction( gltf.animations[ i ] ).play();
 			}
 
-			scene.add( gltf.scene );
+			// scene.add( gltf.scene );
 
 			
 							
