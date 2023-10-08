@@ -196,11 +196,18 @@ if ("xr" in navigator) {
     if (supported) {
       //hide "ar-not-supported"
       document.getElementById("ar-not-supported").style.display = "none";
-      init();
+      
+			init();
       animate();
+			
     }
   });
 }
+
+// run these here to debug otherwise run them in the above if
+// init();
+// animate();
+
 
 function sessionStart() {
   planeFound = false;
@@ -253,13 +260,15 @@ function init() {
       reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
       const scale = Math.random() * 0.4 + 0.25;
       //mesh.scale.set(scale, scale, scale);
-			var ss = 0.04;
+			var ss = 0.08;
 			mesh.scale.set(ss,ss,ss);
       //random rotation
       mesh.rotateY(Math.random() * Math.PI * 2);
       scene.add(mesh);
-
+			
+			
       // animate growing via hacky setInterval then destroy it when fully grown
+			// replace for a dampening effect
       const interval = setInterval(() => {
         mesh.scale.multiplyScalar(1.01);
 
@@ -283,13 +292,26 @@ function init() {
   reticle.visible = false;
   scene.add(reticle);
 
+  {
+	  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+	  const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+	  const cube = new THREE.Mesh( geometry, material );
+	  cube.position.set(0,0,-10);
+	  cube.rotation.y = 1.1;
+	  cube.rotation.z = 0.4;
+	  scene.add( cube );
+  }
 
 	{
 		const loader = new GLTFLoader().setPath( 'models/' );
 		loader.load( 'horsey2.glb', function ( gltf ) {
 
-			//gltf.scene.position.set(0,4,-10);
-			//scene.add( gltf.scene );
+			gltf.scene.position.set(0,1,-10);
+			scene.add( gltf.scene );
+			
+			var ss = 0.08;
+			gltf.scene.scale.set(ss,ss,ss);
+			
 			flowersGltf = gltf.scene;
 
 			//render();
