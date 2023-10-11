@@ -6,6 +6,8 @@ import { ARButton } from "three/addons/webxr/ARButton.js";
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+import { OnScreenLogger } from './OnScreenLogger.js';
+
 
 // this makes it flicker
 // import "./style.css";
@@ -604,3 +606,17 @@ function handleWhileDown(ev) {
   
   
 }
+
+
+
+var onConsole = new OnScreenLogger();
+window.onConsole;
+
+var updateInterval = 1;
+
+var ii = 0;
+var intervalID = setInterval( () =>{
+  onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
+  onConsole.log("fish", Date.now());
+  // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
+}, updateInterval);
