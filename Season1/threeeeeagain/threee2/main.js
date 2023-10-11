@@ -23,7 +23,8 @@ let planeFound = false;
 let flowersGltf;
 
 var horseys = [];
-      var clock;
+window.horseys = horseys;
+var clock;
 
 
 var IS_XR_AVAIL = false;
@@ -427,6 +428,7 @@ function render(timestamp, frame) {
 var touchStartPos = new THREE.Vector2(0,0);
 var pointer2D = new THREE.Vector2(0,0);
 var pointer3D = new THREE.Vector3(0,0,0);
+var horseyPosDown = new THREE.Vector3(0,0,0);
 
 var IS_DOWN = false;
 
@@ -438,18 +440,24 @@ function handleTouchStart(ev) {
   
   touchStartPos.x = touches[0].pageX;
   touchStartPos.y = touches[0].pageY;
+  
+  if (horseys.Length > 0) {
+    horseyPosDown.copy(horseys[0].position);
+  }
 
 }
 
 function handleWhileDown(ev) {
   ev.preventDefault();
   
-  if (IS_DOWN) {
-    const touches = ev.changedTouches;
-    pointer2D.set(touches[0].pageX, touches[0].pageY);
-    
-  }
+  if (IS_DOWN == false) return;
   
+  const touches = ev.changedTouches;
+  pointer2D.set(touches[0].pageX, touches[0].pageY);
+  
+  if (horseys.Length > 0) {
+    pointer3D.set(horseyPosDown.x, horseyPosDown.y, 0);
+  }
   
 
 }
