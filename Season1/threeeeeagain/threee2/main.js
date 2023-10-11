@@ -28,6 +28,9 @@ window.horseys = horseys;
 
 var raycasterCube; // T: Mesh
 
+var shadowPlane; // T: Mesh
+var SHADOW_PLANE_AR = false;
+
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let planeFound = false;
@@ -98,12 +101,27 @@ function init() {
   const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3.4);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
+  
+  {
+  //Create a DirectionalLight and turn on shadows for the light
+  const light = new THREE.DirectionalLight( 0xffffff, 1 );
+  // light.position.set( 1, 0.5, 0 ); //default; light shining from top
+  light.position.set( 0.1, 1, 0 ); //default; light shining from top
+  light.castShadow = true; // default false
+  scene.add( light );
+  const spotLightHelper = new THREE.SpotLightHelper( light );
+  scene.add( spotLightHelper );
+  }
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
+
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
@@ -212,6 +230,18 @@ function init() {
 			var ss = 0.4;
 			gltf.scene.scale.set(ss,ss,ss);
 			
+      // debugger
+      
+      // force shadows but only for the core 3d object
+      // for (var i = 0; i < gltf.scene.children.length-1; i++) {
+      //   if (gltf.scene.children[0].children[i].type === "Mesh") {
+      //     // debugger
+      //       gltf.scene.children[0].children[i].castShadow = true;
+      //   }
+      // }
+      gltf.scene.children[0].children[0].castShadow = true;
+      gltf.scene.children[0].children[1].castShadow = true;
+      gltf.scene.children[0].children[2].castShadow = true;
 
 			// horseys.push(gltf.scene);
 
@@ -389,6 +419,21 @@ function init() {
   const gridHelper = new THREE.GridHelper( size, divisions );
   scene.add( gridHelper );
   
+  {
+    //Create a plane that receives shadows (but does not cast them)
+    var pg = new THREE.PlaneGeometry( 1,1, 32, 32 );
+    // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
+    const material = new THREE.ShadowMaterial();
+    material.opacity = 0.4;
+    shadowPlane = new THREE.Mesh( pg, material );
+    shadowPlane.receiveShadow = true;
+    // window.shadowPlane = shadowPlane;
+    shadowPlane.rotation.x = -Math.PI/2;
+    // shadowPlane.rotation.
+    scene.add( shadowPlane );
+    
+  }
+  
 }
 
 
@@ -480,6 +525,13 @@ function render(timestamp, frame) {
           const s = 0.01;
           cube.scale.set(s,s,s);
           scene.add( cube );
+          
+        }
+        
+        if (SHADOW_PLANE_AR === false) {
+
+          shadowPlane.position = reticle.position;
+          SHADOW_PLANE_AR = true;
           
         }
         
@@ -582,7 +634,7 @@ function handleTouchStart(ev) {
     touchStartPos.x = ev.pageX;
     touchStartPos.y = ev.pageY;
   }
-  console.log(touchStartPos);
+  // console.log(touchStartPos);
   
   if (horseys.length > 0) {
     horseyPosDown.copy(horseys[0].position);
@@ -623,7 +675,7 @@ function handleWhileDown(ev) {
     pointer2D.set(ev.pageX, ev.pageY);
   }
   
-  console.log(pointer2D);
+  // console.log(pointer2D);
   
   deltaPos2D.subVectors(pointer2D, horseyPosDown);
   
@@ -632,7 +684,7 @@ function handleWhileDown(ev) {
     pointer3D.copy(horseys[0].position);
     deltaPos3D.set(deltaPos2D.x, horseys[0].position.y, deltaPos2D.y);
     horseys[0].position.copy(horseyPosDown).add(deltaPos3D);
-    console.log("deltaPos3D", deltaPos3D);
+    // console.log("deltaPos3D", deltaPos3D);
   }
   
   // raycasterCube
@@ -643,29 +695,6 @@ function handleWhileDown(ev) {
 	raycaster.setFromCamera( pointer2D, camera );
   raycaster.ray.intersectPlane ( floorPlane, targetVecOfPlane);
   raycasterCube.position.copy(targetVecOfPlane);
-  
-  
-  //         const intersects = raycaster.intersectObjects( objects, false );
-  // 
-  //         .intersectPlane ( plane : Plane, target : Vector3 ) : Vector3
-  // plane - the Plane to intersect with.
-  // target — the result will be copied into this Vector3.
-  // 
-  // Intersect this Ray with a Plane, returning the intersection point or null if there is no intersection.
-  // 
-  // 
-  // 
-  // 
-  // 				if ( intersects.length > 0 ) {
-  // 
-  // 					const intersect = intersects[ 0 ];
-  // 
-  // 					rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-  // 					rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
-  // 
-  // 					render();
-  // 
-  // 				}
   
   
 }
