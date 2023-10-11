@@ -298,7 +298,7 @@ function init() {
         // window.shadowPlane = shadowPlane;
         shadowPlane.rotation.x = -Math.PI/2;
         // shadowPlane.rotation.
-        // pp.add( shadowPlane );
+        pp.add( shadowPlane );
         
       }
       
@@ -553,14 +553,14 @@ function render(timestamp, frame) {
           
         }
         
-        if (SHADOW_PLANE_SETUP_AR === false) {
-          if (shadowPlane && reticle) {
-            
-            shadowPlane.position = reticle.position;
-            SHADOW_PLANE_SETUP_AR = true;
-          }
-          
-        }
+        // if (SHADOW_PLANE_SETUP_AR === false) {
+        //   if (shadowPlane && reticle) {
+        // 
+        //     shadowPlane.position = reticle.position;
+        //     SHADOW_PLANE_SETUP_AR = true;
+        //   }
+        // 
+        // }
         
         
       } else {
