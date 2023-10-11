@@ -568,8 +568,8 @@ function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
+  IF_MULTITOUCH_DOWN = true;
   if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
-    IF_MULTITOUCH_DOWN = true;
   }
   
   if (ev.pointerType === 'touch') {
@@ -603,8 +603,8 @@ function handleTouchStop(ev) {
   IS_DOWN = false;
   console.log("stop");
   
+  IF_MULTITOUCH_DOWN = false;
   if (ev.pointerType === 'touch') {
-    IF_MULTITOUCH_DOWN = false;
     touchesCount = touches.length;
   }
 }
