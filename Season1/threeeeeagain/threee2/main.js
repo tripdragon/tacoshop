@@ -534,6 +534,7 @@ var horseyPosDown = new THREE.Vector3(0,0,0);
 
 var IS_DOWN = false;
 var IF_MULTITOUCH_DOWN = false;
+var touchesCount = -1;
 
 function handleTouchStart(ev) {
   ev.preventDefault();
@@ -548,6 +549,7 @@ function handleTouchStart(ev) {
     const touches = ev.changedTouches;
     touchStartPos.x = touches[0].pageX;
     touchStartPos.y = touches[0].pageY;
+    touchesCount = touches.length;
   }
   else {
     touchStartPos.x = ev.pageX;
@@ -575,6 +577,7 @@ function handleTouchStop(ev) {
   console.log("stop");
   if (ev.pointerType === 'touch') {
     IF_MULTITOUCH_DOWN = false;
+    touchesCount = touches.length;
   }
 }
 
@@ -618,5 +621,6 @@ var ii = 0;
 var intervalID = setInterval( () =>{
   onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
   onConsole.log("fish", Date.now());
+  onConsole.log("touchesCount", touchesCount);
   // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
 }, updateInterval);
