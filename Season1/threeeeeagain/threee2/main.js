@@ -446,18 +446,21 @@ function render(timestamp, frame) {
         // makeCubey(); this here breaks it, so something is missing
         // so instead we just spam the cube below
         
-        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-        const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        const cube = new THREE.Mesh( geometry, material );
-        // cube.position.set(0,0,0);
-        reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
-        cube.rotation.y = 1.1;
-        cube.rotation.z = 0.4;
-        const s = 0.01;
-        cube.scale.set(s,s,s);
-        scene.add( cube );
+        if(IF_MULTITOUCH_DOWN){
         
+          const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+          // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+          const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+          const cube = new THREE.Mesh( geometry, material );
+          // cube.position.set(0,0,0);
+          reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+          cube.rotation.y = 1.1;
+          cube.rotation.z = 0.4;
+          const s = 0.01;
+          cube.scale.set(s,s,s);
+          scene.add( cube );
+          
+        }
         
         
       } else {
@@ -528,12 +531,16 @@ var horseyPosDown = new THREE.Vector3(0,0,0);
 // 				}
 
 var IS_DOWN = false;
+var IF_MULTITOUCH_DOWN = false;
 
 function handleTouchStart(ev) {
   ev.preventDefault();
   IS_DOWN = true;
   console.log("start");
-
+  
+  if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
+    IF_MULTITOUCH_DOWN = true;
+  }
   
   if (ev.pointerType === 'touch') {
     const touches = ev.changedTouches;
@@ -564,6 +571,9 @@ function handleTouchStop(ev) {
   ev.preventDefault();
   IS_DOWN = false;
   console.log("stop");
+  if (ev.pointerType === 'touch') {
+    IF_MULTITOUCH_DOWN = false;
+  }
 }
 
 function handleWhileDown(ev) {
