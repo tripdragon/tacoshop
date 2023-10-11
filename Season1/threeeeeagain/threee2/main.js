@@ -91,6 +91,7 @@ function init() {
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
   if ( ! IS_XR_AVAIL ) {
+  // if ( true ) {
     controls = new OrbitControls( camera, renderer.domElement );
     // controls.addEventListener( 'change', render ); // use if there is no animation loop
     controls.minDistance = 0.2;
@@ -110,6 +111,7 @@ function init() {
   function onSelect() {
     if (reticle.visible && flowersGltf) {
       makeAHorsey();
+      makeCubey();
     }
   }
   
@@ -122,8 +124,10 @@ function init() {
     //   ];
     const flower = flowersGltf;
     const mesh = flower.clone();
-
+    
+    // this is a non obvious annoying way to get the XR anchors position
     reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
+    
     const scale = Math.random() * 0.4 + 0.25;
     //mesh.scale.set(scale, scale, scale);
     var ss = 0.04;
@@ -153,6 +157,21 @@ function init() {
     setTimeout(() => {
       clearInterval(interval);
     }, 500);
+  }
+  
+  function makeCubey(){
+  
+	  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+	  // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+	  const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+	  const cube = new THREE.Mesh( geometry, material );
+	  cube.position.set(0,0,-10);
+	  cube.rotation.y = 1.1;
+	  cube.rotation.z = 0.4;
+    const s = 0.1;
+    cube.scale.set(s,s,s);
+	  scene.add( cube );
+  
   }
   
   
@@ -277,6 +296,15 @@ function init() {
     m1.addEventListener("click", (ev) => {
       console.log(ev);
       makeAHorsey();
+    });
+  }
+  
+  {
+    const m1 = document.getElementById("makeCubey");
+    // debugger
+    m1.addEventListener("click", (ev) => {
+      console.log(ev);
+      makeCubey();
     });
   }
   

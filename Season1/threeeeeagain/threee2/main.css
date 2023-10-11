@@ -56,9 +56,9 @@ a, button, input, select {
 	}
 }
 
-#sdfdfgdfoverlay {
+#overlay {
 	pointer-events: none;
-	/* position: absolute; */
+	position: absolute;
 	font-size: 16px;
 	z-index: 2;
 	top: 0;
@@ -76,7 +76,7 @@ a, button, input, select {
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 80vh;
+  /* min-height: 80vh; */
   justify-content: center;
   align-items: center;
 }
