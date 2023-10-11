@@ -313,8 +313,8 @@ function makeCubey(){
   // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
   const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
   const cube = new THREE.Mesh( geometry, material );
-  // cube.position.set(0,0,0);
-  reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+  cube.position.set(0,0,0);
+  // reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
   cube.rotation.y = 1.1;
   cube.rotation.z = 0.4;
   const s = 0.01;
@@ -377,7 +377,20 @@ function render(timestamp, frame) {
         reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
         // debugger visulizer
-        makeCubey();
+        // makeCubey();
+        
+        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+        const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+        const cube = new THREE.Mesh( geometry, material );
+        // cube.position.set(0,0,0);
+        reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+        cube.rotation.y = 1.1;
+        cube.rotation.z = 0.4;
+        const s = 0.01;
+        cube.scale.set(s,s,s);
+        scene.add( cube );
+        
         
         
       } else {
@@ -398,3 +411,34 @@ function render(timestamp, frame) {
   }
   renderer.render(scene, camera);
 }
+
+
+
+
+
+
+
+// 
+// touch events
+// 
+// 
+// 
+// 
+// function handleStart(evt) {
+//   evt.preventDefault();
+// 
+//   // const el = document.getElementById("canvas");
+//   // const ctx = el.getContext("2d");
+//   const touches = evt.changedTouches;
+// 
+//   for (let i = 0; i < touches.length; i++) {
+//     log(`touchstart: ${i}.`);
+//     ongoingTouches.push(copyTouch(touches[i]));
+//     const color = colorForTouch(touches[i]);
+//     log(`color of touch with id ${touches[i].identifier} = ${color}`);
+//     ctx.beginPath();
+//     ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false); // a circle at the start
+//     ctx.fillStyle = color;
+//     ctx.fill();
+//   }
+// }
