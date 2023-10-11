@@ -95,8 +95,8 @@ function init() {
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
-  // if ( ! IS_XR_AVAIL ) {
-  if ( false ) {
+  if ( ! IS_XR_AVAIL ) {
+  // if ( false ) {
     controls = new OrbitControls( camera, renderer.domElement );
     // controls.addEventListener( 'change', render ); // use if there is no animation loop
     controls.minDistance = 0.2;
@@ -424,14 +424,32 @@ function render(timestamp, frame) {
 // 
 // 
 // 
-var touchStartPos = {x:0,y:0};
+var touchStartPos = new THREE.Vector2(0,0);
+var pointer2D = new THREE.Vector2(0,0);
+var pointer3D = new THREE.Vector3(0,0,0);
+
+var IS_DOWN = false;
 
 function handleTouchStart(ev) {
   ev.preventDefault();
+  IS_DOWN = true;
 
   const touches = ev.changedTouches;
   
   touchStartPos.x = touches[0].pageX;
   touchStartPos.y = touches[0].pageY;
+
+}
+
+function handleWhileDown(ev) {
+  ev.preventDefault();
+  
+  if (IS_DOWN) {
+    const touches = ev.changedTouches;
+    pointer2D.set(touches[0].pageX, touches[0].pageY);
+    
+  }
+  
+  
 
 }
