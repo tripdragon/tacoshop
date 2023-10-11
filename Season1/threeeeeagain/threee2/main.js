@@ -367,7 +367,8 @@ function render(timestamp, frame) {
         reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
         // debugger visulizer
-        makeCubey();
+        // makeCubey();
+        
         
       } else {
         reticle.visible = false;
