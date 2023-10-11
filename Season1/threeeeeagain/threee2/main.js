@@ -425,6 +425,7 @@ function render(timestamp, frame) {
 // 
 // 
 var touchStartPos = {x:0,y:0};
+
 function handleTouchStart(ev) {
   ev.preventDefault();
 
