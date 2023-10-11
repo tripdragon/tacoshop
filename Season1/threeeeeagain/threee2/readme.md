@@ -19,6 +19,8 @@ npm install --save-dev vite
 npx vite
 
 npx vite build
+or
+npx vite build --watch
 
 test with
 cd dist
