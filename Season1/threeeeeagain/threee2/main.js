@@ -107,18 +107,18 @@ function init() {
   {
   //Create a DirectionalLight and turn on shadows for the light
   spotlight1 = new THREE.DirectionalLight( 0xffffff, 1 );
-  // spotlight1position.set( 1, 0.5, 0 ); //default; light shining from top
-  spotlight1position.set( 0.1, 1, 0 ); //default; light shining from top
-  spotlight1castShadow = true; // default false
+  // spotlight1.position.set( 1, 0.5, 0 ); //default; light shining from top
+  spotlight1.position.set( 0.1, 1, 0 ); //default; light shining from top
+  spotlight1.castShadow = true; // default false
   scene.add( light );
   const spotLightHelper = new THREE.SpotLightHelper( spotlight1 );
   scene.add( spotLightHelper );
   
     //   //Set up shadow properties for the light
-    // spotlight1shadow.mapSize.width = 512; // default
-    // spotlight1shadow.mapSize.height = 512; // default
-    // spotlight1shadow.camera.near = 0.5; // default
-    // spotlight1shadow.camera.far = 500; // default
+    // spotlight1.shadow.mapSize.width = 512; // default
+    // spotlight1.shadow.mapSize.height = 512; // default
+    // spotlight1.shadow.camera.near = 0.5; // default
+    // spotlight1.shadow.camera.far = 500; // default
   }
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
