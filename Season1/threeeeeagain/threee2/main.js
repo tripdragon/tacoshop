@@ -557,7 +557,7 @@ var touchesCount = -1;
 
 var raycaster = new THREE.Raycaster();
 var targetVecPlane = new THREE.Vector3();
-var new THREE.Plane(0,1,0)
+var floorPlane = new THREE.Plane(0,1,0);
 
 var touchType = "-1";
 
@@ -640,11 +640,12 @@ function handleWhileDown(ev) {
   // 
   // raycaster = new THREE.Raycaster();
   // 				pointer = new THREE.Vector2();
-  // pointer2D.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-  // 
-	// raycaster.setFromCamera( pointer, camera );
-  // raycaster.ray.intersectPlane ( new THREE.Plane(0,1,0), targetVecPlane);
-  // 
+  pointer2D.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+  
+	raycaster.setFromCamera( pointer, camera );
+  raycaster.ray.intersectPlane ( floorPlane, targetVecPlane);
+  raycasterCube.position.copy(targetVecPlane);
+  
   //         const intersects = raycaster.intersectObjects( objects, false );
   // 
   //         .intersectPlane ( plane : Plane, target : Vector3 ) : Vector3
