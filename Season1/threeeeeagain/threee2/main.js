@@ -379,7 +379,7 @@ function init() {
   
   
   const plane = new THREE.Plane( new THREE.Vector3( 0,1,0 ), 0 );
-  const helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+  const helper = new THREE.PlaneHelper( plane, 0.2, 0xffff00 );
   scene.add( helper );
 
 
