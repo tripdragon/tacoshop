@@ -164,21 +164,7 @@ function init() {
     }, 500);
   }
   
-  function makeCubey(){
-  
-	  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-	  // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-	  const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-	  const cube = new THREE.Mesh( geometry, material );
-	  cube.position.set(0,0,0);
-    // reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
-	  cube.rotation.y = 1.1;
-	  cube.rotation.z = 0.4;
-    const s = 0.01;
-    cube.scale.set(s,s,s);
-	  scene.add( cube );
-  
-  }
+
   
   
 
@@ -316,6 +302,25 @@ function init() {
   
   
   
+}
+
+
+
+
+function makeCubey(){
+
+  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+  // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+  const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+  const cube = new THREE.Mesh( geometry, material );
+  // cube.position.set(0,0,0);
+  reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+  cube.rotation.y = 1.1;
+  cube.rotation.z = 0.4;
+  const s = 0.01;
+  cube.scale.set(s,s,s);
+  scene.add( cube );
+
 }
 
 function onWindowResize() {
