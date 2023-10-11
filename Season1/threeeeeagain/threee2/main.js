@@ -28,6 +28,8 @@ window.horseys = horseys;
 
 var raycasterCube; // T: Mesh
 
+var spotlight1; // T : Spotlight: Object3D
+
 var shadowPlane; // T: Mesh
 var SHADOW_PLANE_AR = false;
 
@@ -104,13 +106,19 @@ function init() {
   
   {
   //Create a DirectionalLight and turn on shadows for the light
-  const light = new THREE.DirectionalLight( 0xffffff, 1 );
-  // light.position.set( 1, 0.5, 0 ); //default; light shining from top
-  light.position.set( 0.1, 1, 0 ); //default; light shining from top
-  light.castShadow = true; // default false
+  spotlight1 = new THREE.DirectionalLight( 0xffffff, 1 );
+  // spotlight1position.set( 1, 0.5, 0 ); //default; light shining from top
+  spotlight1position.set( 0.1, 1, 0 ); //default; light shining from top
+  spotlight1castShadow = true; // default false
   scene.add( light );
-  const spotLightHelper = new THREE.SpotLightHelper( light );
+  const spotLightHelper = new THREE.SpotLightHelper( spotlight1 );
   scene.add( spotLightHelper );
+  
+    //   //Set up shadow properties for the light
+    // spotlight1shadow.mapSize.width = 512; // default
+    // spotlight1shadow.mapSize.height = 512; // default
+    // spotlight1shadow.camera.near = 0.5; // default
+    // spotlight1shadow.camera.far = 500; // default
   }
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -276,6 +284,23 @@ function init() {
       // gltf.scene.mixer = null;
       
       flowersGltf = pp;
+      
+      
+      // THIS IS EXPENSSIVE need to remove
+      {
+        //Create a plane that receives shadows (but does not cast them)
+        var pg = new THREE.PlaneGeometry( 1,1, 32, 32 );
+        // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
+        const material = new THREE.ShadowMaterial();
+        material.opacity = 0.4;
+        shadowPlane = new THREE.Mesh( pg, material );
+        shadowPlane.receiveShadow = true;
+        // window.shadowPlane = shadowPlane;
+        shadowPlane.rotation.x = -Math.PI/2;
+        // shadowPlane.rotation.
+        pp.add( shadowPlane );
+        
+      }
       
 			
 			// scene.add( gltf.scene );
