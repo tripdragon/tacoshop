@@ -110,7 +110,7 @@ function init() {
   // spotlight1.position.set( 1, 0.5, 0 ); //default; light shining from top
   spotlight1.position.set( 0.1, 1, 0 ); //default; light shining from top
   spotlight1.castShadow = true; // default false
-  scene.add( light );
+  scene.add( spotlight1 );
   const spotLightHelper = new THREE.SpotLightHelper( spotlight1 );
   scene.add( spotLightHelper );
   
@@ -293,12 +293,12 @@ function init() {
         // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
         const material = new THREE.ShadowMaterial();
         material.opacity = 0.4;
-        shadowPlane = new THREE.Mesh( pg, material );
+        var shadowPlane = new THREE.Mesh( pg, material );
         shadowPlane.receiveShadow = true;
         // window.shadowPlane = shadowPlane;
         shadowPlane.rotation.x = -Math.PI/2;
         // shadowPlane.rotation.
-        pp.add( shadowPlane );
+        // pp.add( shadowPlane );
         
       }
       
@@ -447,7 +447,7 @@ function init() {
   {
     //Create a plane that receives shadows (but does not cast them)
     var pg = new THREE.PlaneGeometry( 1,1, 32, 32 );
-    // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
+    // const material = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
     const material = new THREE.ShadowMaterial();
     material.opacity = 0.4;
     shadowPlane = new THREE.Mesh( pg, material );
