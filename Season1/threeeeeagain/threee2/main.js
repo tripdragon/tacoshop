@@ -170,8 +170,8 @@ function init() {
 	  // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
 	  const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 	  const cube = new THREE.Mesh( geometry, material );
-	  // cube.position.set(0,0,0);
-    reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+	  cube.position.set(0,0,0);
+    // reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
 	  cube.rotation.y = 1.1;
 	  cube.rotation.z = 0.4;
     const s = 0.01;
