@@ -424,21 +424,13 @@ function render(timestamp, frame) {
 // 
 // 
 // 
-// function handleStart(evt) {
-//   evt.preventDefault();
-// 
-//   // const el = document.getElementById("canvas");
-//   // const ctx = el.getContext("2d");
-//   const touches = evt.changedTouches;
-// 
-//   for (let i = 0; i < touches.length; i++) {
-//     log(`touchstart: ${i}.`);
-//     ongoingTouches.push(copyTouch(touches[i]));
-//     const color = colorForTouch(touches[i]);
-//     log(`color of touch with id ${touches[i].identifier} = ${color}`);
-//     ctx.beginPath();
-//     ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false); // a circle at the start
-//     ctx.fillStyle = color;
-//     ctx.fill();
-//   }
-// }
+var touchStartPos = {x:0;y:0;}
+function handleTouchStart(ev) {
+  ev.preventDefault();
+
+  const touches = ev.changedTouches;
+  
+  touchStartPos.x = touches[0].pageX;
+  touchStartPos.y = touches[0].pageY;
+
+}
