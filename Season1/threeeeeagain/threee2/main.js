@@ -2,10 +2,15 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ARButton } from "three/addons/webxr/ARButton.js";
-import "./qr.js";
+// import "./qr.js";
 
-import "./style.css";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+
+// this makes it flicker
+// import "./style.css";
+
+let controls;
 let container;
 let camera, scene, renderer;
 let controller;
@@ -21,6 +26,9 @@ var horseys = [];
       var clock;
 
 
+var IS_XR_AVAIL = false;
+
+
 // check for webxr session support
 if ("xr" in navigator) {
   navigator.xr.isSessionSupported("immersive-ar").then((supported) => {
@@ -30,14 +38,16 @@ if ("xr" in navigator) {
       
 			init();
       animate();
+      
+      IS_XR_AVAIL = true;
 			
     }
   });
 }
 
 // // run these here to debug otherwise run them in the above if
-// init();
-// animate();
+init();
+animate();
 
 
 function sessionStart() {
@@ -48,12 +58,16 @@ function sessionStart() {
 
 function init() {
 	
+  
+  
+  
 	clock = new THREE.Clock();
 	
   container = document.createElement("div");
   document.body.appendChild(container);
 
   scene = new THREE.Scene();
+  window.scene = scene;
 
   camera = new THREE.PerspectiveCamera(
     70,
@@ -61,6 +75,8 @@ function init() {
     0.01,
     20
   );
+  
+
 
   const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3.4);
   light.position.set(0.5, 1, 0.25);
@@ -74,6 +90,16 @@ function init() {
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
+  if ( ! IS_XR_AVAIL ) {
+    controls = new OrbitControls( camera, renderer.domElement );
+    // controls.addEventListener( 'change', render ); // use if there is no animation loop
+    controls.minDistance = 0.2;
+    controls.maxDistance = 100;
+    controls.target.set( 0, 0, - 0.2 );
+    controls.enableDamping = true;
+    controls.update();
+  }
+
   document.body.appendChild(
     ARButton.createButton(renderer, {
       requiredFeatures: ["local", "hit-test", "dom-overlay"],
@@ -83,46 +109,53 @@ function init() {
 
   function onSelect() {
     if (reticle.visible && flowersGltf) {
-      //pick random child from flowersGltf
-      // const flower =
-      //   flowersGltf.children[
-      //     Math.floor(Math.random() * flowersGltf.children.length)
-      //   ];
-			const flower = flowersGltf;
-      const mesh = flower.clone();
-
-      reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
-      const scale = Math.random() * 0.4 + 0.25;
-      //mesh.scale.set(scale, scale, scale);
-			var ss = 0.04;
-			mesh.scale.set(ss,ss,ss);
-      //random rotation
-      mesh.rotateY(Math.random() * Math.PI * 2);
-      scene.add(mesh);
-			
-			
-			mesh.mixer = new THREE.AnimationMixer( mesh );
-			for (var i = 0; i < mesh.animations.length; i++) {
-				mesh.mixer.clipAction( mesh.animations[ i ] ).play();
-			}
-
-			
-			
-			horseys.push(mesh);
-			
-			
-      // animate growing via hacky setInterval then destroy it when fully grown
-			// replace for a dampening effect
-      const interval = setInterval(() => {
-        // mesh.scale.multiplyScalar(1.01);
-
-        mesh.rotateY(0.03);
-      }, 16);
-      setTimeout(() => {
-        clearInterval(interval);
-      }, 500);
+      makeAHorsey();
     }
   }
+  
+  
+  function makeAHorsey(){
+    //pick random child from flowersGltf
+    // const flower =
+    //   flowersGltf.children[
+    //     Math.floor(Math.random() * flowersGltf.children.length)
+    //   ];
+    const flower = flowersGltf;
+    const mesh = flower.clone();
+
+    reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
+    const scale = Math.random() * 0.4 + 0.25;
+    //mesh.scale.set(scale, scale, scale);
+    var ss = 0.04;
+    mesh.scale.set(ss,ss,ss);
+    //random rotation
+    mesh.rotateY(Math.random() * Math.PI * 2);
+    scene.add(mesh);
+
+
+    mesh.mixer = new THREE.AnimationMixer( mesh );
+    for (var i = 0; i < mesh.animations.length; i++) {
+      mesh.mixer.clipAction( mesh.animations[ i ] ).play();
+    }
+
+
+
+    horseys.push(mesh);
+
+
+    // animate growing via hacky setInterval then destroy it when fully grown
+    // replace for a dampening effect
+    const interval = setInterval(() => {
+      // mesh.scale.multiplyScalar(1.01);
+
+      mesh.rotateY(0.03);
+    }, 16);
+    setTimeout(() => {
+      clearInterval(interval);
+    }, 500);
+  }
+  
+  
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
@@ -234,6 +267,21 @@ function init() {
   // });
 
   window.addEventListener("resize", onWindowResize);
+  
+  
+  // debugger buttons 
+  // addbuttonhorsey
+  {
+    const m1 = document.getElementById("addbuttonhorsey");
+    // debugger
+    m1.addEventListener("click", (ev) => {
+      console.log(ev);
+      makeAHorsey();
+    });
+  }
+  
+  
+  
 }
 
 function onWindowResize() {
@@ -249,6 +297,10 @@ function animate() {
 
 function render(timestamp, frame) {
 	// console.log("1121212");
+  
+  
+  // console.log("?¿??¿¿");
+  
   if (frame) {
     const referenceSpace = renderer.xr.getReferenceSpace();
     const session = renderer.xr.getSession();
@@ -297,5 +349,8 @@ function render(timestamp, frame) {
     horseys[i].mixer.update( mixerUpdateDelta );
   }
 	
+  if (controls) {
+    controls.update();
+  }
   renderer.render(scene, camera);
 }

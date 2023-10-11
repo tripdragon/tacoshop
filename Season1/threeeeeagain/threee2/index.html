@@ -17,11 +17,18 @@
     
     <link rel="stylesheet" href="main.css">
     <style media="screen">
+    .hide{
+      display: none !important;
+    }
       #notes{
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
+        z-index: 100;
+      }
+      #addbuttonhorsey{
+        padding: 10px;
+        /* top: 20px; */
       }
     </style>
   </head>
@@ -29,11 +36,12 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <!-- <div id="root"></div> -->
 
+
     <div id="overlay">
-      <div id="tracking-prompt"><img src="./public/tea.png" /></div>
+      <div id="tracking-prompt"><img style="width:40px;" src="./public/tea.png" /></div>
       <div id="instructions">Tap to fish</div>
     </div>
-    <div id="app">
+    <div id="app" class="hide" skdlfdfgstyle="display:none;">
       <a href="https://launch.variant3d.com"
         ><img id="variant-logo" alt="WebXR on iOS" src="favicon.ico"
       /></a>
@@ -55,7 +63,10 @@
     
 
     <div id="notes">
-      <h1 style="color:#222222;">Naaarrrff 9999</h1>
+      
+      <button id="addbuttonhorsey">gcgfcyh</button>
+
+      <h1 style="color:#222222;">Naaarrrff 9999aaa</h1>
 
   		<!-- <div id="info">
   			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - hit test<br/>(Chrome Android 81+)
