@@ -10,24 +10,31 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // this makes it flicker
 // import "./style.css";
 
-let controls;
-let container;
-let camera, scene, renderer;
-let controller;
+let controls; // T : OrbitControls
 
-let reticle;
+
+let container; // T: Dom el
+
+let camera, scene, renderer, clock;
+
+let controller; // T : renderer.xr.getController
+
+let reticle; // T:Mesh
+let flowersGltf; // T : Mesh
+var horseys = []; // T : [Mesh]
+window.horseys = horseys;
 
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let planeFound = false;
-let flowersGltf;
-
-var horseys = [];
-window.horseys = horseys;
-var clock;
-
 
 var IS_XR_AVAIL = false;
+
+var modes = {
+  seek: "seek",
+  moveHorsey : "moveHorsey"
+}
+var mode = modes.seek;
 
 
 // check for webxr session support
@@ -62,11 +69,11 @@ function sessionStart() {
   document.getElementById("tracking-prompt").style.display = "block";
 }
 
+//
+//
+//
 function init() {
 	
-  
-  
-  
 	clock = new THREE.Clock();
 	
   container = document.createElement("div");
@@ -99,6 +106,7 @@ function init() {
   if ( ! IS_XR_AVAIL ) {
   // if ( false ) {
     controls = new OrbitControls( camera, renderer.domElement );
+    window.controls = controls;
     // controls.addEventListener( 'change', render ); // use if there is no animation loop
     controls.minDistance = 0.2;
     controls.maxDistance = 100;
@@ -117,7 +125,7 @@ function init() {
   function onSelect() {
     if (reticle.visible && flowersGltf) {
       makeAHorsey();
-      makeCubey();
+      // makeCubey();
     }
   }
   
@@ -216,7 +224,25 @@ function init() {
 				gltf.scene.mixer.clipAction( gltf.animations[ i ] ).play();
 			}
 
-			flowersGltf = gltf.scene;
+			// flowersGltf = gltf.scene;
+      
+      // 
+      // 
+      let pp = new THREE.Group();
+      pp.position.set(0,0,0);
+      var ss = 0.4;
+      // pp.scale.set(ss,ss,ss);
+      scene.add( pp );
+      
+      pp.add(gltf.scene);
+      gltf.scene.position.set(0,1.9,0);
+      pp.animations = gltf.animations;
+      pp.mixer = gltf.scene.mixer;
+      // gltf.scene.animations = null;
+      // gltf.scene.mixer = null;
+      
+      flowersGltf = pp;
+      
 			
 			// scene.add( gltf.scene );
 
@@ -301,7 +327,46 @@ function init() {
     });
   }
   
+//   el.addEventListener("touchstart", handleStart);
+// el.addEventListener("touchend", handleEnd);
+// el.addEventListener("touchcancel", handleCancel);
+// el.addEventListener("touchmove", handleMove);
   
+  if (IS_XR_AVAIL){
+    renderer.domElement.addEventListener("touchstart", handleTouchStart);
+  }
+  else {
+    renderer.domElement.addEventListener("mousedown", handleTouchStart);
+  }
+  
+  if (IS_XR_AVAIL){
+    renderer.domElement.addEventListener("touchmove", handleWhileDown);
+  }
+  else {
+    renderer.domElement.addEventListener("mousemove", handleWhileDown);
+  }
+  
+  
+  if (IS_XR_AVAIL){
+    renderer.domElement.addEventListener("touchend", handleTouchStop);
+  }
+  else {
+    renderer.domElement.addEventListener("mouseup", handleTouchStop);
+  }
+  
+  
+  
+  
+  const plane = new THREE.Plane( new THREE.Vector3( 0,1,0 ), 0 );
+  const helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+  scene.add( helper );
+
+
+  const size = 2;
+  const divisions = 10;
+
+  const gridHelper = new THREE.GridHelper( size, divisions );
+  scene.add( gridHelper );
   
 }
 
@@ -378,7 +443,8 @@ function render(timestamp, frame) {
         reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
         // debugger visulizer
-        // makeCubey();
+        // makeCubey(); this here breaks it, so something is missing
+        // so instead we just spam the cube below
         
         const geometry = new THREE.BoxGeometry( 1, 1, 1 );
         // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
@@ -427,37 +493,104 @@ function render(timestamp, frame) {
 // 
 var touchStartPos = new THREE.Vector2(0,0);
 var pointer2D = new THREE.Vector2(0,0);
+var deltaPos2D = new THREE.Vector2(0,0);
+var deltaPos3D = new THREE.Vector3(0,0,0);
 var pointer3D = new THREE.Vector3(0,0,0);
 var horseyPosDown = new THREE.Vector3(0,0,0);
+
+// 
+// 
+// raycaster = new THREE.Raycaster();
+// 				pointer = new THREE.Vector2();
+//         pointer.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+// 
+// 				raycaster.setFromCamera( pointer, camera );
+//         const intersects = raycaster.intersectObjects( objects, false );
+// 
+//         .intersectPlane ( plane : Plane, target : Vector3 ) : Vector3
+// plane - the Plane to intersect with.
+// target — the result will be copied into this Vector3.
+// 
+// Intersect this Ray with a Plane, returning the intersection point or null if there is no intersection.
+// 
+// 
+// 
+// 
+// 				if ( intersects.length > 0 ) {
+// 
+// 					const intersect = intersects[ 0 ];
+// 
+// 					rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+// 					rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+// 
+// 					render();
+// 
+// 				}
 
 var IS_DOWN = false;
 
 function handleTouchStart(ev) {
   ev.preventDefault();
   IS_DOWN = true;
+  console.log("start");
 
-  const touches = ev.changedTouches;
   
-  touchStartPos.x = touches[0].pageX;
-  touchStartPos.y = touches[0].pageY;
+  if (ev.pointerType === 'touch') {
+    const touches = ev.changedTouches;
+    touchStartPos.x = touches[0].pageX;
+    touchStartPos.y = touches[0].pageY;
+  }
+  else {
+    touchStartPos.x = ev.pageX;
+    touchStartPos.y = ev.pageY;
+  }
+  console.log(touchStartPos);
   
-  if (horseys.Length > 0) {
+  if (horseys.length > 0) {
     horseyPosDown.copy(horseys[0].position);
   }
+  
+  // test raycasting
+  
+//   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
+// x = ( x / this.container.clientWidth ) * 2 - 1;
+// y = - ( y / this.container.clientHeight ) * 2 + 1;
+// this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
+// return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
 
+
+}
+function handleTouchStop(ev) {
+  ev.preventDefault();
+  IS_DOWN = false;
+  console.log("stop");
 }
 
 function handleWhileDown(ev) {
   ev.preventDefault();
   
-  if (IS_DOWN == false) return;
+  if (IS_DOWN === false) return;
+  console.log("down???");
   
-  const touches = ev.changedTouches;
-  pointer2D.set(touches[0].pageX, touches[0].pageY);
-  
-  if (horseys.Length > 0) {
-    pointer3D.set(horseyPosDown.x, horseyPosDown.y, 0);
+  if (ev.pointerType === 'touch') {
+    const touches = ev.changedTouches;
+    pointer2D.set(touches[0].pageX, touches[0].pageY);
+  }
+  else {
+    pointer2D.set(ev.pageX, ev.pageY);
   }
   
-
+  console.log(pointer2D);
+  
+  deltaPos2D.subVectors(pointer2D, horseyPosDown);
+  
+  
+  if (horseys.length > 0) {
+    pointer3D.copy(horseys[0].position);
+    deltaPos3D.set(deltaPos2D.x, horseys[0].position.y, deltaPos2D.y);
+    horseys[0].position.copy(horseyPosDown).add(deltaPos3D);
+    console.log("deltaPos3D", deltaPos3D);
+  }
+  
+  
 }
