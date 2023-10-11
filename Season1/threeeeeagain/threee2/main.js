@@ -26,6 +26,8 @@ let flowersGltf; // T : Mesh
 var horseys = []; // T : [Mesh]
 window.horseys = horseys;
 
+var raycasterCube; // T: Mesh
+
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let planeFound = false;
@@ -329,6 +331,23 @@ function init() {
     });
   }
   
+  {
+    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
+    raycasterCube = new THREE.Mesh( geometry, material );
+    // cube.position.set(0,0,0);
+    reticle.matrix.decompose(raycasterCube.position, raycasterCube.quaternion, raycasterCube.scale);
+    raycasterCube.rotation.y = 1.1;
+    raycasterCube.rotation.z = 0.4;
+    const s = 0.01;
+    raycasterCube.scale.set(s,s,s);
+    scene.add( raycasterCube );
+    
+    
+  }
+  
+  
 //   el.addEventListener("touchstart", handleStart);
 // el.addEventListener("touchend", handleEnd);
 // el.addEventListener("touchcancel", handleCancel);
@@ -536,10 +555,18 @@ var IS_DOWN = false;
 var IF_MULTITOUCH_DOWN = false;
 var touchesCount = -1;
 
+var raycaster = new THREE.Raycaster();
+var targetVecPlane = new THREE.Vector3();
+var new THREE.Plane(0,1,0)
+
+var touchType = "-1";
+
 function handleTouchStart(ev) {
   ev.preventDefault();
   IS_DOWN = true;
   console.log("start");
+  
+  touchType = ev.pointerType;
   
   if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
     IF_MULTITOUCH_DOWN = true;
@@ -607,6 +634,39 @@ function handleWhileDown(ev) {
     console.log("deltaPos3D", deltaPos3D);
   }
   
+  // raycasterCube
+  
+  // 
+  // 
+  // raycaster = new THREE.Raycaster();
+  // 				pointer = new THREE.Vector2();
+  // pointer2D.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+  // 
+	// raycaster.setFromCamera( pointer, camera );
+  // raycaster.ray.intersectPlane ( new THREE.Plane(0,1,0), targetVecPlane);
+  // 
+  //         const intersects = raycaster.intersectObjects( objects, false );
+  // 
+  //         .intersectPlane ( plane : Plane, target : Vector3 ) : Vector3
+  // plane - the Plane to intersect with.
+  // target — the result will be copied into this Vector3.
+  // 
+  // Intersect this Ray with a Plane, returning the intersection point or null if there is no intersection.
+  // 
+  // 
+  // 
+  // 
+  // 				if ( intersects.length > 0 ) {
+  // 
+  // 					const intersect = intersects[ 0 ];
+  // 
+  // 					rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+  // 					rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+  // 
+  // 					render();
+  // 
+  // 				}
+  
   
 }
 
@@ -622,5 +682,6 @@ var intervalID = setInterval( () =>{
   onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
   onConsole.log("fish", Date.now());
   onConsole.log("touchesCount", touchesCount);
+  onConsole.log("touchType", touchType);
   // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
 }, updateInterval);
