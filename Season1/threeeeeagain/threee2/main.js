@@ -90,8 +90,8 @@ function init() {
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
-  if ( ! IS_XR_AVAIL ) {
-  // if ( true ) {
+  // if ( ! IS_XR_AVAIL ) {
+  if ( false ) {
     controls = new OrbitControls( camera, renderer.domElement );
     // controls.addEventListener( 'change', render ); // use if there is no animation loop
     controls.minDistance = 0.2;
