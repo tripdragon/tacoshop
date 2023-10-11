@@ -31,7 +31,7 @@ var raycasterCube; // T: Mesh
 var spotlight1; // T : Spotlight: Object3D
 
 var shadowPlane; // T: Mesh
-var SHADOW_PLANE_AR = false;
+var SHADOW_PLANE_SETUP_AR = false;
 
 let hitTestSource = null;
 let hitTestSourceRequested = false;
@@ -553,10 +553,12 @@ function render(timestamp, frame) {
           
         }
         
-        if (SHADOW_PLANE_AR === false) {
-
-          shadowPlane.position = reticle.position;
-          SHADOW_PLANE_AR = true;
+        if (SHADOW_PLANE_SETUP_AR === false) {
+          if (shadowPlane && reticle) {
+            
+            shadowPlane.position = reticle.position;
+            SHADOW_PLANE_SETUP_AR = true;
+          }
           
         }
         
