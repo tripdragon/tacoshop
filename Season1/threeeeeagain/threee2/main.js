@@ -42,12 +42,17 @@ if ("xr" in navigator) {
       IS_XR_AVAIL = true;
 			
     }
+    else {
+      // // run these here to debug otherwise run them in the above if
+      init();
+      animate();
+    }
   });
 }
 
-// // run these here to debug otherwise run them in the above if
-init();
-animate();
+// // // run these here to debug otherwise run them in the above if
+// init();
+// animate();
 
 
 function sessionStart() {
@@ -367,7 +372,7 @@ function render(timestamp, frame) {
         reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
         // debugger visulizer
-        // makeCubey();
+        makeCubey();
         
         
       } else {
