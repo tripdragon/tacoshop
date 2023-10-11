@@ -5,6 +5,7 @@ Embassy of whutevr
 Need to know to learn
 
 python3 -m http.server 9000
+npx vite
 
 
 https://legacy.reactjs.org/tutorial/tutorial.html#setup-for-the-tutorial

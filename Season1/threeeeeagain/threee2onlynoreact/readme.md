@@ -1,5 +1,7 @@
 
 
+npx vite
+
 touch index.html
 touch main.js
 mkdir public
