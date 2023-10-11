@@ -642,7 +642,7 @@ function handleWhileDown(ev) {
   // 				pointer = new THREE.Vector2();
   pointer2D.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
   
-	raycaster.setFromCamera( pointer, camera );
+	raycaster.setFromCamera( pointer2D, camera );
   raycaster.ray.intersectPlane ( floorPlane, targetVecPlane);
   raycasterCube.position.copy(targetVecPlane);
   
