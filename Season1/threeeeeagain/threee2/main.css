@@ -56,9 +56,9 @@ a, button, input, select {
 	}
 }
 
-#overlay {
+#sdfdfgdfoverlay {
 	pointer-events: none;
-	position: absolute;
+	/* position: absolute; */
 	font-size: 16px;
 	z-index: 2;
 	top: 0;
@@ -71,6 +71,16 @@ a, button, input, select {
 	flex-direction: column;
 	/* background: rgba(0,0,0,0.7); */
 }
+#overlay{
+	pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 80vh;
+  justify-content: center;
+  align-items: center;
+}
+
 
 	#overlay button {
 		background: transparent;
@@ -81,6 +91,12 @@ a, button, input, select {
 		padding: 12px 18px;
 		text-transform: uppercase;
 		cursor: pointer;
+	}
+	#instructions{
+	  margin: auto;
+	  flex-grow: 1;
+	  /* display: none; */
+	  margin-top: 3rem;
 	}
 
 #notSupported {
