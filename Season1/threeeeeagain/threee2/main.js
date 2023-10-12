@@ -678,12 +678,12 @@ function handleTouchStart(ev) {
   if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
   }
   
+  touchesCount = touches.length;
   if (ev.pointerType === 'touch') {
     // const touches = ev.changedTouches;
     const touches = ev.touches;
     touchStartPos.x = touches[0].pageX;
     touchStartPos.y = touches[0].pageY;
-    touchesCount = touches.length;
   }
   else {
     touchStartPos.x = ev.pageX;
