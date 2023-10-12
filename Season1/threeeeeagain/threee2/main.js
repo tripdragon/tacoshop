@@ -753,7 +753,13 @@ function handleWhileDown(ev) {
   
   // raycasterCube
   
-  pointer2D.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
+  if ( testIfMobile() ) {
+    pointer2D.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
+  }
+  else {
+    pointer2D.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
+    
+  }
   
   // debugger
 	raycaster.setFromCamera( pointer2D, camera );
@@ -775,6 +781,8 @@ var intervalID = setInterval( () =>{
   onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
   onConsole.log("fish", Date.now());
   onConsole.log("touchesCount", touchesCount);
-  onConsole.log("touchType", touchType);
+  onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
+  onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
+  // onConsole.log("touchType", touchType);
   // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
 }, updateInterval);
