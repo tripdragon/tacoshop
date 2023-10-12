@@ -57,6 +57,12 @@ export class OnScreenLogger{
     st.color = "#ffffff";
     st.fontSize = "14px";
     st.maxWidth = "500px";
+    st.pointerEvents = "none";
+    // -moz-user-select: none;
+    // -webkit-user-select: none;
+    // -ms-user-select: none;
+    // user-select: none;
+    // pointer-events: none;
     
     // var text1 = document.createElement("p");
     // onLog.appendChild(text1);
