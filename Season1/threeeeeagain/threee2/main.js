@@ -674,8 +674,8 @@ function handleTouchStart(ev) {
   // debugger
   touchType = ev.pointerType;
   
-  IF_MULTITOUCH_DOWN = true;
-  if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
+  if (ev.touches.length > 1) {
+    IF_MULTITOUCH_DOWN = true;
   }
   
   touchesCount = ev.touches.length;
@@ -712,9 +712,9 @@ function handleTouchStop(ev) {
   console.log("stop");
   
   IF_MULTITOUCH_DOWN = false;
-  if (ev.pointerType === 'touch') {
-    // touchesCount = touches.length;
-  }
+  // if (ev.pointerType === 'touch') {
+  //   // touchesCount = touches.length;
+  // }
   touchesCount = "NOT";
 }
 
