@@ -1,7 +1,10 @@
 
+// CHeck the todo s!!!
+
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { ARButton } from "three/addons/webxr/ARButton.js";
+// import { ARButton } from "three/addons/webxr/ARButton.js";
+import { ARButtonAlternative as ARButton } from "./ARButtonAlternative.js";
 // import "./qr.js";
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -147,6 +150,7 @@ function init() {
 
   document.body.appendChild(
     ARButton.createButton(renderer, {
+    // ARButtonAlternative.createButton(renderer, {
       requiredFeatures: ["local", "hit-test", "dom-overlay"],
       domOverlay: { root: document.querySelector("#overlay") },
     })
@@ -285,7 +289,7 @@ function init() {
       
       flowersGltf = pp;
       
-      
+      // TODO:
       // THIS IS EXPENSSIVE need to remove
       {
         //Create a plane that receives shadows (but does not cast them)
