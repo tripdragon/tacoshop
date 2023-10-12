@@ -678,7 +678,8 @@ function handleTouchStart(ev) {
   if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
   }
   
-  touchesCount = touches.length;
+  // touchesCount = touches.length;
+  touchesCount = "NARF";
   if (ev.pointerType === 'touch') {
     // const touches = ev.changedTouches;
     const touches = ev.touches;
@@ -714,6 +715,7 @@ function handleTouchStop(ev) {
   if (ev.pointerType === 'touch') {
     // touchesCount = touches.length;
   }
+  touchesCount = "NOT";
 }
 
 function handleWhileDown(ev) {
@@ -723,7 +725,7 @@ function handleWhileDown(ev) {
   console.log("down???");
   
   
-  touchesCount = touches.length;
+  // touchesCount = touches.length;
   
   if (ev.pointerType === 'touch') {
     // const touches = ev.changedTouches;
