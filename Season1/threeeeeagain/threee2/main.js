@@ -148,12 +148,15 @@ function init() {
     controls.update();
   }
 
+  // AR button
   document.body.appendChild(
     ARButton.createButton(renderer, {
     // ARButtonAlternative.createButton(renderer, {
       requiredFeatures: ["local", "hit-test", "dom-overlay"],
+      // this somewhere in the chain replaces the dom stuff with this selector
       // domOverlay: { root: document.querySelector("#overlay") },
-      domOverlay: { root: document },
+      domOverlay: { root: document.getElementById("rootlike") },
+      // domOverlay: { root: document },
     })
   );
 
@@ -733,7 +736,7 @@ function handleWhileDown(ev) {
 
 
 
-var onConsole = new OnScreenLogger();
+var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
 window.onConsole;
 
 var updateInterval = 1;

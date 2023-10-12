@@ -34,9 +34,19 @@ export class OnScreenLogger{
 
   items = {};
   
-  constructor(){
+  // _element = null;
+  
+  constructor(element){
     this.logger = document.createElement("div");
-    document.body.appendChild(this.logger);
+    if (element) {
+      element.appendChild(this.logger);
+      // _element = element;
+    }
+    else {
+      document.body.appendChild(this.logger);
+      // _element = document.body;
+    }
+    
     var st = this.logger.style;
     st.id = "logger";
     st.position = "absolute";
