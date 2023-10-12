@@ -162,7 +162,10 @@ function init() {
 
   function onSelect() {
     if (reticle.visible && flowersGltf) {
+      // console.log("makeAHorsey is off");
+      
       makeAHorsey();
+      
       // makeCubey();
     }
   }
@@ -679,11 +682,13 @@ function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
-  if (ev.touches.length > 1) {
+  
+  if (testIfMobile() && ev.touches.length > 1) {
     IF_MULTITOUCH_DOWN = true;
+    touchesCount = ev.touches.length;
   }
   
-  touchesCount = ev.touches.length;
+  
   // touchesCount = "NARF";
   // if (ev.pointerType === 'touch') {
   if ( testIfMobile() ) {
@@ -758,22 +763,29 @@ function handleWhileDown(ev) {
   }
   
   // raycasterCube
-  // GetPositionOfRaycaster(ev, targetVecOfPlane);
-  // raycasterCube.position.copy(targetVecOfPlane);
-  // 
+  GetPositionOfRaycaster(ev, targetVecOfPlane);
+  raycasterCube.position.copy(targetVecOfPlane);
+  
   
 }
 
 
 // this takes the mouse event and a vector3 that will mutate
 var pointer2Db = new THREE.Vector2();
+var rect;
 function GetPositionOfRaycaster(ev, vectorin){
   
+  // https://discourse.threejs.org/t/offset-between-mouseposition-and-raycast-intersection/25568/7
+  rect = renderer.domElement.getBoundingClientRect();
   if ( testIfMobile() ) {
-    pointer2Db.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
+    // pointer2Db.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
+    pointer2Db.x = ( ( ev.touches[0].pageX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
+    pointer2Db.y = - ( ( ev.touches[0].pageY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
   }
   else {
-    pointer2Db.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
+    // pointer2Db.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
+    pointer2Db.x = ( ( ev.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
+    pointer2Db.y = - ( ( ev.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
     
   }
   
