@@ -700,6 +700,12 @@ function handleTouchStart(ev) {
     horseyPosDown.copy(horseys[0].position);
   }
   
+  // raycasterCube
+  GetPositionOfRaycaster(ev, targetVecOfPlane);
+  raycasterCube.position.copy(targetVecOfPlane);
+  
+  
+  
   // test raycasting
   
 //   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
@@ -752,22 +758,34 @@ function handleWhileDown(ev) {
   }
   
   // raycasterCube
+  // GetPositionOfRaycaster(ev, targetVecOfPlane);
+  // raycasterCube.position.copy(targetVecOfPlane);
+  // 
+  
+}
+
+
+// this takes the mouse event and a vector3 that will mutate
+var pointer2Db = new THREE.Vector2();
+function GetPositionOfRaycaster(ev, vectorin){
   
   if ( testIfMobile() ) {
-    pointer2D.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
+    pointer2Db.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
   }
   else {
-    pointer2D.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
+    pointer2Db.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
     
   }
   
   // debugger
-	raycaster.setFromCamera( pointer2D, camera );
-  raycaster.ray.intersectPlane ( floorPlane, targetVecOfPlane);
-  raycasterCube.position.copy(targetVecOfPlane);
+  raycaster.setFromCamera( pointer2Db, camera );
+  raycaster.ray.intersectPlane ( floorPlane, vectorin);
   
-  
+  // raycasterCube.position.copy(targetVecOfPlane);
+  // return targetVecOfPlane;
 }
+
+
 
 
 
