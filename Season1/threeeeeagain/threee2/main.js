@@ -49,6 +49,25 @@ var modes = {
 var mode = modes.seek;
 
 
+
+
+var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
+window.onConsole;
+
+var updateInterval = 1;
+
+var ii = 0;
+var intervalID = setInterval( () =>{
+  onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
+  onConsole.log("fish", Date.now());
+  onConsole.log("touchesCount", touchesCount);
+  onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
+  onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
+  // onConsole.log("touchType", touchType);
+  // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
+}, updateInterval);
+
+
 // check for webxr session support
 if ("xr" in navigator) {
   navigator.xr.isSessionSupported("immersive-ar").then((supported) => {
@@ -86,6 +105,8 @@ function sessionStart() {
 //
 function init() {
 	
+  onConsole.log("int1", "111");
+  
 	clock = new THREE.Clock();
 	
   container = document.createElement("div");
@@ -136,6 +157,7 @@ function init() {
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
+onConsole.log("int2", "222");
   if ( ! IS_XR_AVAIL ) {
   // if ( false ) {
     controls = new OrbitControls( camera, renderer.domElement );
@@ -146,6 +168,8 @@ function init() {
     controls.target.set( 0, 0, - 0.2 );
     controls.enableDamping = true;
     controls.update();
+    
+    onConsole.log("int3", "333");
   }
 
   // AR button
@@ -154,11 +178,13 @@ function init() {
     // ARButtonAlternative.createButton(renderer, {
       requiredFeatures: ["local", "hit-test", "dom-overlay"],
       // this somewhere in the chain replaces the dom stuff with this selector
-      domOverlay: { root: document.querySelector("#overlay") },
-      // domOverlay: { root: document.getElementById("rootlike") },
+      // domOverlay: { root: document.querySelector("#overlay") },
+      domOverlay: { root: document.getElementById("rootlike") },
       // domOverlay: { root: document },
     })
   );
+  
+  onConsole.log("int4", "444");
 
   function onSelect() {
     if (reticle.visible && flowersGltf) {
@@ -216,7 +242,7 @@ function init() {
   
 
   
-  
+  onConsole.log("int5", "555");
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
@@ -241,15 +267,20 @@ function init() {
   }
 
 	{
+    onConsole.log("int6", "6a");
+    
 		const loader = new GLTFLoader().setPath( 'models/' );
 		loader.load( 'horsey2.glb', function ( gltf ) {
 
 			// gltf.scene.position.set(0,1,-10);
 			// debugger
 			var ss = 0.4;
+      
 			gltf.scene.scale.set(ss,ss,ss);
 			
       // debugger
+      
+      onConsole.log("int6b", "6b");
       
       // force shadows but only for the core 3d object
       // for (var i = 0; i < gltf.scene.children.length-1; i++) {
@@ -397,6 +428,7 @@ function init() {
     });
   }
   
+  onConsole.log("int7", "777");
   {
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
@@ -483,7 +515,7 @@ function init() {
   }
   
 }
-
+onConsole.log("int8", "888");
 
 
 function testIfMobile(){
@@ -796,23 +828,3 @@ function GetPositionOfRaycaster(ev, vectorin){
   // raycasterCube.position.copy(targetVecOfPlane);
   // return targetVecOfPlane;
 }
-
-
-
-
-
-var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
-window.onConsole;
-
-var updateInterval = 1;
-
-var ii = 0;
-var intervalID = setInterval( () =>{
-  onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
-  onConsole.log("fish", Date.now());
-  onConsole.log("touchesCount", touchesCount);
-  onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
-  onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
-  // onConsole.log("touchType", touchType);
-  // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
-}, updateInterval);
