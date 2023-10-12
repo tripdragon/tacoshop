@@ -44,7 +44,7 @@ class ARButtonAlternative {
 				}
 
 				sessionInit.optionalFeatures.push( 'dom-overlay' );
-				sessionInit.domOverlay = { root: overlay };
+				// sessionInit.domOverlay = { root: overlay };
 
 			}
 
