@@ -75,16 +75,16 @@ if ("xr" in navigator) {
       //hide "ar-not-supported"
       document.getElementById("ar-not-supported").style.display = "none";
       
-			// init();
-      // animate();
+			init();
+      animate();
       
       IS_XR_AVAIL = true;
 			
     }
     else {
       // // run these here to debug otherwise run them in the above if
-      init();
-      animate();
+      // init();
+      // animate();
     }
   });
 }
@@ -157,7 +157,8 @@ function init() {
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
-onConsole.log("int2", "222");
+  onConsole.log("int2", "222");
+  
   if ( ! IS_XR_AVAIL ) {
   // if ( false ) {
     controls = new OrbitControls( camera, renderer.domElement );
