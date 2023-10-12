@@ -90,8 +90,8 @@ if ("xr" in navigator) {
 }
 
 // // // run these here to debug otherwise run them in the above if
-// init();
-// animate();
+init();
+animate();
 
 
 function sessionStart() {
