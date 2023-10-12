@@ -14,9 +14,9 @@ class ARButtonAlternative {
 				const overlay = document.createElement( 'div' );
 				overlay.style.display = 'none';
 				document.body.appendChild( overlay );
-				overlay.style.position = 'absolute';
-				overlay.style.right = '20px';
-				overlay.style.top = '20px';
+				// overlay.style.position = 'absolute';
+				// overlay.style.right = '20px';
+				// overlay.style.top = '20px';
 
 				const svg = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' );
 				svg.setAttribute( 'width', 38 );
@@ -44,7 +44,7 @@ class ARButtonAlternative {
 				}
 
 				sessionInit.optionalFeatures.push( 'dom-overlay' );
-				// sessionInit.domOverlay = { root: overlay };
+				sessionInit.domOverlay = { root: overlay };
 
 			}
 
@@ -118,8 +118,6 @@ class ARButtonAlternative {
 
 		function disableButton() {
 
-// return;
-
 			button.style.display = '';
 
 			button.style.cursor = 'auto';
@@ -129,7 +127,7 @@ class ARButtonAlternative {
 			button.onmouseenter = null;
 			button.onmouseleave = null;
 
-			// button.onclick = null;
+			button.onclick = null;
 
 		}
 
