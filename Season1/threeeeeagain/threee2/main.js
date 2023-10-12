@@ -438,21 +438,15 @@ function init() {
   // }
   // 
   
-  if (navigator.userAgent.match(/Android/i)
-         || navigator.userAgent.match(/webOS/i)
-         || navigator.userAgent.match(/iPhone/i)
-         || navigator.userAgent.match(/iPad/i)
-         || navigator.userAgent.match(/iPod/i)
-       ){
-         renderer.domElement.addEventListener("touchstart", handleTouchStart);
-         renderer.domElement.addEventListener("touchmove", handleWhileDown);
-         renderer.domElement.addEventListener("touchend", handleTouchStop);
-       }
+  if ( testIfMobile() ){
+     renderer.domElement.addEventListener("touchstart", handleTouchStart);
+     renderer.domElement.addEventListener("touchmove", handleWhileDown);
+     renderer.domElement.addEventListener("touchend", handleTouchStop);
+   }
    else {
      renderer.domElement.addEventListener("mousedown", handleTouchStart);
      renderer.domElement.addEventListener("mousemove", handleWhileDown);
      renderer.domElement.addEventListener("mouseup", handleTouchStop);
-
    }
 
 
@@ -488,6 +482,18 @@ function init() {
 }
 
 
+
+function testIfMobile(){
+  if (navigator.userAgent.match(/Android/i)
+   || navigator.userAgent.match(/webOS/i)
+   || navigator.userAgent.match(/iPhone/i)
+   || navigator.userAgent.match(/iPad/i)
+   || navigator.userAgent.match(/iPod/i)
+  ){
+   return true;
+  }
+  return false;
+}
 
 
 function makeCubey(){
@@ -671,7 +677,6 @@ function handleTouchStart(ev) {
   IS_DOWN = true;
   console.log("start");
   
-  // debugger
   touchType = ev.pointerType;
   
   if (ev.touches.length > 1) {
@@ -680,11 +685,10 @@ function handleTouchStart(ev) {
   
   touchesCount = ev.touches.length;
   // touchesCount = "NARF";
-  if (ev.pointerType === 'touch') {
-    // const touches = ev.changedTouches;
-    const touches = ev.touches;
-    touchStartPos.x = touches[0].pageX;
-    touchStartPos.y = touches[0].pageY;
+  // if (ev.pointerType === 'touch') {
+  if ( testIfMobile() ) {
+    touchStartPos.x = ev.touches[0].pageX;
+    touchStartPos.y = ev.touches[0].pageY;
   }
   else {
     touchStartPos.x = ev.pageX;
@@ -727,10 +731,9 @@ function handleWhileDown(ev) {
   
   // touchesCount = touches.length;
   
-  if (ev.pointerType === 'touch') {
-    // const touches = ev.changedTouches;
-    const touches = ev.touches;
-    pointer2D.set(touches[0].pageX, touches[0].pageY);
+  // if (ev.pointerType === 'touch') {
+  if ( testIfMobile() ) {
+    pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
   }
   else {
     pointer2D.set(ev.pageX, ev.pageY);
