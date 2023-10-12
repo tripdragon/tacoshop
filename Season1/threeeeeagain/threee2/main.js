@@ -722,6 +722,9 @@ function handleWhileDown(ev) {
   if (IS_DOWN === false) return;
   console.log("down???");
   
+  
+  touchesCount = touches.length;
+  
   if (ev.pointerType === 'touch') {
     // const touches = ev.changedTouches;
     const touches = ev.touches;
