@@ -154,8 +154,8 @@ function init() {
     // ARButtonAlternative.createButton(renderer, {
       requiredFeatures: ["local", "hit-test", "dom-overlay"],
       // this somewhere in the chain replaces the dom stuff with this selector
-      // domOverlay: { root: document.querySelector("#overlay") },
-      domOverlay: { root: document.getElementById("rootlike") },
+      domOverlay: { root: document.querySelector("#overlay") },
+      // domOverlay: { root: document.getElementById("rootlike") },
       // domOverlay: { root: document },
     })
   );
