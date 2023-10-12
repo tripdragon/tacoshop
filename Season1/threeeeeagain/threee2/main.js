@@ -679,7 +679,8 @@ function handleTouchStart(ev) {
   }
   
   if (ev.pointerType === 'touch') {
-    const touches = ev.changedTouches;
+    // const touches = ev.changedTouches;
+    const touches = ev.touches;
     touchStartPos.x = touches[0].pageX;
     touchStartPos.y = touches[0].pageY;
     touchesCount = touches.length;
@@ -711,7 +712,7 @@ function handleTouchStop(ev) {
   
   IF_MULTITOUCH_DOWN = false;
   if (ev.pointerType === 'touch') {
-    touchesCount = touches.length;
+    // touchesCount = touches.length;
   }
 }
 
@@ -722,7 +723,8 @@ function handleWhileDown(ev) {
   console.log("down???");
   
   if (ev.pointerType === 'touch') {
-    const touches = ev.changedTouches;
+    // const touches = ev.changedTouches;
+    const touches = ev.touches;
     pointer2D.set(touches[0].pageX, touches[0].pageY);
   }
   else {
