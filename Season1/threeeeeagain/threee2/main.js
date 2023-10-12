@@ -678,8 +678,8 @@ function handleTouchStart(ev) {
   if (ev.pointerType === 'touch' && ev.changedTouches.length > 1) {
   }
   
-  // touchesCount = touches.length;
-  touchesCount = "NARF";
+  touchesCount = ev.touches.length;
+  // touchesCount = "NARF";
   if (ev.pointerType === 'touch') {
     // const touches = ev.changedTouches;
     const touches = ev.touches;
