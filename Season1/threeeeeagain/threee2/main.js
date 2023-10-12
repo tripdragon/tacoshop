@@ -75,8 +75,8 @@ if ("xr" in navigator) {
       //hide "ar-not-supported"
       document.getElementById("ar-not-supported").style.display = "none";
       
-			init();
-      animate();
+			// init();
+      // animate();
       
       IS_XR_AVAIL = true;
 			
