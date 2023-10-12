@@ -416,28 +416,46 @@ function init() {
 // el.addEventListener("touchcancel", handleCancel);
 // el.addEventListener("touchmove", handleMove);
   
-  if (IS_XR_AVAIL){
-    renderer.domElement.addEventListener("touchstart", handleTouchStart);
-  }
-  else {
-    renderer.domElement.addEventListener("mousedown", handleTouchStart);
-  }
+  // if (IS_XR_AVAIL){
+  //   renderer.domElement.addEventListener("touchstart", handleTouchStart);
+  // }
+  // else {
+  //   renderer.domElement.addEventListener("mousedown", handleTouchStart);
+  // }
+  // 
+  // if (IS_XR_AVAIL){
+  //   renderer.domElement.addEventListener("touchmove", handleWhileDown);
+  // }
+  // else {
+  //   renderer.domElement.addEventListener("mousemove", handleWhileDown);
+  // }
+  // 
+  // if (IS_XR_AVAIL){
+  //   renderer.domElement.addEventListener("touchend", handleTouchStop);
+  // }
+  // else {
+  //   renderer.domElement.addEventListener("mouseup", handleTouchStop);
+  // }
+  // 
   
-  if (IS_XR_AVAIL){
-    renderer.domElement.addEventListener("touchmove", handleWhileDown);
-  }
-  else {
-    renderer.domElement.addEventListener("mousemove", handleWhileDown);
-  }
-  
-  
-  if (IS_XR_AVAIL){
-    renderer.domElement.addEventListener("touchend", handleTouchStop);
-  }
-  else {
-    renderer.domElement.addEventListener("mouseup", handleTouchStop);
-  }
-  
+  if (navigator.userAgent.match(/Android/i)
+         || navigator.userAgent.match(/webOS/i)
+         || navigator.userAgent.match(/iPhone/i)
+         || navigator.userAgent.match(/iPad/i)
+         || navigator.userAgent.match(/iPod/i)
+       ){
+         renderer.domElement.addEventListener("touchstart", handleTouchStart);
+         renderer.domElement.addEventListener("touchmove", handleWhileDown);
+         renderer.domElement.addEventListener("touchend", handleTouchStop);
+       }
+   else {
+     renderer.domElement.addEventListener("mousedown", handleTouchStart);
+     renderer.domElement.addEventListener("mousemove", handleWhileDown);
+     renderer.domElement.addEventListener("mouseup", handleTouchStop);
+
+   }
+
+
   
   
   
@@ -653,6 +671,7 @@ function handleTouchStart(ev) {
   IS_DOWN = true;
   console.log("start");
   
+  // debugger
   touchType = ev.pointerType;
   
   IF_MULTITOUCH_DOWN = true;
