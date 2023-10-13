@@ -130,6 +130,7 @@ function init() {
 
   const scene = new Scene();
   _o.scene = scene;
+  _o.scene.name = "narfs222";
   
 
   _o.camera = new PerspectiveCamera(
@@ -341,10 +342,12 @@ function render(timestamp, frame) {
   // :o
   // Begin AR testing logics for getting a point in view
   
+  onConsole.log("ARin1", "arin1");
   if (frame) {
     const referenceSpace = _o.renderer.xr.getReferenceSpace();
     const session = _o.renderer.xr.getSession();
 
+onConsole.log("ARin2", "ARin2");
     if (hitTestSourceRequested === false) {
       session.requestReferenceSpace("viewer").then(function (referenceSpace) {
         session
@@ -353,7 +356,7 @@ function render(timestamp, frame) {
             hitTestSource = source;
           });
       });
-
+onConsole.log("ARin3", "ARin3");
       session.addEventListener("end", function () {
         hitTestSourceRequested = false;
         hitTestSource = null;
@@ -363,10 +366,13 @@ function render(timestamp, frame) {
     }
 
     if (hitTestSource) {
+      onConsole.log("ARin4", "ARin4");
       const hitTestResults = frame.getHitTestResults(hitTestSource);
 
       if (hitTestResults.length) {
+        onConsole.log("ARin5", "ARin5");
         if (!planeFound) {
+          onConsole.log("ARin6", "ARin6");
           planeFound = true;
           //hide #tracking-prompt
           document.getElementById("tracking-prompt").style.display = "none";
@@ -377,6 +383,7 @@ function render(timestamp, frame) {
         _o.reticle.visible = true;
         _o.reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
+        onConsole.log("ARin7", "ARin7");
         // from here we could store the matrix and frame to use within the touch events
         // instead of instancing in this function
         
@@ -412,6 +419,7 @@ function render(timestamp, frame) {
         
         
       } else {
+        onConsole.log("ARin8", "ARin8");
         _o.reticle.visible = false;
       }
     }

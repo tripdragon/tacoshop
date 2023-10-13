@@ -15,6 +15,8 @@ export const APP = {
   fish : null,
   gltfFlower: null, // Mesh
   
+  reticle: null, // Mesh
+  
   // touch event logics
   IS_DOWN : false,
   IF_MULTITOUCH_DOWN : false,
