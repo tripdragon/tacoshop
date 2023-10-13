@@ -8,8 +8,11 @@ window._o = _o;
 _o.fish = "narfs";
 
 // not sure if this is tree shaking or not
-import * as THREE from "three";
-import { Box3, Box3Helper, Scene, Clock, PerspectiveCamera } from "three";
+// import * as THREE from "three";
+import { Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
+  Plane, MeshStandardMaterial, BoxGeometry, MeshBasicMaterial, RingGeometry, Mesh, PCFSoftShadowMap, 
+  WebGLRenderer, Box3, Box3Helper, Scene, Clock, PerspectiveCamera, 
+  HemisphereLight, DirectionalLight, SpotLightHelper } from "three";
 
 // import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 // import { ARButton } from "three/addons/webxr/ARButton.js";
@@ -138,18 +141,18 @@ function init() {
   
 
 
-  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3.4);
+  const light = new HemisphereLight(0xffffff, 0xbbbbff, 3.4);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
   
   {
   //Create a DirectionalLight and turn on shadows for the light
-  spotlight1 = new THREE.DirectionalLight( 0xffffff, 1 );
+  spotlight1 = new DirectionalLight( 0xffffff, 1 );
   // spotlight1.position.set( 1, 0.5, 0 ); //default; light shining from top
   spotlight1.position.set( 0.1, 1, 0 ); //default; light shining from top
   spotlight1.castShadow = true; // default false
   scene.add( spotlight1 );
-  const spotLightHelper = new THREE.SpotLightHelper( spotlight1 );
+  const spotLightHelper = new SpotLightHelper( spotlight1 );
   scene.add( spotLightHelper );
   
     //   //Set up shadow properties for the light
@@ -159,7 +162,7 @@ function init() {
     // spotlight1.shadow.camera.far = 500; // default
   }
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const renderer = new WebGLRenderer({ antialias: true, alpha: true });
   _o.renderer = renderer;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -168,7 +171,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+  renderer.shadowMap.type = PCFSoftShadowMap; // default THREE.PCFShadowMap
   
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
@@ -206,18 +209,18 @@ function init() {
   controller.addEventListener("select", onSelect);
   scene.add(controller);
 
-  _o.reticle = new THREE.Mesh(
-    new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
-    new THREE.MeshBasicMaterial()
+  _o.reticle = new Mesh(
+    new RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
+    new MeshBasicMaterial()
   );
   _o.reticle.matrixAutoUpdate = false;
   _o.reticle.visible = false;
   scene.add(_o.reticle);
 
   {
-	  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-	  const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-	  const cube = new THREE.Mesh( geometry, material );
+	  const geometry = new BoxGeometry( 1, 1, 1 );
+	  const material = new MeshStandardMaterial( {color: 0x00ff00} );
+	  const cube = new Mesh( geometry, material );
 	  cube.position.set(0,0,-10);
 	  cube.rotation.y = 1.1;
 	  cube.rotation.z = 0.4;
@@ -253,10 +256,10 @@ function init() {
   
   // onConsole.log("int7", "777");
   {
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
-    const raycasterCube = new THREE.Mesh( geometry, material );
+    const geometry = new BoxGeometry( 1, 1, 1 );
+    // const material = new MeshStandardMaterial( {color: 0x00ff00} );
+    const material = new MeshBasicMaterial( {color: 0x0000ff} );
+    const raycasterCube = new Mesh( geometry, material );
     _o.raycasterCube = raycasterCube;
     // cube.position.set(0,0,0);
     _o.reticle.matrix.decompose(raycasterCube.position, raycasterCube.quaternion, raycasterCube.scale);
@@ -284,24 +287,24 @@ function init() {
   
   
   
-  const plane = new THREE.Plane( new THREE.Vector3( 0,1,0 ), 0 );
-  const helper = new THREE.PlaneHelper( plane, 0.2, 0xffff00 );
+  const plane = new Plane( new Vector3( 0,1,0 ), 0 );
+  const helper = new PlaneHelper( plane, 0.2, 0xffff00 );
   scene.add( helper );
 
 
   const size = 2;
   const divisions = 10;
 
-  const gridHelper = new THREE.GridHelper( size, divisions );
+  const gridHelper = new GridHelper( size, divisions );
   scene.add( gridHelper );
   
   {
     //Create a plane that receives shadows (but does not cast them)
-    var pg = new THREE.PlaneGeometry( 1,1, 32, 32 );
+    var pg = new PlaneGeometry( 1,1, 32, 32 );
     // const material = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
-    const material = new THREE.ShadowMaterial();
+    const material = new ShadowMaterial();
     material.opacity = 0.4;
-    shadowPlane = new THREE.Mesh( pg, material );
+    shadowPlane = new Mesh( pg, material );
     shadowPlane.receiveShadow = true;
     // window.shadowPlane = shadowPlane;
     shadowPlane.rotation.x = -Math.PI/2;
@@ -382,11 +385,12 @@ function render(timestamp, frame) {
         // so instead we just spam the cube below
         
         if(IF_MULTITOUCH_DOWN){
-        
-          const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+          
+          // could cache this 
+          const geometry = new BoxGeometry( 1, 1, 1 );
           // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-          const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-          const cube = new THREE.Mesh( geometry, material );
+          const material = new MeshBasicMaterial( {color: 0x00ff00} );
+          const cube = new Mesh( geometry, material );
           // cube.position.set(0,0,0);
           _o.reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
           cube.rotation.y = 1.1;
