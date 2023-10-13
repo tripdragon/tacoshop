@@ -49,6 +49,12 @@ var modes = {
 var mode = modes.seek;
 
 
+// select box
+let box = new THREE.Box3();
+// box.setFromObject (mesh);
+let selectorBoxHelper;
+// const selectorBoxHelper = new THREE.Box3Helper( box, 0xffff00 );
+// scene.add( helper );
 
 
 var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
@@ -58,11 +64,11 @@ var updateInterval = 1;
 
 var ii = 0;
 var intervalID = setInterval( () =>{
-  onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
+  // onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
   onConsole.log("fish", Date.now());
   onConsole.log("touchesCount", touchesCount);
-  onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
-  onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
+  // onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
+  // onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
   // onConsole.log("touchType", touchType);
   // onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
 }, updateInterval);
@@ -83,8 +89,8 @@ if ("xr" in navigator) {
     }
     else {
       // // run these here to debug otherwise run them in the above if
-      // init();
-      // animate();
+      init();
+      animate();
     }
   });
 }
@@ -105,7 +111,7 @@ function sessionStart() {
 //
 function init() {
 	
-  onConsole.log("int1", "111");
+  // onConsole.log("int1", "111");
   
 	clock = new THREE.Clock();
 	
@@ -157,7 +163,7 @@ function init() {
 
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
-  onConsole.log("int2", "222");
+  // onConsole.log("int2", "222");
   
   if ( ! IS_XR_AVAIL ) {
   // if ( false ) {
@@ -170,7 +176,7 @@ function init() {
     controls.enableDamping = true;
     controls.update();
     
-    onConsole.log("int3", "333");
+    // onConsole.log("int3", "333");
   }
 
   // AR button
@@ -185,7 +191,7 @@ function init() {
     })
   );
   
-  onConsole.log("int4", "444");
+  // onConsole.log("int4", "444");
 
   function onSelect() {
     if (reticle.visible && flowersGltf) {
@@ -218,6 +224,13 @@ function init() {
     mesh.rotateY(Math.random() * Math.PI * 2);
     scene.add(mesh);
 
+    // debugger
+    // const box = new THREE.Box3();
+    // box.setFromObject (mesh);
+    // 
+    // const helper = new THREE.Box3Helper( box, 0xffff00 );
+    // scene.add( helper );
+
 
     mesh.mixer = new THREE.AnimationMixer( mesh );
     for (var i = 0; i < mesh.animations.length; i++) {
@@ -239,11 +252,12 @@ function init() {
     setTimeout(() => {
       clearInterval(interval);
     }, 500);
-  }
+    
+  } // makeAHorsey
   
 
   
-  onConsole.log("int5", "555");
+  // onConsole.log("int5", "555");
 
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
@@ -268,7 +282,7 @@ function init() {
   }
 
 	{
-    onConsole.log("int6", "6a");
+    // onConsole.log("int6", "6a");
     
 		const loader = new GLTFLoader().setPath( 'models/' );
 		loader.load( 'horsey2.glb', function ( gltf ) {
@@ -281,7 +295,7 @@ function init() {
 			
       // debugger
       
-      onConsole.log("int6b", "6b");
+      // onConsole.log("int6b", "6b");
       
       // force shadows but only for the core 3d object
       // for (var i = 0; i < gltf.scene.children.length-1; i++) {
@@ -290,6 +304,7 @@ function init() {
       //       gltf.scene.children[0].children[i].castShadow = true;
       //   }
       // }
+      // its complaining so we just force it on the known for now
       gltf.scene.children[0].children[0].castShadow = true;
       gltf.scene.children[0].children[1].castShadow = true;
       gltf.scene.children[0].children[2].castShadow = true;
@@ -429,7 +444,7 @@ function init() {
     });
   }
   
-  onConsole.log("int7", "777");
+  // onConsole.log("int7", "777");
   {
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
@@ -515,8 +530,15 @@ function init() {
     
   }
   
+  
+  selectorBoxHelper = new THREE.Box3Helper( box, 0xffff00 );
+  scene.add( selectorBoxHelper );
+  selectorBoxHelper.visible = false;
+  
 }
-onConsole.log("int8", "888");
+// init()
+
+// onConsole.log("int8", "888");
 
 
 function testIfMobile(){
@@ -530,6 +552,11 @@ function testIfMobile(){
   }
   return false;
 }
+
+
+
+
+
 
 
 function makeCubey(){
@@ -742,18 +769,75 @@ function handleTouchStart(ev) {
   GetPositionOfRaycaster(ev, targetVecOfPlane);
   raycasterCube.position.copy(targetVecOfPlane);
   
+
+  // test select a box
+  // <<<<<<
   
+  GetMousePositionToScreen(ev, pointer2D);
+  raycaster.setFromCamera( pointer2D, camera );
+  // const intersects = raycaster.intersectObjects( horseys, false );
+  var intersects = [];
+  for (var i = 0; i < horseys.length; i++) {
+    box.setFromObject (horseys[i]);
+    if(raycaster.ray.intersectsBox ( box ) ){
+      intersects.push(horseys[i]);
+    }
+    
+    // intersectObject 
+    // intersects
+  }
+
+//   box.visible
+// 
+//   .intersectsBox ( box : Box3 ) : Boolean
+// box - the Box3 to intersect with.
+
+  				
+
+          
+          				if ( intersects.length > 0 ) {
+          
+          console.log("NEAT!!!");
+          					const intersect = intersects[ 0 ];
+            box.setFromObject ( intersect );
+            selectorBoxHelper.box = box;
+            selectorBoxHelper.visible = true;
+            selectorBoxHelper.updateMatrixWorld();
+          					// rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+          					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+                    // 
+          					// render();
+          
+          				}
+                  else {
+                    selectorBoxHelper.visible = false;
+                  }
+
+
+    // debugger
+    // raycaster.setFromCamera( pointer2Db, camera );
+    // raycaster.ray.intersectPlane ( floorPlane, vectorin);
+    // 
+    // raycasterCube.position.copy(targetVecOfPlane);
+    // return targetVecOfPlane;
+  // }
   
-  // test raycasting
-  
-//   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
-// x = ( x / this.container.clientWidth ) * 2 - 1;
-// y = - ( y / this.container.clientHeight ) * 2 + 1;
-// this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
-// return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
+
+    
+    // test raycasting
+    
+  //   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
+  // x = ( x / this.container.clientWidth ) * 2 - 1;
+  // y = - ( y / this.container.clientHeight ) * 2 + 1;
+  // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
+  // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
 
 
 }
+// handleTouchStart
+
+
+
 function handleTouchStop(ev) {
   ev.preventDefault();
   IS_DOWN = false;
@@ -828,4 +912,20 @@ function GetPositionOfRaycaster(ev, vectorin){
   
   // raycasterCube.position.copy(targetVecOfPlane);
   // return targetVecOfPlane;
+}
+
+
+var rect2;
+function GetMousePositionToScreen(ev, vector2In){
+  rect2 = renderer.domElement.getBoundingClientRect();
+  if ( testIfMobile() ) {
+    // vector2In.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
+    vector2In.x = ( ( ev.touches[0].pageX - rect2.left ) / ( rect2.right - rect2.left ) ) * 2 - 1;
+    vector2In.y = - ( ( ev.touches[0].pageY - rect2.top ) / ( rect2.bottom - rect2.top) ) * 2 + 1;
+  }
+  else {
+    // vector2In.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
+    vector2In.x = ( ( ev.clientX - rect2.left ) / ( rect2.right - rect2.left ) ) * 2 - 1;
+    vector2In.y = - ( ( ev.clientY - rect2.top ) / ( rect2.bottom - rect2.top) ) * 2 + 1;
+  }
 }
