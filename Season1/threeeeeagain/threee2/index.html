@@ -84,12 +84,14 @@
     </div>
 
 </div><!-- rootlike -->
-
+  
+  <!--  the "app", does nothing, it should allow folder scripts to not have to call with ../ -->
 		<script type="importmap">
       {
 				"imports": {
 					"three": "./three/build/three.module.js",
-					"three/addons/": "./three/jsm/"
+					"three/addons/": "./three/jsm/",
+          "app": "./app.js"
 				}
 			}
 		</script>

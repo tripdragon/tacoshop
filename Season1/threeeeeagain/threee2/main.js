@@ -1,8 +1,17 @@
 
 // CHeck the todo s!!!
 
+import { APP as _o } from "./app.js";
+// import { APP } from "./app.js";
+// import { state } from "./app.js";
+window._o = _o;
+_o.fish = "narfs";
+
+// not sure if this is tree shaking or not
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { Box3, Box3Helper, Scene, Clock, PerspectiveCamera } from "three";
+
+// import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 // import { ARButton } from "three/addons/webxr/ARButton.js";
 import { ARButtonAlternative as ARButton } from "./ARButtonAlternative.js";
 // import "./qr.js";
@@ -11,25 +20,29 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import { OnScreenLogger } from './OnScreenLogger.js';
 
+import { testIfMobile } from './tools/testIfMobile.js';
+
+import { makeCubey } from './tools/makeCubey.js';
+import { makeAHorsey } from './tools/makeAHorsey.js';
+import { loadHorseyOnStart_CM } from './loadHorseyOnStart_CM.js';
+
+import { handleTouchStart, handleWhileDown, handleTouchStop } from './touchLogics.js';
+
+
 
 // this makes it flicker
 // import "./style.css";
 
-let controls; // T : OrbitControls
-
 
 let container; // T: Dom el
 
-let camera, scene, renderer, clock;
-
 let controller; // T : renderer.xr.getController
 
-let reticle; // T:Mesh
-let flowersGltf; // T : Mesh
-var horseys = []; // T : [Mesh]
-window.horseys = horseys;
+// let reticle; // T:Mesh
+// let gltfFlower; // T : Mesh
 
-var raycasterCube; // T: Mesh
+_o.horseys = []; // T : [Mesh]
+
 
 var spotlight1; // T : Spotlight: Object3D
 
@@ -49,24 +62,18 @@ var modes = {
 var mode = modes.seek;
 
 
-// select box
-let box = new THREE.Box3();
-// box.setFromObject (mesh);
-let selectorBoxHelper;
-// const selectorBoxHelper = new THREE.Box3Helper( box, 0xffff00 );
-// scene.add( helper );
-
 
 var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
 window.onConsole;
 
-var updateInterval = 1;
 
-var ii = 0;
+
+// a basic screen debugger
+var updateInterval = 1;
 var intervalID = setInterval( () =>{
   // onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
   onConsole.log("fish", Date.now());
-  onConsole.log("touchesCount", touchesCount);
+  onConsole.log("touchesCount", _o.touchesCount);
   // onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
   // onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
   // onConsole.log("touchType", touchType);
@@ -113,15 +120,16 @@ function init() {
 	
   // onConsole.log("int1", "111");
   
-	clock = new THREE.Clock();
+	_o.clock = new Clock();
 	
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  scene = new THREE.Scene();
-  window.scene = scene;
+  const scene = new Scene();
+  _o.scene = scene;
+  
 
-  camera = new THREE.PerspectiveCamera(
+  _o.camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.01,
@@ -151,30 +159,32 @@ function init() {
     // spotlight1.shadow.camera.far = 500; // default
   }
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  _o.renderer = renderer;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
+  
   container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
-
-
+  
   renderer.xr.addEventListener("sessionstart", sessionStart);
 
   // onConsole.log("int2", "222");
   
   if ( ! IS_XR_AVAIL ) {
   // if ( false ) {
-    controls = new OrbitControls( camera, renderer.domElement );
-    window.controls = controls;
+    const controls = new OrbitControls( _o.camera, renderer.domElement );
+    // window.controls = controls;
     // controls.addEventListener( 'change', render ); // use if there is no animation loop
     controls.minDistance = 0.2;
     controls.maxDistance = 100;
     controls.target.set( 0, 0, - 0.2 );
     controls.enableDamping = true;
     controls.update();
+    _o.controls = controls;
     
     // onConsole.log("int3", "333");
   }
@@ -191,85 +201,18 @@ function init() {
     })
   );
   
-  // onConsole.log("int4", "444");
-
-  function onSelect() {
-    if (reticle.visible && flowersGltf) {
-      // console.log("makeAHorsey is off");
-      
-      makeAHorsey();
-      
-      // makeCubey();
-    }
-  }
   
-  
-  function makeAHorsey(){
-    //pick random child from flowersGltf
-    // const flower =
-    //   flowersGltf.children[
-    //     Math.floor(Math.random() * flowersGltf.children.length)
-    //   ];
-    const flower = flowersGltf;
-    const mesh = flower.clone();
-    
-    // this is a non obvious annoying way to get the XR anchors position
-    reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
-    
-    const scale = Math.random() * 0.4 + 0.25;
-    //mesh.scale.set(scale, scale, scale);
-    var ss = 0.04;
-    mesh.scale.set(ss,ss,ss);
-    //random rotation
-    mesh.rotateY(Math.random() * Math.PI * 2);
-    scene.add(mesh);
-
-    // debugger
-    // const box = new THREE.Box3();
-    // box.setFromObject (mesh);
-    // 
-    // const helper = new THREE.Box3Helper( box, 0xffff00 );
-    // scene.add( helper );
-
-
-    mesh.mixer = new THREE.AnimationMixer( mesh );
-    for (var i = 0; i < mesh.animations.length; i++) {
-      mesh.mixer.clipAction( mesh.animations[ i ] ).play();
-    }
-
-
-
-    horseys.push(mesh);
-
-
-    // animate growing via hacky setInterval then destroy it when fully grown
-    // replace for a dampening effect
-    const interval = setInterval(() => {
-      // mesh.scale.multiplyScalar(1.01);
-
-      mesh.rotateY(0.03);
-    }, 16);
-    setTimeout(() => {
-      clearInterval(interval);
-    }, 500);
-    
-  } // makeAHorsey
-  
-
-  
-  // onConsole.log("int5", "555");
-
   controller = renderer.xr.getController(0);
   controller.addEventListener("select", onSelect);
   scene.add(controller);
 
-  reticle = new THREE.Mesh(
+  _o.reticle = new THREE.Mesh(
     new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
     new THREE.MeshBasicMaterial()
   );
-  reticle.matrixAutoUpdate = false;
-  reticle.visible = false;
-  scene.add(reticle);
+  _o.reticle.matrixAutoUpdate = false;
+  _o.reticle.visible = false;
+  scene.add(_o.reticle);
 
   {
 	  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -281,145 +224,8 @@ function init() {
 	  // scene.add( cube );
   }
 
-	{
-    // onConsole.log("int6", "6a");
-    
-		const loader = new GLTFLoader().setPath( 'models/' );
-		loader.load( 'horsey2.glb', function ( gltf ) {
-
-			// gltf.scene.position.set(0,1,-10);
-			// debugger
-			var ss = 0.4;
-      
-			gltf.scene.scale.set(ss,ss,ss);
-			
-      // debugger
-      
-      // onConsole.log("int6b", "6b");
-      
-      // force shadows but only for the core 3d object
-      // for (var i = 0; i < gltf.scene.children.length-1; i++) {
-      //   if (gltf.scene.children[0].children[i].type === "Mesh") {
-      //     // debugger
-      //       gltf.scene.children[0].children[i].castShadow = true;
-      //   }
-      // }
-      // its complaining so we just force it on the known for now
-      gltf.scene.children[0].children[0].castShadow = true;
-      gltf.scene.children[0].children[1].castShadow = true;
-      gltf.scene.children[0].children[2].castShadow = true;
-
-			// horseys.push(gltf.scene);
-
-
-			// gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
-			// gltf.scene.mixer = new THREE.AnimationMixer( pp );
-			
-			// this might be too large to store
-			gltf.scene.animations = gltf.animations;
-			
-			gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
-			for (var i = 0; i < gltf.animations.length; i++) {
-				
-				gltf.scene.mixer.clipAction( gltf.animations[ i ] ).play();
-			}
-
-			// flowersGltf = gltf.scene;
-      
-      // 
-      // 
-      let pp = new THREE.Group();
-      pp.position.set(0,0,0);
-      var ss = 0.4;
-      // pp.scale.set(ss,ss,ss);
-      scene.add( pp );
-      
-      pp.add(gltf.scene);
-      gltf.scene.position.set(0,1.9,0);
-      pp.animations = gltf.animations;
-      pp.mixer = gltf.scene.mixer;
-      // gltf.scene.animations = null;
-      // gltf.scene.mixer = null;
-      
-      flowersGltf = pp;
-      
-      // TODO:
-      // THIS IS EXPENSSIVE need to remove
-      {
-        //Create a plane that receives shadows (but does not cast them)
-        var pg = new THREE.PlaneGeometry( 1,1, 32, 32 );
-        // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
-        const material = new THREE.ShadowMaterial();
-        material.opacity = 0.4;
-        var shadowPlane = new THREE.Mesh( pg, material );
-        shadowPlane.receiveShadow = true;
-        // window.shadowPlane = shadowPlane;
-        shadowPlane.rotation.x = -Math.PI/2;
-        // shadowPlane.rotation.
-        pp.add( shadowPlane );
-        
-      }
-      
-			
-			// scene.add( gltf.scene );
-
-			
-							
-							// 
-							// 
-		          // let pp = new THREE.Group();
-							// pp.position.set(0,0,-10);
-							// var ss = 0.4;
-							// pp.scale.set(ss,ss,ss);
-		          // scene.add( pp );
-							// 
-							// pp.add(gltf.scene);
-							// pp.visible = false;
-							// gltf.scene.position.set(0,4.5,0);
-							// 
-							// flowersGltf = pp;
-							// window.gg = pp;
-							// 
-		          // {
-		          //   const geometry = new THREE.BoxGeometry( 1,1,1 );
-		          //   const material = new THREE.MeshStandardMaterial( {color: 0xffff00} );
-		          //   const cube = new THREE.Mesh( geometry, material );
-		          //   // cube.visible = false;
-		          //   pp.add( cube );
-							// 	cube.position.set(0,0,0);
-		          // }
-							// 
-		          // horseys.push(pp);
-							// 
-							// 
-		          // // gltf.scene.mixer = new THREE.AnimationMixer( gltf.scene );
-		          // // gltf.scene.mixer = new THREE.AnimationMixer( pp );
-		          // pp.mixer = new THREE.AnimationMixer( gltf.scene );
-		          // for (var i = 0; i < gltf.animations.length; i++) {
-							// 
-							// 	pp.mixer.clipAction( gltf.animations[ i ] ).play();
-		          // }
-							// 
-
-
-							
-
-		
-
-
-
-
-
-			//render();
-
-		} );
-	}
-	
-	//load flowers.glb
-	// const loader = new GLTFLoader();
-  // loader.load("flowers.glb", (gltf) => {
-  //   flowersGltf = gltf.scene;
-  // });
+  loadHorseyOnStart_CM(scene, 0.3);
+  
 
   window.addEventListener("resize", onWindowResize);
   
@@ -431,7 +237,8 @@ function init() {
     // debugger
     m1.addEventListener("click", (ev) => {
       console.log(ev);
-      makeAHorsey();
+      // makeAHorsey();
+      makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
     });
   }
   
@@ -440,7 +247,7 @@ function init() {
     // debugger
     m1.addEventListener("click", (ev) => {
       console.log(ev);
-      makeCubey();
+      makeCubey(0.01, scene);
     });
   }
   
@@ -449,9 +256,10 @@ function init() {
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
     const material = new THREE.MeshBasicMaterial( {color: 0x0000ff} );
-    raycasterCube = new THREE.Mesh( geometry, material );
+    const raycasterCube = new THREE.Mesh( geometry, material );
+    _o.raycasterCube = raycasterCube;
     // cube.position.set(0,0,0);
-    reticle.matrix.decompose(raycasterCube.position, raycasterCube.quaternion, raycasterCube.scale);
+    _o.reticle.matrix.decompose(raycasterCube.position, raycasterCube.quaternion, raycasterCube.scale);
     raycasterCube.rotation.y = 1.1;
     raycasterCube.rotation.z = 0.4;
     const s = 0.01;
@@ -502,74 +310,37 @@ function init() {
     
   }
   
-  
-  selectorBoxHelper = new THREE.Box3Helper( box, 0xffff00 );
-  scene.add( selectorBoxHelper );
-  selectorBoxHelper.visible = false;
+  _o.box = new Box3();
+  _o.selectorBoxHelper = new Box3Helper( _o.box, 0xffff00 );
+  scene.add( _o.selectorBoxHelper );
+  _o.selectorBoxHelper.visible = false;
   
 }
 // init()
 
-// onConsole.log("int8", "888");
-
-
-function testIfMobile(){
-  if (navigator.userAgent.match(/Android/i)
-   || navigator.userAgent.match(/webOS/i)
-   || navigator.userAgent.match(/iPhone/i)
-   || navigator.userAgent.match(/iPad/i)
-   || navigator.userAgent.match(/iPod/i)
-  ){
-   return true;
-  }
-  return false;
-}
 
 
 
-
-
-
-
-function makeCubey(){
-
-  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-  const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-  const cube = new THREE.Mesh( geometry, material );
-  cube.position.set(0,0,0);
-  // reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
-  cube.rotation.y = 1.1;
-  cube.rotation.z = 0.4;
-  const s = 0.01;
-  cube.scale.set(s,s,s);
-  scene.add( cube );
-
-}
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  _o.camera.aspect = window.innerWidth / window.innerHeight;
+  _o.camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  _o.renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
+  _o.renderer.setAnimationLoop(render);
 }
 
 function render(timestamp, frame) {
-	// console.log("1121212");
-  
-  
-  // console.log("?¿??¿¿");
-  
+
   // :o
   // Begin AR testing logics for getting a point in view
   
   if (frame) {
-    const referenceSpace = renderer.xr.getReferenceSpace();
-    const session = renderer.xr.getSession();
+    const referenceSpace = _o.renderer.xr.getReferenceSpace();
+    const session = _o.renderer.xr.getSession();
 
     if (hitTestSourceRequested === false) {
       session.requestReferenceSpace("viewer").then(function (referenceSpace) {
@@ -600,14 +371,14 @@ function render(timestamp, frame) {
         }
         const hit = hitTestResults[0];
 
-        reticle.visible = true;
-        reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
+        _o.reticle.visible = true;
+        _o.reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
         // from here we could store the matrix and frame to use within the touch events
         // instead of instancing in this function
         
         // debugger visulizer
-        // makeCubey(); this here breaks it, so something is missing
+        // makeCubey(0.01, scene); this here breaks it, so something is missing
         // so instead we just spam the cube below
         
         if(IF_MULTITOUCH_DOWN){
@@ -617,12 +388,12 @@ function render(timestamp, frame) {
           const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
           const cube = new THREE.Mesh( geometry, material );
           // cube.position.set(0,0,0);
-          reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+          _o.reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
           cube.rotation.y = 1.1;
           cube.rotation.z = 0.4;
           const s = 0.01;
           cube.scale.set(s,s,s);
-          scene.add( cube );
+          _o.scene.add( cube );
           
         }
         
@@ -637,7 +408,7 @@ function render(timestamp, frame) {
         
         
       } else {
-        reticle.visible = false;
+        _o.reticle.visible = false;
       }
     }
   }
@@ -645,268 +416,27 @@ function render(timestamp, frame) {
 
 	
   
-  let mixerUpdateDelta = clock.getDelta();
+  let mixerUpdateDelta = _o.clock.getDelta();
   // todo: not totally sure we cant run one mixer
   // mixer.update( mixerUpdateDelta );
-  for (var i = 0; i < horseys.length; i++) {
-    horseys[i].mixer.update( mixerUpdateDelta );
+  for (var i = 0; i < _o.horseys.length; i++) {
+    _o.horseys[i].mixer.update( mixerUpdateDelta );
   }
 	
-  if (controls) {
-    controls.update();
+  if (_o.controls) {
+    _o.controls.update();
   }
-  renderer.render(scene, camera);
+  _o.renderer.render(_o.scene, _o.camera);
 }
 
 
 
-
-
-
-
-// 
-// touch events
-// 
-// 
-// 
-// 
-var touchStartPos = new THREE.Vector2(0,0);
-var pointer2D = new THREE.Vector2(0,0);
-var deltaPos2D = new THREE.Vector2(0,0);
-var deltaPos3D = new THREE.Vector3(0,0,0);
-var pointer3D = new THREE.Vector3(0,0,0);
-var horseyPosDown = new THREE.Vector3(0,0,0);
-
-// 
-// 
-// raycaster = new THREE.Raycaster();
-// 				pointer = new THREE.Vector2();
-//         pointer.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-// 
-// 				raycaster.setFromCamera( pointer, camera );
-//         const intersects = raycaster.intersectObjects( objects, false );
-// 
-//         .intersectPlane ( plane : Plane, target : Vector3 ) : Vector3
-// plane - the Plane to intersect with.
-// target — the result will be copied into this Vector3.
-// 
-// Intersect this Ray with a Plane, returning the intersection point or null if there is no intersection.
-// 
-// 
-// 
-// 
-// 				if ( intersects.length > 0 ) {
-// 
-// 					const intersect = intersects[ 0 ];
-// 
-// 					rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-// 					rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
-// 
-// 					render();
-// 
-// 				}
-
-var IS_DOWN = false;
-var IF_MULTITOUCH_DOWN = false;
-var touchesCount = -1;
-
-var raycaster = new THREE.Raycaster();
-var targetVecOfPlane = new THREE.Vector3();
-var floorPlane = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
-
-var touchType = "-1";
-
-function handleTouchStart(ev) {
-  ev.preventDefault();
-  IS_DOWN = true;
-  console.log("start");
-  
-  touchType = ev.pointerType;
-  
-  
-  if (testIfMobile() && ev.touches.length > 1) {
-    IF_MULTITOUCH_DOWN = true;
-    touchesCount = ev.touches.length;
-  }
-  
-  
-  // touchesCount = "NARF";
-  // if (ev.pointerType === 'touch') {
-  if ( testIfMobile() ) {
-    touchStartPos.x = ev.touches[0].pageX;
-    touchStartPos.y = ev.touches[0].pageY;
-  }
-  else {
-    touchStartPos.x = ev.pageX;
-    touchStartPos.y = ev.pageY;
-  }
-  // console.log(touchStartPos);
-  
-  if (horseys.length > 0) {
-    horseyPosDown.copy(horseys[0].position);
-  }
-  
-  // raycasterCube
-  GetPositionOfRaycaster(ev, targetVecOfPlane);
-  raycasterCube.position.copy(targetVecOfPlane);
-  
-
-  // test select a box
-  // <<<<<<
-  
-  GetMousePositionToScreen(ev, pointer2D);
-  raycaster.setFromCamera( pointer2D, camera );
-  // const intersects = raycaster.intersectObjects( horseys, false );
-  var intersects = [];
-  for (var i = 0; i < horseys.length; i++) {
-    box.setFromObject (horseys[i]);
-    if(raycaster.ray.intersectsBox ( box ) ){
-      intersects.push(horseys[i]);
-    }
+function onSelect() {
+  if (_o.reticle.visible && _o.gltfFlower) {
+    // console.log("makeAHorsey is off");
     
-    // intersectObject 
-    // intersects
-  }
-
-//   box.visible
-// 
-//   .intersectsBox ( box : Box3 ) : Boolean
-// box - the Box3 to intersect with.
-
-  				
-
-          
-          				if ( intersects.length > 0 ) {
-          
-          console.log("NEAT!!!");
-          					const intersect = intersects[ 0 ];
-            box.setFromObject ( intersect );
-            selectorBoxHelper.box = box;
-            selectorBoxHelper.visible = true;
-            selectorBoxHelper.updateMatrixWorld();
-          					// rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-          					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
-                    // 
-          					// render();
-          
-          				}
-                  else {
-                    selectorBoxHelper.visible = false;
-                  }
-
-
-    // debugger
-    // raycaster.setFromCamera( pointer2Db, camera );
-    // raycaster.ray.intersectPlane ( floorPlane, vectorin);
-    // 
-    // raycasterCube.position.copy(targetVecOfPlane);
-    // return targetVecOfPlane;
-  // }
-  
-
+    makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
     
-    // test raycasting
-    
-  //   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
-  // x = ( x / this.container.clientWidth ) * 2 - 1;
-  // y = - ( y / this.container.clientHeight ) * 2 + 1;
-  // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
-  // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
-
-
-}
-// handleTouchStart
-
-
-
-function handleTouchStop(ev) {
-  ev.preventDefault();
-  IS_DOWN = false;
-  console.log("stop");
-  
-  IF_MULTITOUCH_DOWN = false;
-  // if (ev.pointerType === 'touch') {
-  //   // touchesCount = touches.length;
-  // }
-  touchesCount = "NOT";
-}
-
-function handleWhileDown(ev) {
-  ev.preventDefault();
-  
-  if (IS_DOWN === false) return;
-  console.log("down???");
-  
-  
-  // touchesCount = touches.length;
-  
-  // if (ev.pointerType === 'touch') {
-  if ( testIfMobile() ) {
-    pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
-  }
-  else {
-    pointer2D.set(ev.pageX, ev.pageY);
-  }
-  
-  // console.log(pointer2D);
-  
-  deltaPos2D.subVectors(pointer2D, horseyPosDown);
-  
-  
-  if (horseys.length > 0) {
-    pointer3D.copy(horseys[0].position);
-    deltaPos3D.set(deltaPos2D.x, horseys[0].position.y, deltaPos2D.y);
-    horseys[0].position.copy(horseyPosDown).add(deltaPos3D);
-    // console.log("deltaPos3D", deltaPos3D);
-  }
-  
-  // raycasterCube
-  GetPositionOfRaycaster(ev, targetVecOfPlane);
-  raycasterCube.position.copy(targetVecOfPlane);
-  
-  
-}
-
-
-// this takes the mouse event and a vector3 that will mutate
-var pointer2Db = new THREE.Vector2();
-var rect;
-function GetPositionOfRaycaster(ev, vectorin){
-  
-  // https://discourse.threejs.org/t/offset-between-mouseposition-and-raycast-intersection/25568/7
-  rect = renderer.domElement.getBoundingClientRect();
-  if ( testIfMobile() ) {
-    // pointer2Db.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
-    pointer2Db.x = ( ( ev.touches[0].pageX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
-    pointer2Db.y = - ( ( ev.touches[0].pageY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
-  }
-  else {
-    // pointer2Db.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
-    pointer2Db.x = ( ( ev.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
-    pointer2Db.y = - ( ( ev.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
-    
-  }
-  
-  // debugger
-  raycaster.setFromCamera( pointer2Db, camera );
-  raycaster.ray.intersectPlane ( floorPlane, vectorin);
-  
-  // raycasterCube.position.copy(targetVecOfPlane);
-  // return targetVecOfPlane;
-}
-
-
-var rect2;
-function GetMousePositionToScreen(ev, vector2In){
-  rect2 = renderer.domElement.getBoundingClientRect();
-  if ( testIfMobile() ) {
-    // vector2In.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
-    vector2In.x = ( ( ev.touches[0].pageX - rect2.left ) / ( rect2.right - rect2.left ) ) * 2 - 1;
-    vector2In.y = - ( ( ev.touches[0].pageY - rect2.top ) / ( rect2.bottom - rect2.top) ) * 2 + 1;
-  }
-  else {
-    // vector2In.set( ( ev.clientX / window.innerWidth ) * 2 - 1, - ( ev.clientY / window.innerHeight ) * 2 + 1 );
-    vector2In.x = ( ( ev.clientX - rect2.left ) / ( rect2.right - rect2.left ) ) * 2 - 1;
-    vector2In.y = - ( ( ev.clientY - rect2.top ) / ( rect2.bottom - rect2.top) ) * 2 + 1;
+    // makeCubey();
   }
 }

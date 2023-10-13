@@ -13,10 +13,10 @@ onConsole.log();
 
 var onConsole = new OnScreenLogger();
 window.onConsole;
+var ii = 0;
+
 
 var updateInterval = 1;
-
-var ii = 0;
 var intervalID = setInterval( () =>{
   onConsole.log("fish", Date.now());
   onConsole.log("narfs", Date.now()+ 234896, "moof", "fipot");
