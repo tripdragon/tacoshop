@@ -341,12 +341,12 @@ function render(timestamp, frame) {
   // :o
   // Begin AR testing logics for getting a point in view
   
-  onConsole.log("ARin1", "arin1");
+  // onConsole.log("ARin1", "arin1");
   if (frame) {
     const referenceSpace = _o.renderer.xr.getReferenceSpace();
     const session = _o.renderer.xr.getSession();
 
-onConsole.log("ARin2", "ARin2");
+    // onConsole.log("ARin2", "ARin2");
     if (hitTestSourceRequested === false) {
       session.requestReferenceSpace("viewer").then(function (referenceSpace) {
         session
@@ -355,7 +355,7 @@ onConsole.log("ARin2", "ARin2");
             hitTestSource = source;
           });
       });
-onConsole.log("ARin3", "ARin3");
+    // onConsole.log("ARin3", "ARin3");
       session.addEventListener("end", function () {
         hitTestSourceRequested = false;
         hitTestSource = null;
@@ -365,13 +365,13 @@ onConsole.log("ARin3", "ARin3");
     }
 
     if (hitTestSource) {
-      onConsole.log("ARin4", "ARin4");
+      // onConsole.log("ARin4", "ARin4");
       const hitTestResults = frame.getHitTestResults(hitTestSource);
 
       if (hitTestResults.length) {
-        onConsole.log("ARin5", "ARin5");
+        // onConsole.log("ARin5", "ARin5");
         if (!planeFound) {
-          onConsole.log("ARin6", "ARin6");
+          // onConsole.log("ARin6", "ARin6");
           planeFound = true;
           //hide #tracking-prompt
           document.getElementById("tracking-prompt").style.display = "none";
@@ -382,7 +382,7 @@ onConsole.log("ARin3", "ARin3");
         _o.reticle.visible = true;
         _o.reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
         
-        onConsole.log("ARin7", "ARin7");
+        // onConsole.log("ARin7", "ARin7");
         // from here we could store the matrix and frame to use within the touch events
         // instead of instancing in this function
         
@@ -418,7 +418,7 @@ onConsole.log("ARin3", "ARin3");
         
         
       } else {
-        onConsole.log("ARin8", "ARin8");
+        // onConsole.log("ARin8", "ARin8");
         _o.reticle.visible = false;
       }
     }
