@@ -390,7 +390,7 @@ onConsole.log("ARin3", "ARin3");
         // makeCubey(0.01, scene); this here breaks it, so something is missing
         // so instead we just spam the cube below
         
-        // if(IF_MULTITOUCH_DOWN){
+        if(_o.IF_MULTITOUCH_DOWN){
           
           // could cache this 
           const geometry = new BoxGeometry( 1, 1, 1 );
@@ -405,7 +405,7 @@ onConsole.log("ARin3", "ARin3");
           cube.scale.set(s,s,s);
           _o.scene.add( cube );
           
-        // }
+        }
         
         // if (SHADOW_PLANE_SETUP_AR === false) {
         //   if (shadowPlane && reticle) {
