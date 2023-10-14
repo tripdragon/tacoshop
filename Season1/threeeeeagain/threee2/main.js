@@ -67,7 +67,7 @@ var mode = modes.seek;
 
 
 var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
-
+_o.onConsole = onConsole;
 
 
 // a basic screen debugger

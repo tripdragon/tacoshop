@@ -5,6 +5,8 @@ import { DeltaFrame } from './tools/deltaFrame.js';
 export const APP = {
   narfs : 2,
   
+  onConsole: null,
+  
   clock: null,// T: Clock
   
   frame: null, // this is a the WebXR frame from render()

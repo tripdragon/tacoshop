@@ -138,12 +138,12 @@ export function handleTouchStop(ev) {
 export function handleWhileDown(ev) {
   ev.preventDefault();
   
-  onConsole.log("handleWhileDown111", "handleWhileDown111");
+  _o.onConsole.log("handleWhileDown111", "handleWhileDown111");
   
   if (_o.IS_DOWN === false) return;
   console.log("down???");
 
-  onConsole.log("handleWhileDown222", "handleWhileDown222");
+  _o.onConsole.log("handleWhileDown222", "handleWhileDown222");
   
   if ( testIfMobile() ) {
     pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
@@ -152,7 +152,7 @@ export function handleWhileDown(ev) {
     pointer2D.set(ev.pageX, ev.pageY);
   }
   
-  onConsole.log("handleWhileDown333", "handleWhileDown333");
+  _o.onConsole.log("handleWhileDown333", "handleWhileDown333");
   
   deltaPos2D.subVectors(pointer2D, horseyPosDown);
   
@@ -170,7 +170,7 @@ export function handleWhileDown(ev) {
   
   
   
-  onConsole.log("handleWhileDown444", "handleWhileDown444");
+  _o.onConsole.log("handleWhileDown444", "handleWhileDown444");
 
   
   // debugger visulizer
@@ -184,9 +184,9 @@ export function handleWhileDown(ev) {
     _o.touchesCount = ev.touches.length;
   }
   
-  onConsole.log("handleWhileDown555", "handleWhileDown555");
+  _o.onConsole.log("handleWhileDown555", "handleWhileDown555");
 
-  onConsole.log("IF_MULTITOUCH_DOWN", "multi is not");
+  _o.onConsole.log("IF_MULTITOUCH_DOWN", "multi is not");
   
   if(_o.IF_MULTITOUCH_DOWN){
     const cc = makeCubey(0.01, _o.scene, 0x00ffff);
@@ -197,11 +197,11 @@ export function handleWhileDown(ev) {
     const s = 0.01;
     cc.scale.set(s,s,s);
     
-    onConsole.log("IF_MULTITOUCH_DOWN", "is DOWN");
+    _o.onConsole.log("IF_MULTITOUCH_DOWN", "is DOWN");
     
   }
   
-  onConsole.log("handleWhileDown555bbb", "handleWhileDown555bbb");
+  _o.onConsole.log("handleWhileDown555bbb", "handleWhileDown555bbb");
 
 }
 
