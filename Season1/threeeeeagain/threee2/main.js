@@ -66,16 +66,16 @@ var mode = modes.seek;
 
 
 
-var onConsole = new OnScreenLogger(document.getElementById("rootlike"));
-_o.onConsole = onConsole;
+_o.onConsole = new OnScreenLogger(document.getElementById("rootlike"));
+// _o.onConsole = onConsole;
 
 
 // a basic screen debugger
 var updateInterval = 1;
 var intervalID = setInterval( () =>{
   // onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
-  onConsole.log("fish", Date.now());
-  onConsole.log("touchesCount", _o.touchesCount);
+  _o.onConsole.log("fish", Date.now());
+  _o.onConsole.log("touchesCount", _o.touchesCount);
   // onConsole.log("targetVecOfPlaneA", targetVecOfPlane.z);
   // onConsole.log("targetVecOfPlaneB", targetVecOfPlane.x);
   // onConsole.log("touchType", touchType);
