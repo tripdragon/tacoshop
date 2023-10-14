@@ -383,7 +383,7 @@ function render(timestamp, frame) {
         const mm = hit.getPose(referenceSpace).transform.matrix;
         _o.reticle.matrix.fromArray(mm);
         
-        _o.deltaFrame.poseMatrix.copy(mm);
+        // _o.deltaFrame.poseMatrix.copy(mm);
         
         // onConsole.log("ARin7", "ARin7");
         // from here we could store the matrix and frame to use within the touch events
