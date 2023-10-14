@@ -165,6 +165,31 @@ export function handleWhileDown(ev) {
   _o.raycasterCube.position.copy(targetVecOfPlane);
   
   
+  
+  
+  
+  // debugger visulizer
+  // makeCubey(0.01, scene); this here breaks it, so something is missing
+  // so instead we just spam the cube below
+  
+  if (testIfMobile() && ev.touches.length > 1) {
+    _o.IF_MULTITOUCH_DOWN = true;
+    _o.touchesCount = ev.touches.length;
+  }
+  
+  if(_o.IF_MULTITOUCH_DOWN){
+    const cc = makeCubey(0.01, scene, 0x00ffff);
+    
+    _o.deltaFrame.poseMatrix.decompose(cc.position, cc.quaternion, cc.scale);
+    cc.rotation.y = 1.1;
+    cc.rotation.z = 0.4;
+    const s = 0.01;
+    cc.scale.set(s,s,s);
+    
+    
+  }
+  
+  
 }
 
 

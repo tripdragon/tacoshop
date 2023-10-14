@@ -380,32 +380,35 @@ function render(timestamp, frame) {
         const hit = hitTestResults[0];
 
         _o.reticle.visible = true;
-        _o.reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
+        const mm = hit.getPose(referenceSpace).transform.matrix;
+        _o.reticle.matrix.fromArray(mm);
+        
+        _o.deltaFrame.poseMatrix.copy(mm);
         
         // onConsole.log("ARin7", "ARin7");
         // from here we could store the matrix and frame to use within the touch events
         // instead of instancing in this function
         
-        // debugger visulizer
-        // makeCubey(0.01, scene); this here breaks it, so something is missing
-        // so instead we just spam the cube below
-        
-        if(_o.IF_MULTITOUCH_DOWN){
-          
-          // could cache this 
-          const geometry = new BoxGeometry( 1, 1, 1 );
-          // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
-          const material = new MeshBasicMaterial( {color: 0x00ff00} );
-          const cube = new Mesh( geometry, material );
-          // cube.position.set(0,0,0);
-          _o.reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
-          cube.rotation.y = 1.1;
-          cube.rotation.z = 0.4;
-          const s = 0.01;
-          cube.scale.set(s,s,s);
-          _o.scene.add( cube );
-          
-        }
+                        // // debugger visulizer
+                        // // makeCubey(0.01, scene); this here breaks it, so something is missing
+                        // // so instead we just spam the cube below
+                        // 
+                        // if(_o.IF_MULTITOUCH_DOWN){
+                        // 
+                        //   // could cache this 
+                        //   const geometry = new BoxGeometry( 1, 1, 1 );
+                        //   // const material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
+                        //   const material = new MeshBasicMaterial( {color: 0x00ff00} );
+                        //   const cube = new Mesh( geometry, material );
+                        //   // cube.position.set(0,0,0);
+                        //   _o.reticle.matrix.decompose(cube.position, cube.quaternion, cube.scale);
+                        //   cube.rotation.y = 1.1;
+                        //   cube.rotation.z = 0.4;
+                        //   const s = 0.01;
+                        //   cube.scale.set(s,s,s);
+                        //   _o.scene.add( cube );
+                        // 
+                        // }
         
         // if (SHADOW_PLANE_SETUP_AR === false) {
         //   if (shadowPlane && reticle) {

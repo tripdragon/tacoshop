@@ -1,3 +1,7 @@
+
+
+import { DeltaFrame } from './tools/deltaFrame.js';
+
 export const APP = {
   narfs : 2,
   
@@ -26,5 +30,7 @@ export const APP = {
   selectorBoxHelper : null, // box3Helper Object3D
   box : null, // let box = new Box3();
   
+  
+  deltaFrame : new DeltaFrame(),
   
 }
