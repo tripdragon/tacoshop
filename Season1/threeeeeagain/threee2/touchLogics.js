@@ -179,8 +179,9 @@ export function handleWhileDown(ev) {
     _o.touchesCount = ev.touches.length;
   }
   
+  onConsole.log("IF_MULTITOUCH_DOWN", "multi is not");
   if(_o.IF_MULTITOUCH_DOWN){
-    const cc = makeCubey(0.01, scene, 0x00ffff);
+    const cc = makeCubey(0.01, _o.scene, 0x00ffff);
     
     _o.deltaFrame.poseMatrix.decompose(cc.position, cc.quaternion, cc.scale);
     cc.rotation.y = 1.1;
@@ -188,6 +189,7 @@ export function handleWhileDown(ev) {
     const s = 0.01;
     cc.scale.set(s,s,s);
     
+    onConsole.log("IF_MULTITOUCH_DOWN", "is DOWN");
     
   }
   
