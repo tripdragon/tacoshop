@@ -172,7 +172,7 @@ export function handleWhileDown(ev) {
   // makeCubey(0.01, scene); this here breaks it, so something is missing
   // so instead we just spam the cube below
   
-  return;
+  // return;
   console.log("dkfgdfg");
   if (testIfMobile() && ev.touches.length > 1) {
     _o.IF_MULTITOUCH_DOWN = true;

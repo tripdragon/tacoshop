@@ -382,8 +382,8 @@ function render(timestamp, frame) {
         _o.reticle.visible = true;
         const mm = hit.getPose(referenceSpace).transform.matrix;
         _o.reticle.matrix.fromArray(mm);
-        
-        _o.deltaFrame.poseMatrix.copy(mm);
+        // debugger
+        _o.deltaFrame.poseMatrix.fromArray(mm);
         
         // onConsole.log("ARin7", "ARin7");
         // from here we could store the matrix and frame to use within the touch events
