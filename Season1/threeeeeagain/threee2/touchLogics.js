@@ -138,12 +138,12 @@ export function handleTouchStop(ev) {
 export function handleWhileDown(ev) {
   ev.preventDefault();
   
-  _o.onConsole.log("handleWhileDown111", "handleWhileDown111");
+  // _o.onConsole.log("handleWhileDown111", "handleWhileDown111");
   
   if (_o.IS_DOWN === false) return;
   console.log("down???");
 
-  _o.onConsole.log("handleWhileDown222", "handleWhileDown222");
+  // _o.onConsole.log("handleWhileDown222", "handleWhileDown222");
   
   if ( testIfMobile() ) {
     pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
@@ -152,7 +152,7 @@ export function handleWhileDown(ev) {
     pointer2D.set(ev.pageX, ev.pageY);
   }
   
-  _o.onConsole.log("handleWhileDown333", "handleWhileDown333");
+  // _o.onConsole.log("handleWhileDown333", "handleWhileDown333");
   
   deltaPos2D.subVectors(pointer2D, horseyPosDown);
   
@@ -170,7 +170,7 @@ export function handleWhileDown(ev) {
   
   
   
-  _o.onConsole.log("handleWhileDown444", "handleWhileDown444");
+  // _o.onConsole.log("handleWhileDown444", "handleWhileDown444");
 
   
   // debugger visulizer
@@ -182,18 +182,18 @@ export function handleWhileDown(ev) {
   
   _o.onConsole.log("othercount", ev.touches.length );
   
+  _o.touchesCount = ev.touches.length;
   if (testIfMobile() && ev.touches.length > 1) {
     _o.IF_MULTITOUCH_DOWN = true;
-    _o.touchesCount = ev.touches.length;
     _o.onConsole.log("handleWhileDown555rrr", "handleWhileDown555rrr" );
     
   }
   
-  _o.onConsole.log("handleWhileDown555", "handleWhileDown555");
+  // _o.onConsole.log("handleWhileDown555", "handleWhileDown555");
 
   _o.onConsole.log("IF_MULTITOUCH_DOWN", "multi is not");
   
-  if(_o.IF_MULTITOUCH_DOWN){
+  if(_o.IF_MULTITOUCH_DOWN === true){
     const cc = makeCubey(0.01, _o.scene, 0x00ffff);
     
     _o.onConsole.log("IF_MULTITOUCH_DOWNaaa", "IF_MULTITOUCH_DOWN aaa");
@@ -207,6 +207,9 @@ export function handleWhileDown(ev) {
     
     _o.onConsole.log("IF_MULTITOUCH_DOWN", "is DOWN");
     
+  }
+  else {
+    _o.IF_MULTITOUCH_DOWN = false;
   }
   
   _o.onConsole.log("handleWhileDown555bbb", "handleWhileDown555bbb");
