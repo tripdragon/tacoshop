@@ -179,9 +179,14 @@ export function handleWhileDown(ev) {
   
   // return;
   console.log("dkfgdfg");
+  
+  _o.onConsole.log("othercount", ev.touches.length );
+  
   if (testIfMobile() && ev.touches.length > 1) {
     _o.IF_MULTITOUCH_DOWN = true;
     _o.touchesCount = ev.touches.length;
+    _o.onConsole.log("handleWhileDown555rrr", "handleWhileDown555rrr" );
+    
   }
   
   _o.onConsole.log("handleWhileDown555", "handleWhileDown555");
@@ -191,7 +196,10 @@ export function handleWhileDown(ev) {
   if(_o.IF_MULTITOUCH_DOWN){
     const cc = makeCubey(0.01, _o.scene, 0x00ffff);
     
+    _o.onConsole.log("IF_MULTITOUCH_DOWNaaa", "IF_MULTITOUCH_DOWN aaa");
+    
     _o.deltaFrame.poseMatrix.decompose(cc.position, cc.quaternion, cc.scale);
+    _o.onConsole.log("IF_MULTITOUCH_DOWNbbb", "IF_MULTITOUCH_DOWN bbb");
     cc.rotation.y = 1.1;
     cc.rotation.z = 0.4;
     const s = 0.01;
