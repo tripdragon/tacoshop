@@ -2,21 +2,28 @@
 
 import { DeltaFrame } from './tools/deltaFrame.js';
 
+import { Clock } from 'three';
+
+import { RollyController } from './tools/rollyController.js';
+
 export const APP = {
   narfs : 2,
   
+  container: null,
+  
   onConsole: null,
   
-  clock: null,// T: Clock
+  clock: new Clock(),// T: Clock
   
-  frame: null, // this is a the WebXR frame from render()
-  frameAnchorMatrix : null, 
-  timestamp: 0,
   
-  controls: null, // T : OrbitControls
+  // this is a the WebXR frame from render()
+  deltaFrame : new DeltaFrame(),
+  
+  orbitControls: null, // T : OrbitControls
   
   camera: null,
   
+  domElement : null,
   renderer : null,
   fish : null,
   gltfFlower: null, // Mesh
@@ -32,7 +39,7 @@ export const APP = {
   selectorBoxHelper : null, // box3Helper Object3D
   box : null, // let box = new Box3();
   
-  
-  deltaFrame : new DeltaFrame(),
+  rollyControllers : [], 
+  selectedObjects : []
   
 }

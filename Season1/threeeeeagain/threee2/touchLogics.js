@@ -4,7 +4,7 @@ import { APP as _o } from "./app.js";
 import { Vector2, Vector3, Raycaster, Plane } from 'three';
 import { testIfMobile } from './tools/testIfMobile.js';
 
-import { GetMousePositionToScreen, GetPositionOfRaycaster } from './tools/mouseScreenTools.js';
+import { GetMousePositionToScreen, GetPositionOfRaycasterFromFloor } from './tools/mouseScreenTools.js';
 
 // 
 // touch events
@@ -28,9 +28,19 @@ var touchType = "-1";
 
 var intersects = [];
 
+
+
+
+// ---------------------------
+// 
+// 
+// 
+// 
 export function handleTouchStart(ev) {
   ev.preventDefault();
+  
   _o.IS_DOWN = true;
+  
   console.log("start");
   
   touchType = ev.pointerType;
@@ -40,10 +50,8 @@ export function handleTouchStart(ev) {
     _o.IF_MULTITOUCH_DOWN = true;
     _o.touchesCount = ev.touches.length;
   }
-  
-  
-  
-  
+
+  // how to hande each?
   if ( testIfMobile() ) {
     touchStartPos.x = ev.touches[0].pageX;
     touchStartPos.y = ev.touches[0].pageY;
@@ -54,22 +62,22 @@ export function handleTouchStart(ev) {
   }
   // console.log(touchStartPos);
   
-  if (_o.horseys.length > 0) {
-    horseyPosDown.copy(_o.horseys[0].position);
-  }
-  
+
+  //
+  // :o begin raycasting
+  //
   // raycasterCube
   // note targetVecOfPlane is mutated here
-  GetPositionOfRaycaster({renderer:_o.renderer, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
+  GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
   _o.raycasterCube.position.copy(targetVecOfPlane);
   
 
-  GetMousePositionToScreen(_o.renderer, ev, pointer2D);
+  GetMousePositionToScreen(_o.renderer.domElement, ev, pointer2D);
   
   raycaster.setFromCamera( pointer2D, _o.camera );
   // const intersects = raycaster.intersectObjects( horseys, false );
-  
-  intersects = [];
+
+  intersects.length = 0;
   
   for (var i = 0; i < _o.horseys.length; i++) {
     _o.box.setFromObject (_o.horseys[i]);
@@ -91,6 +99,15 @@ export function handleTouchStart(ev) {
     _o.selectorBoxHelper.updateMatrixWorld();
   					// rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
   					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+
+    _o.selectedObjects.length = 0;
+            
+    
+    _o.rollyControllers[0].attach(intersect);
+    _o.selectedObjects.push(intersect);
+    //horseyPosDown.copy(_o.horseys[0].position);
+    
+    _o.orbitControls.enabled = false;
 
   }
   else {
@@ -122,20 +139,40 @@ export function handleTouchStart(ev) {
 
 
 
+// ------------------------------
+
+// 
+// 
+// 
+// 
 export function handleTouchStop(ev) {
   ev.preventDefault();
+  
   _o.IS_DOWN = false;
+  
+  _o.orbitControls.enabled = true;
+  
   console.log("stop");
   
   _o.IF_MULTITOUCH_DOWN = false;
 
   _o.touchesCount = "NOT";
+  
+  _o.selectedObjects.length = 0;
+  
+  for (var i = 0; i < _o.rollyControllers.length; i++) {
+    console.log("release 111");
+    _o.rollyControllers[i].release();
+  }
+  
 }
 
 
 
 // moving logics
 export function handleWhileDown(ev) {
+  
+  return;
   ev.preventDefault();
   
   // _o.onConsole.log("handleWhileDown111", "handleWhileDown111");
@@ -165,7 +202,7 @@ export function handleWhileDown(ev) {
   }
   
   // raycasterCube
-  GetPositionOfRaycaster({renderer:_o.renderer, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane: floorPlane, vector3in: targetVecOfPlane});
+  GetPositionOfRaycasterFromFloor({renderer:_o.renderer, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane: floorPlane, vector3in: targetVecOfPlane});
   _o.raycasterCube.position.copy(targetVecOfPlane);
   
   

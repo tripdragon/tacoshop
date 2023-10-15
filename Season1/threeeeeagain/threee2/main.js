@@ -30,6 +30,7 @@ import { makeAHorsey } from './tools/makeAHorsey.js';
 import { loadHorseyOnStart_CM } from './loadHorseyOnStart_CM.js';
 
 import { handleTouchStart, handleWhileDown, handleTouchStop } from './touchLogics.js';
+import { RollyController } from './tools/RollyController.js';
 
 
 
@@ -37,7 +38,7 @@ import { handleTouchStart, handleWhileDown, handleTouchStop } from './touchLogic
 // import "./style.css";
 
 
-let container; // T: Dom el
+// let container; // T: Dom el
 
 let controller; // T : renderer.xr.getController
 
@@ -124,8 +125,9 @@ function init() {
   
 	_o.clock = new Clock();
 	
-  container = document.createElement("div");
-  document.body.appendChild(container);
+  _o.container = document.createElement("div");
+  document.body.appendChild(_o.container);
+  _o.container.id = "threecontainer";
 
   const scene = new Scene();
   _o.scene = scene;
@@ -168,7 +170,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
   
-  container.appendChild(renderer.domElement);
+  _o.container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap; // default THREE.PCFShadowMap
@@ -179,18 +181,22 @@ function init() {
   
   if ( ! IS_XR_AVAIL ) {
   // if ( false ) {
-    const controls = new OrbitControls( _o.camera, renderer.domElement );
-    // window.controls = controls;
-    // controls.addEventListener( 'change', render ); // use if there is no animation loop
-    controls.minDistance = 0.2;
-    controls.maxDistance = 100;
-    controls.target.set( 0, 0, - 0.2 );
-    controls.enableDamping = true;
-    controls.update();
-    _o.controls = controls;
+    const orbitControls = new OrbitControls( _o.camera, renderer.domElement );
+    // orbitControls.addEventListener( 'change', render ); // use if there is no animation loop
+    orbitControls.minDistance = 0.2;
+    orbitControls.maxDistance = 100;
+    orbitControls.target.set( 0, 0, - 0.2 );
+    orbitControls.enableDamping = true;
+    orbitControls.update();
+    _o.orbitControls = orbitControls;
     
     // onConsole.log("int3", "333");
   }
+
+
+  _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
+  _o.rollyControllers[0].useDebugMode = true;
+  
 
   // AR button
   document.body.appendChild(
@@ -268,8 +274,6 @@ function init() {
     const s = 0.01;
     raycasterCube.scale.set(s,s,s);
     scene.add( raycasterCube );
-    
-    
   }
   
   if ( testIfMobile() ){
@@ -289,7 +293,7 @@ function init() {
   
   const plane = new Plane( new Vector3( 0,1,0 ), 0 );
   const helper = new PlaneHelper( plane, 0.2, 0xffff00 );
-  scene.add( helper );
+  // scene.add( helper );
 
 
   const size = 2;
@@ -437,8 +441,8 @@ function render(timestamp, frame) {
     _o.horseys[i].mixer.update( mixerUpdateDelta );
   }
 	
-  if (_o.controls) {
-    _o.controls.update();
+  if (_o.orbitControls) {
+    _o.orbitControls.update();
   }
   _o.renderer.render(_o.scene, _o.camera);
 }

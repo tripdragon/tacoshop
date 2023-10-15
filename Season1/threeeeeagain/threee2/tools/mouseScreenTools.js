@@ -7,8 +7,8 @@ var rect;
 var localPointer = new Vector2();
 
 
-export function GetMousePositionToScreen(renderer, ev, vector2In){
-  rect = renderer.domElement.getBoundingClientRect();
+export function GetMousePositionToScreen(domElement, ev, vector2In){
+  rect = domElement.getBoundingClientRect();
   if ( testIfMobile() ) {
     // vector2In.set( ( ev.touches[0].pageX / window.innerWidth ) * 2 - 1, - ( ev.touches[0].pageY / window.innerHeight ) * 2 + 1 );
     vector2In.x = ( ( ev.touches[0].pageX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
@@ -27,9 +27,9 @@ export function GetMousePositionToScreen(renderer, ev, vector2In){
 // blegh 6 arguments
 // this mutates the vector3in to give a position to use
 // raycasterCube.position.copy(vector3in);
-export function GetPositionOfRaycaster({renderer, ev, raycaster, camera, floorPlane, vector3in}){
+export function GetPositionOfRaycasterFromFloor({domElement, ev, raycaster, camera, floorPlane, vector3in}){
   
-  GetMousePositionToScreen(renderer, ev, localPointer);
+  GetMousePositionToScreen(domElement, ev, localPointer);
   
   // debugger
   raycaster.setFromCamera( localPointer, camera );
