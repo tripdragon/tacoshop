@@ -21,7 +21,7 @@
     <!-- <script src="https://launchar.app/sdk/v1?key=jRhpJS4XjxGGES1muiAIJYd7gbsf4zBx&redirect=true"></script> -->
     <!-- <script src="https://launchar.app/sdk/v1?key=jRhpJS4XjxGGES1muiAIJYd7gbsf4zBx&redirect=false"></script> -->
     
-    <link rel="stylesheet" href="main.css">
+    
     <style media="screen">
     .hide{
       display: none !important;
@@ -37,6 +37,17 @@
         /* top: 20px; */
       }
     </style>
+		<script type="importmap">
+      {
+				"imports": {
+					"three": "./three/build/three.module.js",
+					"three/addons/": "./three/jsm/",
+          "app": "./app.js"
+				}
+			}
+		</script>
+    <script type="module" crossorigin src="./assets/index-3cba7656.js"></script>
+    <link rel="stylesheet" href="./assets/index-d089fae8.css">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -49,7 +60,7 @@
 
 
     <div id="overlay">
-      <div id="tracking-prompt"><img style="width:40px;" src="./public/tea.png" /></div>
+      <div id="tracking-prompt"><img style="width:40px;" src="./assets/tea-639cff7e.png" /></div>
       <div id="instructions">Tap to fish</div>
     </div>
     
@@ -86,18 +97,10 @@
 </div><!-- rootlike -->
   
   <!--  the "app", does nothing, it should allow folder scripts to not have to call with ../ -->
-		<script type="importmap">
-      {
-				"imports": {
-					"three": "./three/build/three.module.js",
-					"three/addons/": "./three/jsm/",
-          "app": "./app.js"
-				}
-			}
-		</script>
+
     
     
-    <script type="module" src="/main.js"></script>
+    
 
 		<!-- <script type="module"></script> -->
     
