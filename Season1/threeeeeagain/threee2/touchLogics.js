@@ -75,12 +75,12 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
   //
   // raycasterCube
   // note targetVecOfPlane is mutated here
-  GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
+  GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
   _o.onConsole.log("isdownBbb", "isdownBbb");
   _o.raycasterCube.position.copy(targetVecOfPlane);
   _o.onConsole.log("isdownCcc", "isdownCcc");
 
-  GetMousePositionToScreen(_o.renderer.domElement, ev, pointer2D);
+  GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
   _o.onConsole.log("isdownGgg", "isdownGgg");
   raycaster.setFromCamera( pointer2D, _o.camera );
   // const intersects = raycaster.intersectObjects( horseys, false );
@@ -216,7 +216,7 @@ export function handleWhileDown(ev) {
   }
   
   // raycasterCube
-  GetPositionOfRaycasterFromFloor({renderer:_o.renderer, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane: floorPlane, vector3in: targetVecOfPlane});
+  GetPositionOfRaycasterFromFloor({renderer:_o.renderer, ev:ev, camera: _o.camera, floorPlane: floorPlane, vector3in: targetVecOfPlane});
   _o.raycasterCube.position.copy(targetVecOfPlane);
   
   

@@ -117,7 +117,7 @@ export class RollyController {
     // }
     
     // raycasterCube
-    GetPositionOfRaycasterFromFloor({domElement: _this.domElement, ev:ev, raycaster:raycaster, camera: _this.camera, floorPlane: _this.plane, vector3in: targetVector});
+    GetPositionOfRaycasterFromFloor({domElement: _this.domElement, ev:ev, camera: _this.camera, floorPlane: _this.plane, vector3in: targetVector});
     _o.raycasterCube.position.copy(targetVector);
     
     // _this.attachedObject.position.copy(targetVector).sub(_this.startPosition);
