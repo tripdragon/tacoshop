@@ -65,6 +65,8 @@ export function handleTouchStart(ev) {
   touchStartPos.x = ev.clientX;
   touchStartPos.y = ev.clientY;
 
+_o.onConsole.log("touchStartPos.x", touchStartPos.x);
+_o.onConsole.log("touchStartPos.y", touchStartPos.y);
 
   //
   // :o begin raycasting
