@@ -45,11 +45,11 @@ export function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
-
-  if (testIfMobile() && ev.touches.length > 1) {
-    _o.IF_MULTITOUCH_DOWN = true;
-    _o.touchesCount = ev.touches.length;
-  }
+          // 
+          // if (testIfMobile() && ev.touches.length > 1) {
+          //   _o.IF_MULTITOUCH_DOWN = true;
+          //   _o.touchesCount = ev.touches.length;
+          // }
 
   // how to hande each?
   // if ( testIfMobile() ) {
