@@ -45,6 +45,7 @@ export function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
+  _o.onConsole.log("isdown2", "isdown2 yes");
           // 
           // if (testIfMobile() && ev.touches.length > 1) {
           //   _o.IF_MULTITOUCH_DOWN = true;
@@ -112,7 +113,7 @@ _o.onConsole.log("touchStartPos.y", touchStartPos.y);
     _o.selectedObjects.push(intersect);
     //horseyPosDown.copy(_o.horseys[0].position);
     
-    _o.orbitControls.enabled = false;
+    if(_o.orbitControls) _o.orbitControls.enabled = false;
 
   }
   else {
@@ -153,9 +154,11 @@ _o.onConsole.log("touchStartPos.y", touchStartPos.y);
 export function handleTouchStop(ev) {
   ev.preventDefault();
   
+  _o.onConsole.log("isdown2", "isdown2 no");
+  
   _o.IS_DOWN = false;
   
-  _o.orbitControls.enabled = true;
+  if(_o.orbitControls) _o.orbitControls.enabled = true;
   
   console.log("stop");
   
