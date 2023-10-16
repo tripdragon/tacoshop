@@ -94,9 +94,10 @@ _o.onConsole.log("touchStartPos.y", touchStartPos.y);
 
   }
 		
+    _o.onConsole.log("isdown3", "isdown3 33333");
 
   if ( intersects.length > 0 ) {
-
+_o.onConsole.log("isdown4", "isdown4");
     console.log("NEAT!!!");
     const intersect = intersects[ 0 ];
     _o.box.setFromObject ( intersect );
@@ -107,7 +108,7 @@ _o.onConsole.log("touchStartPos.y", touchStartPos.y);
   					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
 
     _o.selectedObjects.length = 0;
-            
+            _o.onConsole.log("isdown555", "isdown555");
     
     _o.rollyControllers[0].attach(intersect);
     _o.selectedObjects.push(intersect);
@@ -115,12 +116,13 @@ _o.onConsole.log("touchStartPos.y", touchStartPos.y);
     
     if(_o.orbitControls) _o.orbitControls.enabled = false;
 
+_o.onConsole.log("isdown555bbb", "isdown555bbb");
   }
   else {
     _o.selectorBoxHelper.visible = false;
   }
 
-
+_o.onConsole.log("isdown7777aaa", "isdown7777aaa");
     // debugger
     // raycaster.setFromCamera( pointer2Db, camera );
     // raycaster.ray.intersectPlane ( floorPlane, vectorin);
