@@ -453,11 +453,11 @@ function render(timestamp, frame) {
 
 
 function onSelect() {
-  if (_o.reticle.visible && _o.gltfFlower) {
-    // console.log("makeAHorsey is off");
-    
-    makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
-    
-    // makeCubey();
-  }
+  // if (_o.reticle.visible && _o.gltfFlower) {
+  //   // console.log("makeAHorsey is off");
+  // 
+  //   makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
+  // 
+  //   // makeCubey();
+  // }
 }
