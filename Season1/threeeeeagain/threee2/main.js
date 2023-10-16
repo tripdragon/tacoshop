@@ -276,17 +276,20 @@ function init() {
     scene.add( raycasterCube );
   }
   
-  if ( testIfMobile() ){
-     renderer.domElement.addEventListener("touchstart", handleTouchStart);
-     renderer.domElement.addEventListener("touchmove", handleWhileDown);
-     renderer.domElement.addEventListener("touchend", handleTouchStop);
-   }
-   else {
-     renderer.domElement.addEventListener("mousedown", handleTouchStart);
-     renderer.domElement.addEventListener("mousemove", handleWhileDown);
-     renderer.domElement.addEventListener("mouseup", handleTouchStop);
-   }
+  // if ( testIfMobile() ){
+  //    renderer.domElement.addEventListener("touchstart", handleTouchStart);
+  //    renderer.domElement.addEventListener("touchmove", handleWhileDown);
+  //    renderer.domElement.addEventListener("touchend", handleTouchStop);
+  //  }
+  //  else {
+  //    renderer.domElement.addEventListener("mousedown", handleTouchStart);
+  //    renderer.domElement.addEventListener("mousemove", handleWhileDown);
+  //    renderer.domElement.addEventListener("mouseup", handleTouchStop);
+  //  }
 
+   renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+   renderer.domElement.addEventListener("pointermove", handleWhileDown);
+   renderer.domElement.addEventListener("pointerup", handleTouchStop);
 
   
   

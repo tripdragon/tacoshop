@@ -20,6 +20,7 @@ const targetVector = new Vector3();
 
 var raycaster = new Raycaster();
 
+const worldPos = new Vector3();
 
 var _this;
 
@@ -30,7 +31,6 @@ export class RollyController {
   plane = new Plane(new Vector3(0,1,0), 0);
   
   startPosition = new Vector3();
-  worldPos = new Vector3();
   
   renderer = null;
   domElement = null;
@@ -60,23 +60,23 @@ export class RollyController {
     this.startPosition.copy(wobject.position);
     this.domElement.addEventListener( 'pointermove', this.onPointerMove );
     
-    // wobject.updateMatrixWorld();
+    wobject.updateMatrixWorld();
     // wobject.parent.updateMatrixWorld();
 
-    wobject.getWorldPosition(this.worldPos);
+    wobject.getWorldPosition(worldPos);
     
     this.plane.set(wobject.up,0); // not sure this is world up, docs are not clear
     
     // this.plane.translate(wobject.position); // this is not checking for world position yet
     
-    this.plane.translate(this.worldPos);
+    this.plane.translate(worldPos);
     
     if(this.useDebugMode) {
       // this.scene.remove(this.planeObject);
       // this.planeObject = new PlaneHelper(this.plane, 0.2, 0x00ffff);
       // this.scene.add(this.planeObject);
       this.planeObject.visible = true;
-      // this.planeObject.updateMatrixWorld();
+      this.planeObject.updateMatrixWorld(true);
     }
     
   }
@@ -120,7 +120,8 @@ export class RollyController {
     GetPositionOfRaycasterFromFloor({domElement: _this.domElement, ev:ev, raycaster:raycaster, camera: _this.camera, floorPlane: _this.plane, vector3in: targetVector});
     _o.raycasterCube.position.copy(targetVector);
     
-    _this.attachedObject.position.copy(targetVector).sub(_this.startPosition);
+    // _this.attachedObject.position.copy(targetVector).sub(_this.startPosition);
+    _this.attachedObject.position.copy(targetVector);
     
                       // 
                       // 
