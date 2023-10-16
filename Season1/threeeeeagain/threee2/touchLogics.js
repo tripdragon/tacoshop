@@ -52,16 +52,19 @@ export function handleTouchStart(ev) {
   }
 
   // how to hande each?
-  if ( testIfMobile() ) {
-    touchStartPos.x = ev.touches[0].pageX;
-    touchStartPos.y = ev.touches[0].pageY;
-  }
-  else {
-    touchStartPos.x = ev.pageX;
-    touchStartPos.y = ev.pageY;
-  }
+  // if ( testIfMobile() ) {
+  //   touchStartPos.x = ev.touches[0].pageX;
+  //   touchStartPos.y = ev.touches[0].pageY;
+  // }
+  // else {
+  //   touchStartPos.x = ev.pageX;
+  //   touchStartPos.y = ev.pageY;
+  // }
   // console.log(touchStartPos);
-  
+
+  touchStartPos.x = ev.clientX;
+  touchStartPos.y = ev.clientY;
+
 
   //
   // :o begin raycasting
