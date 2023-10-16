@@ -6,6 +6,8 @@ import { testIfMobile } from './tools/testIfMobile.js';
 
 import { GetMousePositionToScreen, GetPositionOfRaycasterFromFloor } from './tools/mouseScreenTools.js';
 
+import { makeAHorsey } from './tools/makeAHorsey.js';
+
 // 
 // touch events
 // 
@@ -146,14 +148,15 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
     // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
 
 
-
+_o.onConsole.log("notOnSelect", "notOnSelect1111");
 
     if (_o.selectedObjects.length === 0) {
+      _o.onConsole.log("notOnSelect", "notOnSelect222");
       if (_o.reticle.visible && _o.gltfFlower) {
         // console.log("makeAHorsey is off");
-        
+        _o.onConsole.log("notOnSelect", "notOnSelect3333");
         makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
-        
+        _o.onConsole.log("notOnSelect", "notOnSelect444");
         // makeCubey();
       }
     }
