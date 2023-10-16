@@ -69,22 +69,25 @@ export function handleTouchStart(ev) {
 _o.onConsole.log("touchStartPos.x", touchStartPos.x);
 _o.onConsole.log("touchStartPos.y", touchStartPos.y);
 
+_o.onConsole.log("isdownAaa", "isdownAaa");
   //
   // :o begin raycasting
   //
   // raycasterCube
   // note targetVecOfPlane is mutated here
   GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, raycaster:raycaster, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
+  _o.onConsole.log("isdownBbb", "isdownBbb");
   _o.raycasterCube.position.copy(targetVecOfPlane);
-  
+  _o.onConsole.log("isdownCcc", "isdownCcc");
 
   GetMousePositionToScreen(_o.renderer.domElement, ev, pointer2D);
-  
+  _o.onConsole.log("isdownGgg", "isdownGgg");
   raycaster.setFromCamera( pointer2D, _o.camera );
   // const intersects = raycaster.intersectObjects( horseys, false );
 
   intersects.length = 0;
   
+  // we use the box3 to perfrom the raycast sine object3ds dont have bounding boxes
   for (var i = 0; i < _o.horseys.length; i++) {
     _o.box.setFromObject (_o.horseys[i]);
     if(raycaster.ray.intersectsBox ( _o.box ) ){
