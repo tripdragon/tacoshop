@@ -47,7 +47,7 @@ export function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
-  _o.onConsole.log("isdown2", "isdown2 yes");
+  // _o.onConsole.log("isdown2", "isdown2 yes");
           // 
           // if (testIfMobile() && ev.touches.length > 1) {
           //   _o.IF_MULTITOUCH_DOWN = true;
@@ -67,11 +67,12 @@ export function handleTouchStart(ev) {
 
   touchStartPos.x = ev.clientX;
   touchStartPos.y = ev.clientY;
-
-_o.onConsole.log("touchStartPos.x", touchStartPos.x);
-_o.onConsole.log("touchStartPos.y", touchStartPos.y);
-
-_o.onConsole.log("isdownAaa", "isdownAaa");
+  // 
+  // _o.onConsole.log("touchStartPos.x", touchStartPos.x);
+  // _o.onConsole.log("touchStartPos.y", touchStartPos.y);
+  // 
+  // _o.onConsole.log("isdownAaa", "isdownAaa");
+  
   //
   // :o begin raycasting
   //
@@ -80,10 +81,10 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
   GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
   _o.onConsole.log("isdownBbb", "isdownBbb");
   _o.raycasterCube.position.copy(targetVecOfPlane);
-  // _o.onConsole.log("isdownCcc", "isdownCcc");
+  
 
   GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
-  // _o.onConsole.log("isdownGgg", "isdownGgg");
+  
   raycaster.setFromCamera( pointer2D, _o.camera );
   // const intersects = raycaster.intersectObjects( horseys, false );
 
@@ -98,11 +99,9 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
     
 
   }
-		
-    // _o.onConsole.log("isdown3", "isdown3 33333");
 
   if ( intersects.length > 0 ) {
-// _o.onConsole.log("isdown4", "isdown4");
+
     console.log("NEAT!!!");
     const intersect = intersects[ 0 ];
     _o.box.setFromObject ( intersect );
@@ -113,7 +112,6 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
   					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
 
     _o.selectedObjects.length = 0;
-            // _o.onConsole.log("isdown555", "isdown555");
     
     _o.rollyControllers[0].attach(intersect);
     _o.selectedObjects.push(intersect);
@@ -121,24 +119,20 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
     
     if(_o.orbitControls) _o.orbitControls.enabled = false;
 
-// _o.onConsole.log("isdown555bbb", "isdown555bbb");
+
   }
   else {
     _o.selectorBoxHelper.visible = false;
   }
 
 // _o.onConsole.log("isdown7777aaa", "isdown7777aaa");
-    // debugger
+    
     // raycaster.setFromCamera( pointer2Db, camera );
     // raycaster.ray.intersectPlane ( floorPlane, vectorin);
     // 
     // raycasterCube.position.copy(targetVecOfPlane);
     // return targetVecOfPlane;
 
-  
-
-// dfkmgdfkg
-    
     // test raycasting
       
     //   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
@@ -147,16 +141,13 @@ _o.onConsole.log("isdownAaa", "isdownAaa");
     // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
     // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
 
-
-_o.onConsole.log("notOnSelect", "notOnSelect1111");
-
     if (_o.selectedObjects.length === 0) {
-      _o.onConsole.log("notOnSelect", "notOnSelect222");
+
       if (_o.reticle.visible && _o.gltfFlower) {
         // console.log("makeAHorsey is off");
-        _o.onConsole.log("notOnSelect", "notOnSelect3333");
+
         makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
-        _o.onConsole.log("notOnSelect", "notOnSelect444");
+
         // makeCubey();
       }
     }
