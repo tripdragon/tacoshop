@@ -5,6 +5,9 @@ import { Group, PlaneGeometry, ShadowMaterial, Mesh, AnimationMixer } from "thre
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import { ModelWrapper } from './tools/modelWrapper.js';
+
+
 export function loadHorseyOnStart_CM(scene, scale = 0.4){
 
   const loader = new GLTFLoader().setPath( 'models/' );
@@ -51,18 +54,24 @@ export function loadHorseyOnStart_CM(scene, scale = 0.4){
     
     // 
     // 
-    let pp = new Group();
+    // let pp = new Group();
+    let pp = new ModelWrapper();
     pp.position.set(0,0,0);
     var ss = 0.4;
     // pp.scale.set(ss,ss,ss);
     scene.add( pp );
     
     pp.add(gltf.scene);
-    gltf.scene.position.set(0,1.9,0);
+    gltf.scene.position.set(0,1.4,0);
     pp.animations = gltf.animations;
     pp.mixer = gltf.scene.mixer;
     // gltf.scene.animations = null;
     // gltf.scene.mixer = null;
+    
+    // this is hard coded for now
+    pp.boundingObjects.push(gltf.scene.children[0].children[0]);
+    pp.boundingObjects.push(gltf.scene.children[1].children[0]);
+    pp.boundingObjects.push(gltf.scene.children[2].children[0]);
     
     // gltfFlower = pp;
     _o.gltfFlower = pp;

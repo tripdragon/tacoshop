@@ -82,6 +82,15 @@ export function handleTouchStart(ev) {
   _o.onConsole.log("isdownBbb", "isdownBbb");
   _o.raycasterCube.position.copy(targetVecOfPlane);
   
+  
+  // _o.debugPlane.translate(targetVecOfPlane);
+  _o.debugPlane.translate(new Vector3(1, 0, 1));
+  // _o.debugPlane.constant = 0.2;
+  _o.debugPlaneHelper.updateMatrixWorld(true);
+  
+  // missing rotation
+  _o.debugPlaneMesh.position.copy(targetVecOfPlane);
+  
 
   GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
   
@@ -104,7 +113,24 @@ export function handleTouchStart(ev) {
 
     console.log("NEAT!!!");
     const intersect = intersects[ 0 ];
+    
+    // not working right now
+    // if (intersect.boundingObjects && intersect.boundingObjects.length > 0) {
+    //   for (var i = 0; i < intersect.boundingObjects.length-1; i++) {
+    //     if (i === 0) {
+    //       _o.box.setFromObject ( intersect.boundingObjects[0] );
+    //     }
+    //     else {
+    //       _o.box.expandByObject  ( intersect.boundingObjects[i] );
+    //     }
+    //   }
+    // }
+    // else {
+    //   _o.box.setFromObject ( intersect );
+    // }
+    
     _o.box.setFromObject ( intersect );
+    
     _o.selectorBoxHelper.box = _o.box;
     _o.selectorBoxHelper.visible = true;
     _o.selectorBoxHelper.updateMatrixWorld();
@@ -125,8 +151,6 @@ export function handleTouchStart(ev) {
     _o.selectorBoxHelper.visible = false;
   }
 
-// _o.onConsole.log("isdown7777aaa", "isdown7777aaa");
-    
     // raycaster.setFromCamera( pointer2Db, camera );
     // raycaster.ray.intersectPlane ( floorPlane, vectorin);
     // 

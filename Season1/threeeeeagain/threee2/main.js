@@ -12,12 +12,13 @@ _o.fish = "narfs";
 import { Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
   Plane, MeshStandardMaterial, BoxGeometry, MeshBasicMaterial, RingGeometry, Mesh, PCFSoftShadowMap, 
   WebGLRenderer, Box3, Box3Helper, Scene, Clock, PerspectiveCamera, 
-  HemisphereLight, DirectionalLight, SpotLightHelper } from "three";
+  HemisphereLight, DirectionalLight, SpotLightHelper, DoubleSide } from "three";
 
 // import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 // import { ARButton } from "three/addons/webxr/ARButton.js";
 import { ARButtonAlternative as ARButton } from "./ARButtonAlternative.js";
 // import "./qr.js";
+
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -141,7 +142,9 @@ function init() {
     20
   );
   
-
+  _o.camera.position.y = 0.2;
+  _o.camera.position.z = 0.4;
+  _o.camera.position.x = 0.3;
 
   const light = new HemisphereLight(0xffffff, 0xbbbbff, 3.4);
   light.position.set(0.5, 1, 0.25);
@@ -216,7 +219,7 @@ function init() {
   scene.add(controller);
 
   _o.reticle = new Mesh(
-    new RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
+    new RingGeometry(0.04, 0.052, 32).rotateX(-Math.PI / 2),
     new MeshBasicMaterial()
   );
   _o.reticle.matrixAutoUpdate = false;
@@ -296,7 +299,19 @@ function init() {
   
   const plane = new Plane( new Vector3( 0,1,0 ), 0 );
   const helper = new PlaneHelper( plane, 0.2, 0xffff00 );
-  // scene.add( helper );
+  scene.add( helper );
+  _o.debugPlane = plane;
+  _o.debugPlaneHelper = helper;
+  
+  {
+    const geometry = new PlaneGeometry( 0.5, 0.5 );
+    const material = new MeshStandardMaterial( {color: 0xff00ff, side: DoubleSide} );
+    material.wireframe = true;
+    const plane = new Mesh( geometry, material );
+    plane.rotation.x = -Math.PI/2;
+    scene.add( plane );
+    _o.debugPlaneMesh = plane;
+  }
 
 
   const size = 2;

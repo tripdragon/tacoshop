@@ -65,11 +65,16 @@ export class RollyController {
 
     wobject.getWorldPosition(worldPos);
     
+    console.log("worldPos", worldPos);
+    
     this.plane.set(wobject.up,0); // not sure this is world up, docs are not clear
     
     // this.plane.translate(wobject.position); // this is not checking for world position yet
-    
-    this.plane.translate(worldPos);
+    console.log("wobject.position", wobject.position);
+    // this.plane.translate(worldPos);
+    this.plane.translate(wobject.position);
+    // this.plane.translate(new Vector3(1,1,1));
+    // this.plane.constant = 1;
     
     if(this.useDebugMode) {
       // this.scene.remove(this.planeObject);
