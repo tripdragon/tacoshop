@@ -100,8 +100,8 @@ if ("xr" in navigator) {
     }
     else {
       // // run these here to debug otherwise run them in the above if
-      // init();
-      // animate();
+      init();
+      animate();
     }
   });
 }
@@ -503,11 +503,11 @@ function render(timestamp, frame) {
 
 
 function onSelect() {
-  // if (_o.reticle.visible && _o.gltfFlower) {
-  //   // console.log("makeAHorsey is off");
-  // 
-  //   makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
-  // 
-  //   // makeCubey();
-  // }
+  if (_o.reticle.visible && _o.gltfFlower) {
+    // console.log("makeAHorsey is off");
+    _o.onConsole.log("ARin38u3984", "ARin38u3984");
+    makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
+  
+    // makeCubey();
+  }
 }
