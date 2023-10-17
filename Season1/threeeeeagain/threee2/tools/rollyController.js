@@ -24,6 +24,8 @@ const worldPos = new Vector3();
 
 var _this;
 
+var bb = 0;
+
 export class RollyController {
  
   attachedObject = null; // Object3d
@@ -95,8 +97,15 @@ export class RollyController {
   }
   release(){
     this.attachedObject = null;
-    // this.domElement.removeEventListener( 'pointermove', this.onPointerMove.bind(this) );
-    this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
+    
+    // this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
+    if ( testIfMobile() ){
+     renderer.domElement.removeEventListener("touchmove", this.onPointerMove);
+    }
+    else {
+     this.domElement.removeEventListener("mousemove", this.onPointerMove);
+    }
+    
     this.planeObject.visible = false;
   }
 
@@ -112,7 +121,8 @@ export class RollyController {
       pointer2D.set(ev.pageX, ev.pageY);
     }
     
-    
+    bb++;
+    _o.onConsole.log("sdjkfdrg", "sdjkfdrg " + bb+" ¿?");
     
     // pointer2D.set(ev.clientX, ev.clientY);
     
