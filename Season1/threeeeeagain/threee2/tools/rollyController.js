@@ -97,16 +97,16 @@ export class RollyController {
     console.log("rollllly");
     
     // we dont actually need testIfMobile for one touch
-    // if ( testIfMobile() ) {
-    //   pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
-    // }
-    // else {
-    //   pointer2D.set(ev.pageX, ev.pageY);
-    // }
-    // 
+    if ( testIfMobile() ) {
+      pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
+    }
+    else {
+      pointer2D.set(ev.pageX, ev.pageY);
+    }
     
     
-    pointer2D.set(ev.clientX, ev.clientY);
+    
+    // pointer2D.set(ev.clientX, ev.clientY);
     
     
     // _o.onConsole.log("handleWhileDown333", "handleWhileDown333");
