@@ -182,8 +182,8 @@ function init() {
 
   // onConsole.log("int2", "222");
   
-  if ( ! IS_XR_AVAIL ) {
-  // if ( false ) {
+  // if ( ! IS_XR_AVAIL ) {
+  if ( false ) {
     const orbitControls = new OrbitControls( _o.camera, renderer.domElement );
     // orbitControls.addEventListener( 'change', render ); // use if there is no animation loop
     orbitControls.minDistance = 0.2;
