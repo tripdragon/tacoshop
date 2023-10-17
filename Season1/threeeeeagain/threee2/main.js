@@ -290,15 +290,16 @@ function init() {
   //    renderer.domElement.addEventListener("mouseup", handleTouchStop);
   //  }
 
-   // renderer.domElement.addEventListener("pointerdown", handleTouchStart);
-   // renderer.domElement.addEventListener("pointermove", handleWhileDown);
-   // renderer.domElement.addEventListener("pointerup", handleTouchStop);
-   // 
+   renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+   renderer.domElement.addEventListener("pointermove", handleWhileDown);
+   renderer.domElement.addEventListener("pointerup", handleTouchStop);
+   
    
    var gg = 0;
   renderer.domElement.addEventListener("pointerdown", function(ev){
     gg++;
-    _o.onConsole.log("gggggg", "Down¿¿¿?¿¿¿??¿??");
+    var bb = gg + " Down??¿¿¿?";
+    _o.onConsole.log("gggggg", bb);
   });
   
   
