@@ -115,6 +115,11 @@ function sessionStart() {
   planeFound = false;
   //show #tracking-prompt
   document.getElementById("tracking-prompt").style.display = "block";
+  
+  _o.renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+  _o.renderer.domElement.addEventListener("pointermove", handleWhileDown);
+  _o.renderer.domElement.addEventListener("pointerup", handleTouchStop);
+  
 }
 
 //
