@@ -55,18 +55,19 @@ export function handleTouchStart(ev) {
           // }
 
   // how to hande each?
-  // if ( testIfMobile() ) {
-  //   touchStartPos.x = ev.touches[0].pageX;
-  //   touchStartPos.y = ev.touches[0].pageY;
-  // }
-  // else {
-  //   touchStartPos.x = ev.pageX;
-  //   touchStartPos.y = ev.pageY;
-  // }
+  // android is not ready yet for pointerevents
+  if ( testIfMobile() ) {
+    touchStartPos.x = ev.touches[0].pageX;
+    touchStartPos.y = ev.touches[0].pageY;
+  }
+  else {
+    touchStartPos.x = ev.pageX;
+    touchStartPos.y = ev.pageY;
+  }
   // console.log(touchStartPos);
 
-  touchStartPos.x = ev.clientX;
-  touchStartPos.y = ev.clientY;
+  // touchStartPos.x = ev.clientX;
+  // touchStartPos.y = ev.clientY;
   
   _o.onConsole.log("isdownstart222", "isdownstart222");
   

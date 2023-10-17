@@ -279,33 +279,34 @@ function init() {
     scene.add( raycasterCube );
   }
   
-  // if ( testIfMobile() ){
-  //    renderer.domElement.addEventListener("touchstart", handleTouchStart);
-  //    renderer.domElement.addEventListener("touchmove", handleWhileDown);
-  //    renderer.domElement.addEventListener("touchend", handleTouchStop);
-  //  }
-  //  else {
-  //    renderer.domElement.addEventListener("mousedown", handleTouchStart);
-  //    renderer.domElement.addEventListener("mousemove", handleWhileDown);
-  //    renderer.domElement.addEventListener("mouseup", handleTouchStop);
-  //  }
-
-   renderer.domElement.addEventListener("pointerdown", handleTouchStart);
-   renderer.domElement.addEventListener("pointermove", handleWhileDown);
-   renderer.domElement.addEventListener("pointerup", handleTouchStop);
-   
-   
-   _o.onConsole.log("floood1", "floood1");
-   _o.onConsole.log("floood2", "floood2");
-   _o.onConsole.log("floood3", "floood3");
-   
-   if (window.PointerEvent) {
-     _o.onConsole.log("pppp", "pointer events good");
+  if ( testIfMobile() ){
+     renderer.domElement.addEventListener("touchstart", handleTouchStart);
+     renderer.domElement.addEventListener("touchmove", handleWhileDown);
+     renderer.domElement.addEventListener("touchend", handleTouchStop);
    }
-   else{
-     _o.onConsole.log("pppp", "nerrp");
+   else {
+     renderer.domElement.addEventListener("mousedown", handleTouchStart);
+     renderer.domElement.addEventListener("mousemove", handleWhileDown);
+     renderer.domElement.addEventListener("mouseup", handleTouchStop);
    }
    
+   // android not working, so back we go for now
+   // renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+   // renderer.domElement.addEventListener("pointermove", handleWhileDown);
+   // renderer.domElement.addEventListener("pointerup", handleTouchStop);
+   
+   // 
+   // _o.onConsole.log("floood1", "floood1");
+   // _o.onConsole.log("floood2", "floood2");
+   // _o.onConsole.log("floood3", "floood3");
+   // 
+   // if (window.PointerEvent) {
+   //   _o.onConsole.log("pppp", "pointer events good");
+   // }
+   // else{
+   //   _o.onConsole.log("pppp", "nerrp");
+   // }
+   // 
    
    var gg = 0;
   renderer.domElement.addEventListener("pointerdown", function(ev){
