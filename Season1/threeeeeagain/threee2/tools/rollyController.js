@@ -58,7 +58,15 @@ export class RollyController {
 
     this.attachedObject = wobject;
     this.startPosition.copy(wobject.position);
-    this.domElement.addEventListener( 'pointermove', this.onPointerMove );
+    
+    if ( testIfMobile() ){
+     renderer.domElement.addEventListener("touchmove", this.onPointerMove);
+    }
+    else {
+     this.domElement.addEventListener("mousemove", this.onPointerMove);
+    }
+    // this.domElement.addEventListener( 'pointermove', this.onPointerMove );
+    
     
     wobject.updateMatrixWorld();
     // wobject.parent.updateMatrixWorld();
