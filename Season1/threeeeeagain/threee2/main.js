@@ -312,9 +312,25 @@ function init() {
   renderer.domElement.addEventListener("pointerdown", function(ev){
     gg++;
     var bb = gg + " Down??¿¿¿?";
-    _o.onConsole.log("gggggg", bb);
+    _o.onConsole.log("gggggg111", `pointerdown ${bb}`);
+    // debugger
   });
   
+
+ renderer.domElement.addEventListener("mousedown", function(ev){
+   gg++;
+   var bb = gg + " Down??¿¿¿?";
+   _o.onConsole.log("gggggg2222", `mousedown main ${bb}`);
+   // debugger
+ });
+  
+ 
+  renderer.domElement.addEventListener("touchstart", function(ev){
+    gg++;
+    var bb = gg + " Down??¿¿¿?";
+    _o.onConsole.log("gggggg3333", `touchstart main ${bb}`);
+    // debugger
+  });
   
   const plane = new Plane( new Vector3( 0,1,0 ), 0 );
   const helper = new PlaneHelper( plane, 0.2, 0xffff00 );
