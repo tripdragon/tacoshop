@@ -295,6 +295,18 @@ function init() {
    renderer.domElement.addEventListener("pointerup", handleTouchStop);
    
    
+   _o.onConsole.log("floood1", "floood1");
+   _o.onConsole.log("floood2", "floood2");
+   _o.onConsole.log("floood3", "floood3");
+   
+   if (window.PointerEvent) {
+     _o.onConsole.log("pppp", "pointer events good");
+   }
+   else{
+     _o.onConsole.log("pppp", "nerrp");
+   }
+   
+   
    var gg = 0;
   renderer.domElement.addEventListener("pointerdown", function(ev){
     gg++;
