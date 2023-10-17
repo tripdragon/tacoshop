@@ -116,9 +116,9 @@ function sessionStart() {
   //show #tracking-prompt
   document.getElementById("tracking-prompt").style.display = "block";
   
-  _o.renderer.domElement.addEventListener("pointerdown", handleTouchStart);
-  _o.renderer.domElement.addEventListener("pointermove", handleWhileDown);
-  _o.renderer.domElement.addEventListener("pointerup", handleTouchStop);
+  // _o.renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+  // _o.renderer.domElement.addEventListener("pointermove", handleWhileDown);
+  // _o.renderer.domElement.addEventListener("pointerup", handleTouchStop);
   
 }
 
@@ -187,8 +187,8 @@ function init() {
 
   // onConsole.log("int2", "222");
   
-  // if ( ! IS_XR_AVAIL ) {
-  if ( false ) {
+  if ( ! IS_XR_AVAIL ) {
+  // if ( false ) {
     const orbitControls = new OrbitControls( _o.camera, renderer.domElement );
     // orbitControls.addEventListener( 'change', render ); // use if there is no animation loop
     orbitControls.minDistance = 0.2;
@@ -207,6 +207,7 @@ function init() {
   
 
   // AR button
+  // https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession
   document.body.appendChild(
     ARButton.createButton(renderer, {
     // ARButtonAlternative.createButton(renderer, {
@@ -258,7 +259,7 @@ function init() {
       makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
     });
   }
-  
+  ``
   {
     const m1 = document.getElementById("makeCubey");
     // debugger
@@ -295,10 +296,19 @@ function init() {
   //    renderer.domElement.addEventListener("mouseup", handleTouchStop);
   //  }
    
+   // https://discourse.threejs.org/t/rotating-3d-object-in-webxr/15926/9
+   // https://discourse.threejs.org/t/webxr-touch-input/21096
    // android not working, so back we go for now
-   renderer.domElement.addEventListener("pointerdown", handleTouchStart);
-   renderer.domElement.addEventListener("pointermove", handleWhileDown);
-   renderer.domElement.addEventListener("pointerup", handleTouchStop);
+   const mm = document.getElementById("rootlike");
+   // 
+   // renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+   // renderer.domElement.addEventListener("pointermove", handleWhileDown);
+   // renderer.domElement.addEventListener("pointerup", handleTouchStop);
+   // 
+   
+   mm.addEventListener("pointerdown", handleTouchStart);
+   mm.addEventListener("pointermove", handleWhileDown);
+   mm.addEventListener("pointerup", handleTouchStop);
    
    // 
    // _o.onConsole.log("floood1", "floood1");

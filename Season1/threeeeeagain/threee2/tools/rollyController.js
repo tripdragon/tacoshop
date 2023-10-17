@@ -67,7 +67,8 @@ export class RollyController {
     // else {
     //  this.domElement.addEventListener("mousemove", this.onPointerMove);
     // }
-    this.domElement.addEventListener( 'pointermove', this.onPointerMove );
+    const mm = document.getElementById("rootlike");
+    mm.addEventListener( 'pointermove', this.onPointerMove );
     
     
     wobject.updateMatrixWorld();
@@ -98,7 +99,11 @@ export class RollyController {
   release(){
     this.attachedObject = null;
     
-    this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
+    // this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
+    
+    const mm = document.getElementById("rootlike");
+    mm.removeEventListener( 'pointermove', this.onPointerMove );
+    
     // if ( testIfMobile() ){
     //  renderer.domElement.removeEventListener("touchmove", this.onPointerMove);
     // }
