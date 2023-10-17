@@ -61,13 +61,13 @@ export class RollyController {
     this.attachedObject = wobject;
     this.startPosition.copy(wobject.position);
     
-    if ( testIfMobile() ){
-     renderer.domElement.addEventListener("touchmove", this.onPointerMove);
-    }
-    else {
-     this.domElement.addEventListener("mousemove", this.onPointerMove);
-    }
-    // this.domElement.addEventListener( 'pointermove', this.onPointerMove );
+    // if ( testIfMobile() ){
+    //  renderer.domElement.addEventListener("touchmove", this.onPointerMove);
+    // }
+    // else {
+    //  this.domElement.addEventListener("mousemove", this.onPointerMove);
+    // }
+    this.domElement.addEventListener( 'pointermove', this.onPointerMove );
     
     
     wobject.updateMatrixWorld();
@@ -98,13 +98,13 @@ export class RollyController {
   release(){
     this.attachedObject = null;
     
-    // this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
-    if ( testIfMobile() ){
-     renderer.domElement.removeEventListener("touchmove", this.onPointerMove);
-    }
-    else {
-     this.domElement.removeEventListener("mousemove", this.onPointerMove);
-    }
+    this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
+    // if ( testIfMobile() ){
+    //  renderer.domElement.removeEventListener("touchmove", this.onPointerMove);
+    // }
+    // else {
+    //  this.domElement.removeEventListener("mousemove", this.onPointerMove);
+    // }
     
     this.planeObject.visible = false;
   }
@@ -113,18 +113,18 @@ export class RollyController {
   onPointerMove(ev){
     console.log("rollllly");
     
-    // we dont actually need testIfMobile for one touch
-    if ( testIfMobile() ) {
-      pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
-    }
-    else {
-      pointer2D.set(ev.pageX, ev.pageY);
-    }
+    // // we dont actually need testIfMobile for one touch
+    // if ( testIfMobile() ) {
+    //   pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
+    // }
+    // else {
+    //   pointer2D.set(ev.pageX, ev.pageY);
+    // }
     
     bb++;
     _o.onConsole.log("sdjkfdrg", "sdjkfdrg " + bb+" ¿?");
     
-    // pointer2D.set(ev.clientX, ev.clientY);
+    pointer2D.set(ev.clientX, ev.clientY);
     
     
     // _o.onConsole.log("handleWhileDown333", "handleWhileDown333");

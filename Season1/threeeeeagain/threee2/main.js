@@ -278,22 +278,22 @@ function init() {
     raycasterCube.scale.set(s,s,s);
     scene.add( raycasterCube );
   }
-  
-  if ( testIfMobile() ){
-     renderer.domElement.addEventListener("touchstart", handleTouchStart);
-     renderer.domElement.addEventListener("touchmove", handleWhileDown);
-     renderer.domElement.addEventListener("touchend", handleTouchStop);
-   }
-   else {
-     renderer.domElement.addEventListener("mousedown", handleTouchStart);
-     renderer.domElement.addEventListener("mousemove", handleWhileDown);
-     renderer.domElement.addEventListener("mouseup", handleTouchStop);
-   }
+  // 
+  // if ( testIfMobile() ){
+  //    renderer.domElement.addEventListener("touchstart", handleTouchStart);
+  //    renderer.domElement.addEventListener("touchmove", handleWhileDown);
+  //    renderer.domElement.addEventListener("touchend", handleTouchStop);
+  //  }
+  //  else {
+  //    renderer.domElement.addEventListener("mousedown", handleTouchStart);
+  //    renderer.domElement.addEventListener("mousemove", handleWhileDown);
+  //    renderer.domElement.addEventListener("mouseup", handleTouchStop);
+  //  }
    
    // android not working, so back we go for now
-   // renderer.domElement.addEventListener("pointerdown", handleTouchStart);
-   // renderer.domElement.addEventListener("pointermove", handleWhileDown);
-   // renderer.domElement.addEventListener("pointerup", handleTouchStop);
+   renderer.domElement.addEventListener("pointerdown", handleTouchStart);
+   renderer.domElement.addEventListener("pointermove", handleWhileDown);
+   renderer.domElement.addEventListener("pointerup", handleTouchStop);
    
    // 
    // _o.onConsole.log("floood1", "floood1");

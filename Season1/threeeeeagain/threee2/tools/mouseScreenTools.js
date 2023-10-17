@@ -37,17 +37,17 @@ export function GetMousePositionToScreen(xx,yy, domElement, vector2In){
 // this mutates the vector3in to give a position to use
 // raycasterCube.position.copy(vector3in);
 export function GetPositionOfRaycasterFromFloor({domElement, ev, camera, floorPlane, vector3in}){
-  if ( testIfMobile() ) {
-    vectortempppp.x = ev.touches[0].pageX;
-    vectortempppp.y = ev.touches[0].pageY;
-  }
-  else {
-    vectortempppp.x = ev.pageX;
-    vectortempppp.y = ev.pageY;
-  }
+  // if ( testIfMobile() ) {
+  //   vectortempppp.x = ev.touches[0].pageX;
+  //   vectortempppp.y = ev.touches[0].pageY;
+  // }
+  // else {
+  //   vectortempppp.x = ev.pageX;
+  //   vectortempppp.y = ev.pageY;
+  // }
   
-  // GetMousePositionToScreen(ev.clientX, ev.clientY, domElement,  localPointer);
-  GetMousePositionToScreen(vectortempppp.x, vectortempppp.y, domElement,  localPointer);
+  GetMousePositionToScreen(ev.clientX, ev.clientY, domElement,  localPointer);
+  // GetMousePositionToScreen(vectortempppp.x, vectortempppp.y, domElement,  localPointer);
   
   // debugger
   raycaster.setFromCamera( localPointer, camera );

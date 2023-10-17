@@ -56,18 +56,18 @@ export function handleTouchStart(ev) {
 
   // how to hande each?
   // android is not ready yet for pointerevents
-  if ( testIfMobile() ) {
-    touchStartPos.x = ev.touches[0].pageX;
-    touchStartPos.y = ev.touches[0].pageY;
-  }
-  else {
-    touchStartPos.x = ev.pageX;
-    touchStartPos.y = ev.pageY;
-  }
+  // if ( testIfMobile() ) {
+  //   touchStartPos.x = ev.touches[0].pageX;
+  //   touchStartPos.y = ev.touches[0].pageY;
+  // }
+  // else {
+  //   touchStartPos.x = ev.pageX;
+  //   touchStartPos.y = ev.pageY;
+  // }
   // console.log(touchStartPos);
 
-  // touchStartPos.x = ev.clientX;
-  // touchStartPos.y = ev.clientY;
+  touchStartPos.x = ev.clientX;
+  touchStartPos.y = ev.clientY;
   
   _o.onConsole.log("isdownstart222", "isdownstart222");
   
@@ -242,12 +242,13 @@ export function handleWhileDown(ev) {
 
   // _o.onConsole.log("handleWhileDown222", "handleWhileDown222");
   
-  if ( testIfMobile() ) {
-    pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
-  }
-  else {
-    pointer2D.set(ev.pageX, ev.pageY);
-  }
+  // if ( testIfMobile() ) {
+  //   pointer2D.set(ev.touches[0].pageX, ev.touches[0].pageY);
+  // }
+  // else {
+  //   pointer2D.set(ev.pageX, ev.pageY);
+  // }
+  pointer2D.set(ev.clientX, ev.clientY);
   
   // _o.onConsole.log("handleWhileDown333", "handleWhileDown333");
   
