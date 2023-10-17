@@ -47,7 +47,7 @@ export function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
-  _o.onConsole.log("isdownstart111", "isdownstart111");
+  // _o.onConsole.log("isdown2", "isdown2 yes");
           // 
           // if (testIfMobile() && ev.touches.length > 1) {
           //   _o.IF_MULTITOUCH_DOWN = true;
@@ -67,12 +67,9 @@ export function handleTouchStart(ev) {
 
   touchStartPos.x = ev.clientX;
   touchStartPos.y = ev.clientY;
-  
-  _o.onConsole.log("isdownstart222", "isdownstart222");
-  
   // 
-  _o.onConsole.log("touchStartPos.x", touchStartPos.x);
-  _o.onConsole.log("touchStartPos.y", touchStartPos.y);
+  // _o.onConsole.log("touchStartPos.x", touchStartPos.x);
+  // _o.onConsole.log("touchStartPos.y", touchStartPos.y);
   // 
   // _o.onConsole.log("isdownAaa", "isdownAaa");
   
@@ -85,8 +82,6 @@ export function handleTouchStart(ev) {
   _o.onConsole.log("isdownBbb", "isdownBbb");
   _o.raycasterCube.position.copy(targetVecOfPlane);
   
-  
-  _o.onConsole.log("isdownstart333", "isdownstart333");
   
   // _o.debugPlane.translate(targetVecOfPlane);
   _o.debugPlane.translate(new Vector3(1, 0, 1));
@@ -104,8 +99,6 @@ export function handleTouchStart(ev) {
 
   intersects.length = 0;
   
-  _o.onConsole.log("isdownstart444", "isdownstart444");
-  
   // we use the box3 to perfrom the raycast sine object3ds dont have bounding boxes
   for (var i = 0; i < _o.horseys.length; i++) {
     _o.box.setFromObject (_o.horseys[i]);
@@ -116,13 +109,10 @@ export function handleTouchStart(ev) {
 
   }
 
-_o.onConsole.log("isdownstart555", "isdownstart555");
   if ( intersects.length > 0 ) {
 
     console.log("NEAT!!!");
     const intersect = intersects[ 0 ];
-    
-    _o.onConsole.log("isdownstart555bbb", "isdownstart555bbb");
     
     // not working right now
     // if (intersect.boundingObjects && intersect.boundingObjects.length > 0) {
@@ -175,8 +165,6 @@ _o.onConsole.log("isdownstart555", "isdownstart555");
     // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
     // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
 
-_o.onConsole.log("isdownstart777aaa", "isdownstart777aaa");
-
     if (_o.selectedObjects.length === 0) {
 
       if (_o.reticle.visible && _o.gltfFlower) {
@@ -189,7 +177,6 @@ _o.onConsole.log("isdownstart777aaa", "isdownstart777aaa");
     }
 
 
-_o.onConsole.log("isdownstart888aaa", "isdownstart888aaa");
 
 }
 // handleTouchStart

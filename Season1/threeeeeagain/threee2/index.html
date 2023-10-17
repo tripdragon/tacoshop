@@ -13,35 +13,49 @@
 
     <title>TASTE THE RAINBOW</title>
     
-    <script src="https://launchar.app/sdk/v1?key=jRhpJS4XjxGGES1muiAIJYd7gbsf4zBx&redirect=true"></script>
+    <!-- <meta name="apple-itunes-app" content="app-id=myAppStoreID, app-clip-bundle-id=appClipBundleID, app-clip-display=card"> -->
+
+    <!-- if it fails trying to get the button, try making a new apy key -->
+    <script src="https://launchar.app/sdk/v1?key=m382CmCIiimQWA85njnvIoqQI8woyILu&redirect=true"></script>
+    
+    <!-- <script src="https://launchar.app/sdk/v1?key=jRhpJS4XjxGGES1muiAIJYd7gbsf4zBx&redirect=true"></script> -->
+    <!-- <script src="https://launchar.app/sdk/v1?key=jRhpJS4XjxGGES1muiAIJYd7gbsf4zBx&redirect=false"></script> -->
     
     <link rel="stylesheet" href="main.css">
     <style media="screen">
+    .hide{
+      display: none !important;
+    }
       #notes{
         position: absolute;
         top: 10px;
         left: 10px;
-        z-index: 1;
+        z-index: 100;
       }
       #addbuttonhorsey{
         padding: 10px;
-        top: 20px;
+        /* top: 20px; */
       }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <!-- <div id="root"></div> -->
+    
+    <div id="rootlike" class="">
+      
+    
+    <!-- <h2 id="touchcountdom" style="color:white;">9</h2> -->
 
 
     <div id="overlay">
       <div id="tracking-prompt"><img style="width:40px;" src="./public/tea.png" /></div>
       <div id="instructions">Tap to fish</div>
     </div>
-    <div id="app">
-      <a href="https://launch.variant3d.com"
-        ><img id="variant-logo" alt="WebXR on iOS" src="favicon.ico"
-      /></a>
+    
+    <!-- this is hidden, its a qr code, we dont need it -->
+    <div id="app" class="hide" skdlfdfgstyle="display:none;">
+      <a href="https://launch.variant3d.com"><img id="variant-logo" alt="WebXR on iOS" src="favicon.ico"/></a>
       <h2>Variant Launch ThreeJS Example</h2>
       <div id="ar-not-supported">
         <p>
@@ -50,9 +64,7 @@
         </p>
         <p>
           For documentation & support, visit
-          <a href="https://launch.variant3d.com/docs"
-            >https://launch.variant3d.com</a
-          >.
+          <a href="https://launch.variant3d.com/docs">https://launch.variant3d.com</a>.
         </p>
         <img id="qr-code" />
       </div>
@@ -62,19 +74,24 @@
     <div id="notes">
       
       <button id="addbuttonhorsey">gcgfcyh</button>
+      <button id="makeCubey">makeCubey</button>
 
-      <h1 style="color:#222222;">Naaarrrff 9999aaa</h1>
+      <h1 style="color:#eee;">Naaarrrff 2525252cccc1</h1>
 
   		<!-- <div id="info">
   			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - hit test<br/>(Chrome Android 81+)
   		</div> -->
     </div>
 
+</div><!-- rootlike -->
+  
+  <!--  the "app", does nothing, it should allow folder scripts to not have to call with ../ -->
 		<script type="importmap">
       {
 				"imports": {
 					"three": "./three/build/three.module.js",
-					"three/addons/": "./three/jsm/"
+					"three/addons/": "./three/jsm/",
+          "app": "./app.js"
 				}
 			}
 		</script>
