@@ -253,22 +253,22 @@ function init() {
   // debugger buttons 
   // addbuttonhorsey
   {
-    const m1 = document.getElementById("addbuttonhorsey");
-    // debugger
-    m1.addEventListener("click", (ev) => {
-      console.log(ev);
-      // makeAHorsey();
-      makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
-    });
+    // const m1 = document.getElementById("addbuttonhorsey");
+    // // debugger
+    // m1.addEventListener("click", (ev) => {
+    //   console.log(ev);
+    //   // makeAHorsey();
+    //   makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
+    // });
   }
-  ``
+
   {
-    const m1 = document.getElementById("makeCubey");
-    // debugger
-    m1.addEventListener("click", (ev) => {
-      console.log(ev);
-      makeCubey(0.01, scene);
-    });
+    // const m1 = document.getElementById("makeCubey");
+    // // debugger
+    // m1.addEventListener("click", (ev) => {
+    //   console.log(ev);
+    //   makeCubey(0.01, scene);
+    // });
   }
   
   // onConsole.log("int7", "777");

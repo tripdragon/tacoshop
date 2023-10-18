@@ -16,8 +16,8 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     // gltf.scene.position.set(0,1,-10);
     // debugger
     
-    
-    // gltf.scene.scale.set( scale, scale, scale);
+    scale = 0.9;
+    gltf.scene.scale.set( scale, scale, scale);
     
     // debugger
     
@@ -62,7 +62,7 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     // scene.add( pp );
     
     pp.add(gltf.scene);
-    // gltf.scene.position.set(0,1.4,0);
+    gltf.scene.position.set(0,0.05,0);
     pp.animations = gltf.animations;
     pp.mixer = gltf.scene.mixer;
     // gltf.scene.animations = null;
@@ -80,7 +80,7 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     // THIS IS EXPENSSIVE need to remove
     {
       //Create a plane that receives shadows (but does not cast them)
-      var pg = new PlaneGeometry( 1,1, 32, 32 );
+      var pg = new PlaneGeometry( 0.5,0.5, 32, 32 );
       // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
       const material = new ShadowMaterial();
       material.opacity = 0.4;
@@ -89,7 +89,7 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
       // window.shadowPlane = shadowPlane;
       shadowPlane.rotation.x = -Math.PI/2;
       // shadowPlane.rotation.
-      pp.add( shadowPlane );
+      // pp.add( shadowPlane );
       
     }
 
