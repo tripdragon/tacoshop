@@ -28,7 +28,7 @@ import { testIfMobile } from './tools/testIfMobile.js';
 
 import { makeCubey } from './tools/makeCubey.js';
 import { makeAHorsey } from './tools/makeAHorsey.js';
-import { loadHorseyOnStart_CM } from './loadHorseyOnStart_CM.js';
+import { loadShoeOnStart_CM } from './loadShoeOnStart_CM.js';
 
 import { handleTouchStart, handleWhileDown, handleTouchStop } from './touchLogics.js';
 import { RollyController } from './tools/RollyController.js';
@@ -244,7 +244,7 @@ function init() {
 	  // scene.add( cube );
   }
 
-  loadHorseyOnStart_CM(scene, 0.3);
+  loadShoeOnStart_CM(scene, 0.3);
   
 
   window.addEventListener("resize", onWindowResize);
