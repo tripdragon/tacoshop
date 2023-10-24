@@ -36,10 +36,13 @@ export const APP = {
   touchesCount : 0,
   
   raycasterCube: null, // T : Mesh
+  // these are for the raycast hit testing
   selectorBoxHelper : null, // box3Helper Object3D
   box : null, // let box = new Box3();
   
   rollyControllers : [], 
-  selectedObjects : []
+  selectedObjects : [],
+  
+  displayBoxes: [], 
   
 }

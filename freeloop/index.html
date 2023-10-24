@@ -1,0 +1,525 @@
+<html lang="en">
+  <head>
+    <style media="screen">
+      #canvas{
+        background : green;
+      }
+      *{
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="600" height="500"></canvas>
+    
+    <script type="text/javascript">
+      
+      class Vector2 {
+        constructor(x=0,y=0){
+          this.x = x; this.y = y;
+        }
+        set(x,y){
+          this.x = x; this.y = y; return this;
+        }
+        add(v){
+          this.x += v.x; this.y += v.y; return this;
+        }
+        divide(v){
+          this.x /= v.x; this.y /= v.y; return this;
+        }
+        divideScalar(s){
+          this.x /= s; this.y /= s; return this;
+        }
+        multiply(v){
+          this.x *= v.x; this.y *= v.y; return this;
+        }
+        multiplyScalar(s){
+          this.x *= s; this.y *= s; return this;
+        }
+        sub(v){
+          this.x -= v.x; this.y -= v.y; return this;
+        }
+        length() {
+          return Math.sqrt( this.x * this.x + this.y * this.y );
+        }
+        normalize(){
+          return this.divideScalar( this.length() || 1 );
+        }
+        copy(v){
+          this.x = v.x; this.y = v.y; return this;
+        }
+        dot( v ) {
+          return this.x * v.x + this.y * v.y;
+        }
+      }
+
+
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      function draw() {
+        if (canvas.getContext) {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          ctx.beginPath();
+          ctx.arc(moof.position.x, moof.position.y, 50, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+      
+      
+      class Player{
+        position = new Vector2(400,75);
+        frameId = 0;
+        mass = 1;
+        acceleration = new Vector2(0,0);
+        velocity = new Vector2(0, 0);
+        
+        setup(x,y){
+          this.position.set(x,y);
+        }
+        
+        applyForce = (function (wobj, force){
+          let ff = new Vector2();
+          return function applyForce(wobj, force){
+            ff.copy(force);
+            ff.divideScalar(wobj.mass);
+            wobj.acceleration.add(ff);
+            wobj.velocity.add(wobj.acceleration);
+            wobj.position.add(wobj.velocity);
+          }
+        })()
+        
+        clearAcceleration(){
+          this.acceleration.x = 0; this.acceleration.y = 0;
+        }
+        
+      }
+      
+      
+      
+      var ggIid = -1;
+      arrf = -1;
+      var delay = 510;
+      
+      // setTimeout((x)=>{
+      //   console.log("fiish");
+      //   // draw();
+      //   freeLoopLinear(moof, "x", 4.192384, 0.0001, (x)=>{
+      //     draw();
+      //   });
+      // }, delay)
+      
+
+      
+
+
+      // to get the frame id to cancel the animation
+      // we need to store and reference it in the in object
+      // cancelAnimationFrame(moof.frameId);
+      function freeLoopLinear(wobj, prop, damp, out, func){
+        var ii = 0;
+        var mm = 0;
+        var mProp = wobj[prop];
+        
+        function loop() {
+          // console.log("tacos", wobj, prop, damp, out);
+          let delta = wobj[prop] - damp;
+          if (delta >= out ) {
+            ii++;
+            // console.log("normal 111", mProp / delta );
+            // console.log("normal down", delta / mProp );
+            // console.log("normal up", 1 - delta / mProp );
+            wobj[prop] -= damp;
+            // console.log(ii, wobj[prop], delta);
+            func();
+            mm = requestAnimationFrame(loop);
+            wobj.frameId = mm;
+          }
+          else{
+            console.log("Done!?", delta);
+            cancelAnimationFrame(mm);
+          }
+        }
+        
+        loop();
+      }
+      
+      
+      // f = force / mass
+      // ac += f
+      // vel += ac
+      // pos += vel
+      // ac * 0
+      
+      let ff = new Vector2();
+      // var applyForce = (function (wobj, force){
+      //   return function applyForce(wobj, force){
+      //     ff.copy(force);
+      //     ff.divideScalar(wobj.mass);
+      //     wobj.acceleration.add(ff);
+      //     wobj.velocity.add(wobj.acceleration);
+      //     wobj.position.add(wobj.velocity);
+      //   }
+      // })()
+      function applyForce(wobj, force){
+        ff.copy(force);
+        ff.divideScalar(wobj.mass);
+        wobj.acceleration.add(ff);
+        wobj.velocity.add(wobj.acceleration);
+        // wobj.velocity.multiplyScalar(0.8);
+        wobj.position.add(wobj.velocity);
+        // wobj.position.x -= 5.202;
+      }
+      
+      // gg = new Vector2(2,4);
+      
+      var moof = new Player();
+      
+      // applyForce(moof, new Vector2(4,4))
+      // moof.clearAcceleration();
+      
+      var mm = 0;
+      var wind = new Vector2(-10.5,0);
+      var wind = new Vector2(-20.5,0);
+      // var wind = new Vector2(-42.5,0);
+      var vrrr = new Vector2(0.5,0);
+      draw();
+      
+      var coE = 0.4;
+      var coE = 0.7;
+      // var coE = 4.9;
+      var friction = new Vector2();
+      var mag = 0;
+      var drag = new Vector2();
+      var vel = new Vector2();
+
+      var mAccel = 0;
+      var mPos = new Vector2();
+      var gPos = new Vector2();
+      
+      var mDot = 0;
+      
+      var mDir = new Vector2();
+      var dir = new Vector2();
+      
+      var mVel = new Vector2();
+      var gVel = new Vector2();
+      
+      function doPhysics() {
+        
+        friction.copy(moof.velocity);
+        friction.multiplyScalar(-1);
+        friction.normalize();
+        friction.multiplyScalar(coE);
+        
+        
+        // dir.copy(moof.position).sub()
+        
+        gPos.copy(moof.position);
+        // debugger
+        // var dot = gPos.normalize().dot(mPos.normalize());
+        console.log("pos x", moof.position.x);
+        // if (dot > 0 ) {
+        //   debugger
+        //   console.log("!!!!!");
+        // }
+        
+        // console.log("dot",  dot);
+        // mPos.copy(moof.position);
+        
+        
+        
+        
+        applyForce(moof, friction);
+        
+        
+        gVel.copy(moof.velocity);
+        var dot = gVel.normalize().dot(mVel.normalize());
+        
+        
+        mVel.copy(gVel);
+        
+        console.log("dot", gVel, dot);
+        
+        mDot = dot;
+        
+        // 
+        // 
+        
+        // moof.position.add(moof.velocity);
+        // moof.velocity.multiplyScalar(0.1);
+        
+        
+        // var speed = moof.velocity.length();
+        // var dragMagnitude = 0.2 * speed * speed;
+        // drag.copy(moof.velocity);
+        // drag.multiplyScalar(-1);
+        // drag.normalize();
+        // drag.multiplyScalar(dragMagnitude);
+        // applyForce(moof, drag);
+        
+        // applyForce(moof, wind);
+        // applyForce(moof, vrrr);
+        // console.log(moof.position);
+        
+        
+        // mAccel = moof.acceleration.length();
+        // console.log("acceleration", mAccel);
+        // console.log("vel", moof.velocity.length());
+        
+        
+        
+        moof.clearAcceleration();
+        
+        // console.log("pos", moof.position);
+        // console.log("speed", speed);
+        draw();
+        
+        // console.log("acceleration", moof.acceleration);
+        
+        // if flipped
+        if (dot > 0) {
+          return true;
+        }
+        return false;
+        
+      }
+      
+      function loopG() {
+        
+        var isReverse = doPhysics();
+        
+        // if (moof.velocity.length() >= 0.001) {
+        // if (true) {
+        if (isReverse) {
+          
+          mm = requestAnimationFrame(loopG);
+        }
+        else {
+          console.log("done??¿¿?¿");
+        }
+      
+      }
+      
+      
+      function loopR() {
+        
+        var _stop = stop;
+        // moof.position.x = (_stop - moof.position.x) * speeeed * speeeed + moof.position.x;
+        moof.position.x = easeInQuad(moof.position.x, 100, speeeed);
+        // moof.position.x = easeOutBounce(moof.position.x, 100, speeeed);
+        draw();
+        
+        // if (moof.velocity.length() >= 0.001) {
+        if (true) {
+          mm = requestAnimationFrame(loopR);
+        }
+        else {
+          console.log("done??¿¿?¿");
+        }
+      
+      }
+      
+      
+      function easeOutQuad(start, stop, val){
+        stop -= start;
+        return -stop * val * (val - 2) + start;
+      }
+      // function easeOutQuadNor(val, speed){
+      //   stop -= start;
+      //   return -stop * val * (val - 2) + start;
+      // }
+      function easeInQuad(start, end, value){
+          end -= start;
+          return end * value * value + start;
+      }
+      
+      function lerp( x, y, t ) {
+      	return ( 1 - t ) * x + t * y;
+      }
+      
+      
+      // springs = 
+      // F = - k * x
+      // rest length is state at rest
+      
+      
+      
+      
+      
+      var stop = 100;
+      var speeeed = 0.4;
+      
+      var _k = 0.4;
+      var restX = 400;
+      
+      class Spring{
+        anchor = new Vector2();
+        restLength = 0;
+        k = 0;
+        constructor(pos, restLength, constantK){
+          this.anchor.copy(pos);
+          this.restLength = restLength;
+          this.k = constantK;
+        }
+      }
+      
+      var _spring = new Spring(moof.position, 400, 0.094);
+      
+      
+      var forceDir = new Vector2();
+      // var ff = new Vector2();
+      function loopSpring() {
+        
+        // console.log("_spring anchor 111", _spring.anchor);
+        
+        forceDir.copy(moof.position);
+        
+        forceDir.sub(_spring.anchor);
+        // forceDir.set(_spring.anchor.x * -1, _spring.y);
+        // forceDir.x *= -1;
+        var mag = forceDir.length();
+        var delta = mag - _spring.restLength;
+
+        forceDir.normalize();
+        
+        
+        var gg = -1 * _spring.k * delta;
+        
+        forceDir.multiplyScalar( gg );
+        // forceDir.multiplyScalar( 0.2 );
+        
+        // forceDir.sub(_spring.anchor);
+        
+        // applyForce(moof, forceDir);
+//         f = -K * ( ps - R ); // f=-ky
+// as = f / M;          // Set the acceleration, f=ma == a=f/m
+// vs = D * (vs + as);  // Set the velocity
+// ps = ps + vs;        // Updated position
+        
+        // apply force routines
+        ff.copy(forceDir);
+        ff.divideScalar(moof.mass);
+        moof.acceleration.add(ff);
+        moof.velocity.add(moof.acceleration);
+        moof.velocity.multiplyScalar(0.7871); // dampening
+        moof.position.add(moof.velocity);
+        
+        // moof.position.x -= 5.202;
+        
+        
+        console.log("moof", moof.position);
+        
+        draw();
+        
+        moof.clearAcceleration();
+        
+        if ( Math.abs( moof.velocity.length() ) >= 0.001) {
+        // if (true) {
+          mm = requestAnimationFrame(loopSpring);
+        }
+        else {
+          console.log("done??¿¿?¿");
+        }
+      
+      }
+      
+      
+      //applyForce(moof, new Vector2(0,0));
+      // moof.position.x = 600;
+      // moof.position.x = 100;
+      moof.velocity.x = -10.1;
+      moof.velocity.x = -100.1;
+      moof.mass = 1.1;
+      moof.clearAcceleration();
+      
+      draw();
+      
+      setTimeout((x)=>{
+        console.log("fiish");
+        
+        mPos.copy(moof.position);
+        mDir.copy(moof.position);
+        
+        // applyForce(moof, wind);
+        // applyForce(moof, new Vector2(-20,0));
+        // applyForce(moof, new Vector2(10,0));
+        // // moof.position.x = 600;
+        // moof.position.x = 100;
+        
+        
+        _spring = new Spring(moof.position, 200, 0.094);
+        // console.log("_spring anchor 111", _spring.anchor);
+        // moof.clearAcceleration();
+        
+        // moof.mass = 2.2;
+        
+        // doPhysics();
+        // draw();
+        
+        // loopG();
+        // loopR();
+        loopSpring();
+      
+      }, 400)
+      
+      
+      
+      // ----------------
+      // clamping frame rate no better
+      
+      // var stop = false;
+      // var frameCount = 0;
+      // // var $results = $("#results");
+      // var fps, fpsInterval, startTime, now, then, elapsed;
+      // function startAnimating(fps) {
+      //     fpsInterval = 1000 / fps;
+      //     then = Date.now();
+      //     startTime = then;
+      //     animate();
+      // }
+      
+      //// the animation loop calculates time elapsed since the last loop
+      //// and only draws if your specified fps interval is achieved
+      // var mm = 0;
+      // function animate() {
+      // 
+      //     if (moof.position.x > 0) {
+      // 
+      //       mm = requestAnimationFrame(animate);
+      //     }
+      // 
+      //     now = Date.now();
+      //     elapsed = now - then;
+      // 
+      //     if (elapsed > fpsInterval) {
+      // 
+      //         // Get ready for next frame by setting then=now, but also adjust for your
+      //         // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+      //         then = now - (elapsed % fpsInterval);
+      // 
+      //         // Put your drawing code here
+      // 
+      //         applyForce(moof, wind)
+      //         moof.clearAcceleration();
+      //         // console.log("pos", moof.position);
+      //         draw();
+      // 
+      //     }
+      // }
+      
+      
+      
+      // setTimeout((x)=>{
+      //   console.log("fiish");
+      // 
+      //   // loopG();
+      //   startAnimating(60)
+      // 
+      // }, 200)
+      
+      // freeLoopLinear(moof, "x", 1.192384, 0.001);
+
+    </script>
+  </body>
+</html>

@@ -7,8 +7,19 @@
 // also https://github.com/mrdoob/three.js/blob/master/examples/jsm/controls/TransformControls.js
 
 
+// this will send events the same name as the functions
+// attach, release, pointerMove
 
-import { Vector2, Vector3, Plane, PlaneHelper, Raycaster } from 'three';
+/*
+controls.addEventListener( 'attach', function ( event ) {
+
+  event.object.material.emissive.set( 0xaaaaaa );
+
+} );
+*/
+
+
+import { Vector2, Vector3, Plane, PlaneHelper, Raycaster, EventDispatcher } from 'three';
 import { testIfMobile } from './testIfMobile.js';
 import { GetMousePositionToScreen, GetPositionOfRaycasterFromFloor } from './mouseScreenTools.js';
 
@@ -26,7 +37,7 @@ var _this;
 
 var bb = 0;
 
-export class RollyController {
+export class RollyController extends EventDispatcher {
  
   attachedObject = null; // Object3d
   
@@ -43,6 +54,8 @@ export class RollyController {
   planeObject = null;
   
   constructor(renderer, camera, scene){
+    
+    super();
     
     _this = this;
     
@@ -67,6 +80,8 @@ export class RollyController {
     // else {
     //  this.domElement.addEventListener("mousemove", this.onPointerMove);
     // }
+    
+    // todo: this is hard coded
     const mm = document.getElementById("rootlike");
     mm.addEventListener( 'pointermove', this.onPointerMove );
     
@@ -95,12 +110,16 @@ export class RollyController {
       this.planeObject.updateMatrixWorld(true);
     }
     
+    _this.dispatchEvent( { type: 'attach', object: _this.attachedObject } );
+    
+    
   }
   release(){
     this.attachedObject = null;
     
     // this.domElement.removeEventListener( 'pointermove', this.onPointerMove );
     
+    // todo Hard coded dom element
     const mm = document.getElementById("rootlike");
     mm.removeEventListener( 'pointermove', this.onPointerMove );
     
@@ -112,6 +131,9 @@ export class RollyController {
     // }
     
     this.planeObject.visible = false;
+    
+		_this.dispatchEvent( { type: 'release', object: _this.attachedObject } );
+    
   }
 
   
@@ -150,6 +172,12 @@ export class RollyController {
     
     // _this.attachedObject.position.copy(targetVector).sub(_this.startPosition);
     _this.attachedObject.position.copy(targetVector);
+    
+    
+    
+    _this.dispatchEvent( { type: 'pointerMove', object: _this.attachedObject } );
+
+
     
                       // 
                       // 

@@ -7,6 +7,7 @@ import { testIfMobile } from './tools/testIfMobile.js';
 import { GetMousePositionToScreen, GetPositionOfRaycasterFromFloor } from './tools/mouseScreenTools.js';
 
 import { makeAHorsey } from './tools/makeAHorsey.js';
+import { RollyController } from './tools/rollyController.js';
 
 // 
 // touch events
@@ -120,6 +121,23 @@ export function handleTouchStart(ev) {
 // _o.onConsole.log("isdownstart555", "isdownstart555");
   if ( intersects.length > 0 ) {
 
+    _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
+    _o.rollyControllers[0].useDebugMode = true;
+    
+    // this gets deleted once the above reference gets replaced anyway
+    _o.rollyControllers[0].addEventListener( 'pointerMove', function ( event ) {
+
+      // event.object.material.emissive.set( 0xaaaaaa );
+      // console.log("slides");
+      if (_o.selectorBoxHelper.visible === true) {
+        _o.box.setFromObject ( intersects[ 0 ] );
+        _o.selectorBoxHelper.box = _o.box;
+      }
+
+    } );
+    
+
+
     console.log("NEAT!!!");
     const intersect = intersects[ 0 ];
     
@@ -220,9 +238,11 @@ export function handleTouchStop(ev) {
   
   _o.selectedObjects.length = 0;
   
+  // this wrecks multiselect if we dont have a proper cache
   for (var i = 0; i < _o.rollyControllers.length; i++) {
     console.log("release 111");
     _o.rollyControllers[i].release();
+    //_o.rollyControllers[i] = null;
   }
   
 }
@@ -317,6 +337,15 @@ export function handleWhileDown(ev) {
 
 
 
+// 
+// 
+// 
+// 
+// 
+// function debugUpdateDisplayBox(index = 0){
+// 
+// }
+// 
 
 // 
 // 

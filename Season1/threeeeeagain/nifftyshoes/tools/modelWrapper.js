@@ -2,10 +2,40 @@
 
 
 
-import { Object3D } from 'three';
+import { Object3D, Vector3 } from 'three';
+import { applySpringForce, applyForce, Spring } from './physics/physicsMini.js';
 
 class ModelWrapper extends Object3D {
 
+	frameId = 0;
+	mass = 1;
+	acceleration = new Vector3();
+	velocity = new Vector3();
+	
+	// friction = 1; this does not belong here, its an outside effector
+	
+	// a place to store one spring effector
+	// spring = null; // T: Spring from physicsMini.js
+	
+	physicsSession = null;
+	
+	// this would be an impulse force since its sent once
+	applyForce(force, damping){
+		applyForce(this, force, damping);
+	}
+	
+	updateSpringForce(force, damping){
+		applySpringForce(this, this.spring, force, damping);
+	} 
+	
+	createSpring(anchorPosition, restLength, constantK){
+		this.spring = new Spring(anchorPosition, restLength, constantK);
+	}
+	
+	clearAcceleration(){
+		this.acceleration.set(0,0,0);
+	}
+	
 	constructor() {
 
 		super();

@@ -4,12 +4,19 @@ import { APP as _o } from '../app';
 // this is an artifact from the old demo code
 // it has hard sizing things, so its not really a good conpositional function like
 
-let mesh;
 
-import { AnimationMixer } from 'three';
+
+let wobject; // Type of ModelWrapper so it can have physics
+
+import { AnimationMixer, Vector3 } from 'three';
+
+import { PhysicsSession, Spring, Force } from './physics/physicsMini.js';
 
 // horseys.push(makeAHorsey())
+
+// @parent is an Scene level Object3D or Scene
 export function makeAHorsey(gltfFlower, reticle, parent){
+  
   //pick random child from flowersGltf
   // const flower =
   //   flowersGltf.children[
@@ -17,47 +24,111 @@ export function makeAHorsey(gltfFlower, reticle, parent){
   //   ];
   // const flower = flowersGltf;
   
-  mesh = _o.gltfFlower.clone();
+  wobject = _o.gltfFlower.clone();
   
   // this is a non obvious annoying way to get the XR anchors position
-  reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
+  reticle.matrix.decompose(wobject.position, wobject.quaternion, wobject.scale);
   
   const scale = Math.random() * 0.4 + 0.25;
-  //mesh.scale.set(scale, scale, scale);
+  //wobject.scale.set(scale, scale, scale);
   var ss = 0.04;
-  // mesh.scale.set(ss,ss,ss);
+  // wobject.scale.set(ss,ss,ss);
   //random rotation
-  mesh.rotateY(Math.random() * Math.PI * 2);
-  // scene.add(mesh);
-  parent.add(mesh);
+  wobject.rotateY(Math.random() * Math.PI * 2);
+  
+  // scene.add(wobject);
+  
+  parent.add(wobject);
 
   // debugger
   // const box = new THREE.Box3();
-  // box.setFromObject (mesh);
+  // box.setFromObject (wobject);
   // 
   // const helper = new THREE.Box3Helper( box, 0xffff00 );
   // scene.add( helper );
 
 
-  mesh.mixer = new AnimationMixer( mesh );
-  for (var i = 0; i < mesh.animations.length; i++) {
-    mesh.mixer.clipAction( mesh.animations[ i ] ).play();
+  wobject.mixer = new AnimationMixer( wobject );
+  for (var i = 0; i < wobject.animations.length; i++) {
+    wobject.mixer.clipAction( wobject.animations[ i ] ).play();
   }
 
 
 
-  _o.horseys.push(mesh);
+  _o.horseys.push(wobject);
 
+  var yy = wobject.position.y;
+  var iy = 0;
+  // 
+  // // animate growing via hacky setInterval then destroy it when fully spun
+  // // replace for a damping effect
+  // const interval = setInterval(() => {
+  //   // wobject.scale.multiplyScalar(1.01);
+  // 
+  //   // wobject.rotateY(0.03);
+  //   wobject.position.y += 0.002;
+  // }, 16);
+  // setTimeout(() => {
+  //   clearInterval(interval);
+  // }, 500);
+  
+  
+  
+  // finding the right value of force and damping is verrry fiddly
+  // so we will test replacing with a spring with high k value to act like a force
+  // var gg = new PhysicsSession({
+  //   wobj:wobject, 
+  //   vecForce: new Vector3(0,0.002,0), 
+  //   damping: 0.9781, // lower below 1 slower 0.91, higher below 1 .99 faster
+  //   coefriction: 1,
+  //   //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
+  //   func: function(){
+  //     console.log("fiiiish");
+  //   }
+  // })
+  // gg.start();
+  // 
+  
+  // var gg = new PhysicsSession({
+  //   wobj:wobject, 
+  //   // damping lower below 1 slower 0.91, higher below 1 .99 faster
+  //   force : new Force( { vecForce: new Vector3(0,0.002,0), damping : 0.9781, coefriction: 1 }),
+  //   type: "impulse",
+  //   //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
+  //   func: function(){
+  //     console.log("fiiiish");
+  //   }
+  // })
+  // gg.start();
+  
+  
+  // spring type
+  wobject.position.y -= 0.1;// offset the start of the spring a bit
+  var gg = new PhysicsSession({
+    wobj:wobject, 
+    // damping lower below 1 slower 0.91, higher below 1 .99 faster
+    force : new Spring( { anchor: new Vector3(0,0.2,0), restLength: 0.1, constantK: 0.02, damping: 0.8  }),
+    type: "spring",
+    //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
+    func: function(){
+      console.log("fiiiish");
+    }
+  })
+  gg.start();
+  
+  // spring type
+  // var gg = new PhysicsSession({
+  //   wobj:wobject, 
+  //   damping: 0.97, 
+  //   coefriction: 0.04,
+  //   // var _spring = new Spring(moof.position, 400, 0.094);
+  //   spring: new Spring(new Vector3(0,0,0), 1, 0.2, 0.4),
+  //   func: function(){
+  //     console.log("fiiiish");
+  //   }
+  // })
+  // gg.start();
 
-  // animate growing via hacky setInterval then destroy it when fully grown
-  // replace for a dampening effect
-  const interval = setInterval(() => {
-    // mesh.scale.multiplyScalar(1.01);
-
-    mesh.rotateY(0.03);
-  }, 16);
-  setTimeout(() => {
-    clearInterval(interval);
-  }, 500);
+  
   
 } // makeAHorsey

@@ -33,18 +33,16 @@ import { loadShoeOnStart_CM } from './loadShoeOnStart_CM.js';
 import { handleTouchStart, handleWhileDown, handleTouchStop } from './touchLogics.js';
 import { RollyController } from './tools/RollyController.js';
 
+import { setupKeyboardEvents } from './setupKeyboardEvents.js';
+
+
 
 
 // this makes it flicker
 // import "./style.css";
 
-
-// let container; // T: Dom el
-
 let controller; // T : renderer.xr.getController
 
-// let reticle; // T:Mesh
-// let gltfFlower; // T : Mesh
 
 _o.horseys = []; // T : [Mesh]
 
@@ -69,7 +67,6 @@ var mode = modes.seek;
 
 
 _o.onConsole = new OnScreenLogger(document.getElementById("rootlike"));
-// _o.onConsole = onConsole;
 
 
 // a basic screen debugger
@@ -127,6 +124,8 @@ function sessionStart() {
 //
 function init() {
 	
+  setupKeyboardEvents();
+  
   // onConsole.log("int1", "111");
   
 	_o.clock = new Clock();
@@ -203,10 +202,10 @@ function init() {
     // onConsole.log("int3", "333");
   }
 
-
-  _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
-  _o.rollyControllers[0].useDebugMode = true;
-  
+  // moving this to touch logics
+  // _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
+  // _o.rollyControllers[0].useDebugMode = true;
+  // 
 
   // AR button
   // https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession
@@ -327,21 +326,21 @@ function init() {
    // 
    
    var gg = 0;
-  renderer.domElement.addEventListener("pointerdown", function(ev){
-    gg++;
-    var bb = gg + " Down??¿¿¿?";
-    _o.onConsole.log("gggggg111", `pointerdown ${bb}`);
-    // debugger
-  });
+    renderer.domElement.addEventListener("pointerdown", function(ev){
+      gg++;
+      var bb = gg + " Down??¿¿¿?";
+      _o.onConsole.log("gggggg111", `pointerdown ${bb}`);
+      // debugger
+    });
   
 
- renderer.domElement.addEventListener("mousedown", function(ev){
-   gg++;
-   var bb = gg + " Down??¿¿¿?";
-   _o.onConsole.log("gggggg2222", `mousedown main ${bb}`);
-   // debugger
- });
-  
+   renderer.domElement.addEventListener("mousedown", function(ev){
+     gg++;
+     var bb = gg + " Down??¿¿¿?";
+     _o.onConsole.log("gggggg2222", `mousedown main ${bb}`);
+     // debugger
+   });
+    
  
   renderer.domElement.addEventListener("touchstart", function(ev){
     gg++;
@@ -388,6 +387,7 @@ function init() {
     
   }
   
+  // this is for hit testing, not the display???¿¿
   _o.box = new Box3();
   _o.selectorBoxHelper = new Box3Helper( _o.box, 0xffff00 );
   scene.add( _o.selectorBoxHelper );
