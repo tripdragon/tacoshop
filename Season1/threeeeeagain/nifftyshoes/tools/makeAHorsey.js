@@ -103,11 +103,12 @@ export function makeAHorsey(gltfFlower, reticle, parent){
   
   
   // spring type
+  const mV = wobject.position.clone();
   wobject.position.y -= 0.1;// offset the start of the spring a bit
   var gg = new PhysicsSession({
     wobj:wobject, 
     // damping lower below 1 slower 0.91, higher below 1 .99 faster
-    force : new Spring( { anchor: new Vector3(0,0.2,0), restLength: 0.1, constantK: 0.02, damping: 0.8  }),
+    force : new Spring( { anchor: mV.add(new Vector3(0,0.1,0)), restLength: 0.1, constantK: 0.02, damping: 0.8  }),
     type: "spring",
     //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
     func: function(){
