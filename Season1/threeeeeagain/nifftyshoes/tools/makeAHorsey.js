@@ -76,19 +76,7 @@ export function makeAHorsey(gltfFlower, reticle, parent){
   
   // finding the right value of force and damping is verrry fiddly
   // so we will test replacing with a spring with high k value to act like a force
-  // var gg = new PhysicsSession({
-  //   wobj:wobject, 
-  //   vecForce: new Vector3(0,0.002,0), 
-  //   damping: 0.9781, // lower below 1 slower 0.91, higher below 1 .99 faster
-  //   coefriction: 1,
-  //   //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
-  //   func: function(){
-  //     console.log("fiiiish");
-  //   }
-  // })
-  // gg.start();
-  // 
-  
+
   // var gg = new PhysicsSession({
   //   wobj:wobject, 
   //   // damping lower below 1 slower 0.91, higher below 1 .99 faster
@@ -104,11 +92,13 @@ export function makeAHorsey(gltfFlower, reticle, parent){
   
   // spring type
   const mV = wobject.position.clone();
-  wobject.position.y -= 0.1;// offset the start of the spring a bit
+  wobject.position.y -= 0.2;// offset the start of the spring a bit
   var gg = new PhysicsSession({
     wobj:wobject, 
     // damping lower below 1 slower 0.91, higher below 1 .99 faster
-    force : new Spring( { anchor: mV.add(new Vector3(0,0.1,0)), restLength: 0.1, constantK: 0.02, damping: 0.8  }),
+    // force : new Spring( { anchor: mV.add(new Vector3(0,0.1,0)), restLength: 0.1, constantK: 0.02, damping: 0.8  }),
+    force : new Spring( { anchor: mV.add(new Vector3(0,0.1,0)), restLength: 0.1, constantK: 0.014, damping: 0.91  }),
+    angularForce : new Force( { vecForce: new Vector3(0,0.6,0), damping : 0.9781, coefriction: 1 }),
     type: "spring",
     //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
     func: function(){
@@ -117,19 +107,5 @@ export function makeAHorsey(gltfFlower, reticle, parent){
   })
   gg.start();
   
-  // spring type
-  // var gg = new PhysicsSession({
-  //   wobj:wobject, 
-  //   damping: 0.97, 
-  //   coefriction: 0.04,
-  //   // var _spring = new Spring(moof.position, 400, 0.094);
-  //   spring: new Spring(new Vector3(0,0,0), 1, 0.2, 0.4),
-  //   func: function(){
-  //     console.log("fiiiish");
-  //   }
-  // })
-  // gg.start();
 
-  
-  
 } // makeAHorsey

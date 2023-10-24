@@ -10,7 +10,9 @@ class ModelWrapper extends Object3D {
 	frameId = 0;
 	mass = 1;
 	acceleration = new Vector3();
+	angularAcceleration = new Vector3();
 	velocity = new Vector3();
+	angularVelocity = new Vector3();
 	
 	// friction = 1; this does not belong here, its an outside effector
 	
@@ -34,6 +36,10 @@ class ModelWrapper extends Object3D {
 	
 	clearAcceleration(){
 		this.acceleration.set(0,0,0);
+	}
+	
+	clearAngularAcceleration(){
+		this.angularAcceleration.set(0,0,0);
 	}
 	
 	constructor() {

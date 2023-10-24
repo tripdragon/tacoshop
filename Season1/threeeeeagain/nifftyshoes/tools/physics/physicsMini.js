@@ -3,6 +3,7 @@
 import { Vector3 } from 'three';
 
 var _forceV = new Vector3();
+var _forceAngularV = new Vector3();
 var _friction = new Vector3();
 
 
@@ -41,12 +42,15 @@ export class PhysicsSession{
   selected = null;
   type = "fish"; // spring, impulse
   force = null; // T : Force or Spring
+  angularForce = null; // T : Force or Spring
   loopId = 0;
   forceWork = new Vector3();
+  angularForceWork = new Vector3();
   // constructor( { wobj, vecForce, damping, coefriction, spring, func } ){
-  constructor( { wobj, force, type, func } ){
+  constructor( { wobj, force, angularForce, type, func } ){
     this.selected = wobj;
     this.force = force;
+    this.angularForce = angularForce;
     this.type = type;
     if (type === "impulse") {}
     this.func = func;
@@ -62,6 +66,10 @@ export class PhysicsSession{
       
     }
     console.log(this.selected.position);
+    
+    // angular force
+    applyAngularForce(this.selected, this.angularForce.vecForce, this.angularForce.damping);
+    this.selected.clearAngularAcceleration();
   
     
     // looping function start
@@ -80,11 +88,17 @@ export class PhysicsSession{
       }
       
       // todo: this does not belong here
-      _this.selected.rotateY( _this.selected.velocity.length()* Math.PI * 9);
+      // _this.selected.rotateY( _this.selected.velocity.length()* Math.PI * 9);
+      applyAngularForce(_this.selected, _this.angularForceWork, _this.angularForce.damping);
+      
+      
+      
       
       _this.selected.clearAcceleration();
+      _this.selected.clearAngularAcceleration();
       
-      if ( Math.abs( _this.selected.velocity.length() ) >= 0.00001) {
+      // if ( Math.abs( _this.selected.velocity.length() ) >= 0.00001) {
+      if ( Math.abs( _this.selected.velocity.length() && _this.selected.angularVelocity.length() ) >= 0.0001) {
       // if (true) {
         // console.log(" reloop ");
         _this.loopId = requestAnimationFrame(_this.loopR);
@@ -155,12 +169,26 @@ function getFriction(vecIn, velocity, coefriction){
 
 // @force : Vector3
 
+export function applyAngularForce(wobj, force, damping = 1){
+  _forceAngularV.copy(force);
+  _forceAngularV.divideScalar(wobj.mass);
+  wobj.angularAcceleration.add(_forceAngularV);
+  wobj.angularVelocity.add(wobj.angularAcceleration);
+  wobj.angularVelocity.multiplyScalar(damping);
+  
+  // this is guessing since .rotation is an T: Euler and does not follow vector .add
+  // since they have order options, default being XYZ
+  wobj.rotation.x += wobj.angularVelocity.x;
+  wobj.rotation.y += wobj.angularVelocity.y;
+  wobj.rotation.z += wobj.angularVelocity.z;
+}
+
 export function applyForce(wobj, force, damping = 1){
   _forceV.copy(force);
   _forceV.divideScalar(wobj.mass);
   wobj.acceleration.add(_forceV);
   wobj.velocity.add(wobj.acceleration);
-  wobj.velocity.multiplyScalar(damping); // damping
+  wobj.velocity.multiplyScalar(damping);
   wobj.position.add(wobj.velocity);
 }
 
