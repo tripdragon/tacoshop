@@ -2,10 +2,13 @@
 
 
 
-import { Object3D, Vector3 } from 'three';
+import { Object3D, Vector3, MathUtils } from 'three';
 import { applySpringForce, applyForce, Spring } from './physics/physicsMini.js';
 
 class ModelWrapper extends Object3D {
+	
+	// used for material effects like fade in
+	meshes = [];
 
 	frameId = 0;
 	mass = 1;
@@ -64,9 +67,23 @@ class ModelWrapper extends Object3D {
     const cc = new this.constructor().copy( this, recursive );
     
     cc.boundingObjects = this.boundingObjects.slice(0);
+		
+		// prepare materials for fade effects
+		cc.meshes.length = 0;
+		cc.traverse( ( item ) => {
+			if ( item.isMesh ) {
+				cc.meshes.push(item);
+			}
+		});
     
     return cc;
 
+	}
+	
+	setOpacity(val){
+		this.meshes.forEach((item, i) => {
+			item.material.opacity = MathUtils.clamp(val, 0, 1);
+		});
 	}
 
 }

@@ -38,6 +38,8 @@ gg.start();
 
 */
 
+// for now angular force is just an impulse type
+
 export class PhysicsSession{
   selected = null;
   type = "fish"; // spring, impulse

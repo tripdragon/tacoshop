@@ -18,9 +18,7 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     
     scale = 0.9;
     gltf.scene.scale.set( scale, scale, scale);
-    
-    // debugger
-    
+
     // onConsole.log("int6b", "6b");
     
     // force shadows but only for the core 3d object
@@ -75,6 +73,21 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     
     // gltfFlower = pp;
     _o.gltfFlower = pp;
+    
+    
+    // prepare materials for fade effects
+    gltf.scene.traverse( ( item ) => {
+
+      if ( item.isMesh ) {
+        console.log(item.material.type);
+        // .transparent 
+        item.material.transparent = true;
+        item.material.opacity = 1.0;
+        pp.meshes.push(item);
+      }
+    });
+    
+    
     
     // TODO:
     // THIS IS EXPENSSIVE need to remove

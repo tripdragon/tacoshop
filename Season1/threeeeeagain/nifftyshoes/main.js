@@ -66,6 +66,8 @@ var mode = modes.seek;
 
 
 
+
+
 _o.onConsole = new OnScreenLogger(document.getElementById("rootlike"));
 
 
@@ -284,46 +286,22 @@ function init() {
     const s = 0.01;
     raycasterCube.scale.set(s,s,s);
     scene.add( raycasterCube );
+    _o.debugMouseBox = raycasterCube;
+    _o.debugMouseBox.visible = _o.debugSettings.showMouseBox;
   }
-  // 
-  // if ( testIfMobile() ){
-  //    renderer.domElement.addEventListener("touchstart", handleTouchStart);
-  //    renderer.domElement.addEventListener("touchmove", handleWhileDown);
-  //    renderer.domElement.addEventListener("touchend", handleTouchStop);
-  //  }
-  //  else {
-  //    renderer.domElement.addEventListener("mousedown", handleTouchStart);
-  //    renderer.domElement.addEventListener("mousemove", handleWhileDown);
-  //    renderer.domElement.addEventListener("mouseup", handleTouchStop);
-  //  }
-   
+
    // https://discourse.threejs.org/t/rotating-3d-object-in-webxr/15926/9
    // https://discourse.threejs.org/t/webxr-touch-input/21096
    // android not working, so back we go for now
    // we remove the priour renderer.domElement for webxrs overlay requirement
    const mm = document.getElementById("rootlike");
-   // 
-   // renderer.domElement.addEventListener("pointerdown", handleTouchStart);
-   // renderer.domElement.addEventListener("pointermove", handleWhileDown);
-   // renderer.domElement.addEventListener("pointerup", handleTouchStop);
-   // 
+
    
    mm.addEventListener("pointerdown", handleTouchStart);
    mm.addEventListener("pointermove", handleWhileDown);
    mm.addEventListener("pointerup", handleTouchStop);
    
-   // 
-   // _o.onConsole.log("floood1", "floood1");
-   // _o.onConsole.log("floood2", "floood2");
-   // _o.onConsole.log("floood3", "floood3");
-   // 
-   // if (window.PointerEvent) {
-   //   _o.onConsole.log("pppp", "pointer events good");
-   // }
-   // else{
-   //   _o.onConsole.log("pppp", "nerrp");
-   // }
-   // 
+
    
    var gg = 0;
     renderer.domElement.addEventListener("pointerdown", function(ev){
@@ -354,6 +332,8 @@ function init() {
   scene.add( helper );
   _o.debugPlane = plane;
   _o.debugPlaneHelper = helper;
+  _o.debugPlaneHelper.visible = _o.debugSettings.showWorldPlane;
+  
   
   {
     const geometry = new PlaneGeometry( 0.5, 0.5 );
@@ -362,7 +342,9 @@ function init() {
     const plane = new Mesh( geometry, material );
     plane.rotation.x = -Math.PI/2;
     scene.add( plane );
-    _o.debugPlaneMesh = plane;
+    _o.debugMousePlane = plane;
+    _o.debugMousePlane.visible = _o.debugSettings.showMousePlane;
+    
   }
 
 
@@ -371,6 +353,8 @@ function init() {
 
   const gridHelper = new GridHelper( size, divisions );
   scene.add( gridHelper );
+  _o.gridHelper = gridHelper;
+  _o.gridHelper.visible = _o.debugSettings.showGridPlane;
   
   {
     //Create a plane that receives shadows (but does not cast them)
@@ -383,7 +367,7 @@ function init() {
     // window.shadowPlane = shadowPlane;
     shadowPlane.rotation.x = -Math.PI/2;
     // shadowPlane.rotation.
-    scene.add( shadowPlane );
+    // scene.add( shadowPlane );
     
   }
   

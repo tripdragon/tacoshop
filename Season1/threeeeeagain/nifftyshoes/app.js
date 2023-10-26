@@ -45,4 +45,12 @@ export const APP = {
   
   displayBoxes: [], 
   
+  debugSettings : {
+    showWorldPlane : false,
+    showGridPlane : false,
+    showMousePlane : false,
+    showMouseBox : false,
+    forceReticleDesktop: false
+  }
+  
 }

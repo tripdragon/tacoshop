@@ -8,9 +8,9 @@ import { APP as _o } from '../app';
 
 let wobject; // Type of ModelWrapper so it can have physics
 
-import { AnimationMixer, Vector3 } from 'three';
+import { AnimationMixer, Vector3, MathUtils } from 'three';
 
-import { PhysicsSession, Spring, Force } from './physics/physicsMini.js';
+import { PhysicsSession, Spring, Force, applySpringForce, applyAngularForce, applyForce } from './physics/physicsMini.js';
 
 // horseys.push(makeAHorsey())
 
@@ -92,20 +92,116 @@ export function makeAHorsey(gltfFlower, reticle, parent){
   
   // spring type
   const mV = wobject.position.clone();
-  wobject.position.y -= 0.2;// offset the start of the spring a bit
+  wobject.position.y -= 0.1;// offset the start of the spring a bit
   var gg = new PhysicsSession({
     wobj:wobject, 
     // damping lower below 1 slower 0.91, higher below 1 .99 faster
     // force : new Spring( { anchor: mV.add(new Vector3(0,0.1,0)), restLength: 0.1, constantK: 0.02, damping: 0.8  }),
     force : new Spring( { anchor: mV.add(new Vector3(0,0.1,0)), restLength: 0.1, constantK: 0.014, damping: 0.91  }),
-    angularForce : new Force( { vecForce: new Vector3(0,0.6,0), damping : 0.9781, coefriction: 1 }),
+    // angularForce : new Force( { vecForce: new Vector3(0,0.6,0), damping : 0.9781, coefriction: 1 }),
+    angularForce : new Force( { vecForce: new Vector3(0,0.6,0), damping : 0.9281, coefriction: 1 }),
     type: "spring",
     //spring: maybe new Spring(moof.position, 100, 0.2, 0.4),
     func: function(){
       console.log("fiiiish");
     }
-  })
-  gg.start();
-  
+  });
+  // start auto wraps the logic into a rafqlooooop
+  // gg.start();
+  buildAnimation(gg);
 
 } // makeAHorsey
+
+
+
+
+// this is a starter shoehorn for just getting a bunch of animation things
+// together instead of an animation system just yet
+// @physicsSession : PhysicsSession
+function buildAnimation( _p ){
+  
+  // first setup velocitys and such
+
+  if (_p.type === "impulse") {
+    // here we mutate the velocity of the object and prep it for the loop
+    applyForce(_p.selected, _p.force.vecForce, _p.force.damping);
+    _p.selected.clearAcceleration();
+  }
+  // else if (this.type === "spring") {}
+  
+  // angular force
+  applyAngularForce(_p.selected, _p.angularForce.vecForce, _p.angularForce.damping);
+  _p.selected.clearAngularAcceleration();
+
+  _p.selected.setOpacity(0);
+  var matOpacity = 0;
+  let fadeInRate = 0.02;
+  
+  //
+  //
+  // Set up loop, which we have to keep a reference to to work with
+  
+  const _this = _p;
+  
+    
+  // looping function start
+  
+  _this.loopR = function() {
+    
+    // this makes it fricken jitter infinitely
+    // getFriction(_this.forceWork, _this.selected.velocity, _this.force.coefriction);
+    
+    if(_this.type === "spring"){
+      applySpringForce(_this.selected, _this.force, _this.forceWork, _this.force.damping);
+    }
+    else if (_this.type === "impulse") {
+      // console.log("¿");
+      applyForce(_this.selected, _this.forceWork, _this.force.damping);
+    }
+    
+    // todo: this does not belong here
+    // _this.selected.rotateY( _this.selected.velocity.length()* Math.PI * 9);
+    applyAngularForce(_this.selected, _this.angularForceWork, _this.angularForce.damping);
+    
+    
+    // More animations states would start here
+    // if they were like a cache
+    
+    matOpacity += fadeInRate;
+    _this.selected.setOpacity(matOpacity);
+    
+    // materials.forEach
+    //   opacity = Math.Clamp(0,1, opacity + rate);
+    // 
+    // spartikles system, bast a few
+    // use reverse atractor
+    // spin them a bit
+    // deltaTime >= lim
+    // 
+    
+    
+    
+    
+    _this.selected.clearAcceleration();
+    _this.selected.clearAngularAcceleration();
+    
+    // if ( Math.abs( _this.selected.velocity.length() ) >= 0.00001) {
+    if ( Math.abs( _this.selected.velocity.length() && _this.selected.angularVelocity.length() ) >= 0.0001) {
+    // if (true) {
+      // console.log(" reloop ");
+      _this.loopId = requestAnimationFrame(_this.loopR);
+    }
+    else {
+      console.log("done??¿¿?¿");
+    }
+    
+    
+    // console.log(_this.selected.position);
+
+  }
+  
+  // start it
+  _this.loopR();
+  
+  
+}

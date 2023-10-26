@@ -96,7 +96,7 @@ export function handleTouchStart(ev) {
   _o.debugPlaneHelper.updateMatrixWorld(true);
   
   // missing rotation
-  _o.debugPlaneMesh.position.copy(targetVecOfPlane);
+  _o.debugMousePlane.position.copy(targetVecOfPlane);
   
 
   GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
