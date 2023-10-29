@@ -6,7 +6,8 @@ import { testIfMobile } from './tools/testIfMobile.js';
 
 import { GetMousePositionToScreen, GetPositionOfRaycasterFromFloor } from './tools/mouseScreenTools.js';
 
-import { makeAHorsey } from './tools/makeAHorsey.js';
+// import { makeAHorsey } from './tools/makeAHorsey.js';
+import { makeAShoe } from './tools/makeAShoe.js';
 import { RollyController } from './tools/rollyController.js';
 
 // 
@@ -108,15 +109,36 @@ export function handleTouchStart(ev) {
   
   // _o.onConsole.log("isdownstart444", "isdownstart444");
   
-  // we use the box3 to perfrom the raycast sine object3ds dont have bounding boxes
-  for (var i = 0; i < _o.horseys.length; i++) {
-    _o.box.setFromObject (_o.horseys[i]);
+  // we use the box3 to perfrom the raycast since object3ds dont have bounding boxes
+  // for (var i = 0; i < _o.horseys.length; i++) {
+  //   _o.box.setFromObject (_o.horseys[i]);
+  //   if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //     intersects.push(_o.horseys[i]);
+  //   }
+  // }
+  // for (var i = 0; i < _o.shoesCache.length; i++) {
+  //   _o.box.setFromObject (_o.shoesCache[i]);
+  //   if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //     intersects.push(_o.shoesCache[i]);
+  //   }
+  // }
+  for (var i = 0; i < _o.shoesCache.length; i++) {
+    _o.box.setFromObject (_o.shoesCache[i].selectorObjects[0]);
     if(raycaster.ray.intersectsBox ( _o.box ) ){
-      intersects.push(_o.horseys[i]);
+      intersects.push(_o.shoesCache[i]);
     }
-    
-
   }
+  
+  // for (var i = 0; i < _o.horseys.length; i++) {
+  //   // just the first one from selectorObjects for now, will need to run "expandByObjects" later
+  //   if (_o.horseys[i].visible === true) {
+  //     debugger
+  //     _o.box.setFromObject (_o.horseys[i].selectorObjects[0]);
+  //     if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //       intersects.push(_o.horseys[i]);
+  //     }
+  //   }
+  // }
 
 // _o.onConsole.log("isdownstart555", "isdownstart555");
   if ( intersects.length > 0 ) {
@@ -130,7 +152,8 @@ export function handleTouchStart(ev) {
       // event.object.material.emissive.set( 0xaaaaaa );
       // console.log("slides");
       if (_o.selectorBoxHelper.visible === true) {
-        _o.box.setFromObject ( intersects[ 0 ] );
+        // _o.box.setFromObject ( intersects[ 0 ] );
+        _o.box.setFromObject ( intersects[ 0 ].selectorObjects[0]);
         _o.selectorBoxHelper.box = _o.box;
       }
 
@@ -158,7 +181,8 @@ export function handleTouchStart(ev) {
     //   _o.box.setFromObject ( intersect );
     // }
     
-    _o.box.setFromObject ( intersect );
+    // _o.box.setFromObject ( intersect );
+    _o.box.setFromObject ( intersect.selectorObjects[0]);
     
     _o.selectorBoxHelper.box = _o.box;
     _o.selectorBoxHelper.visible = true;
@@ -199,11 +223,9 @@ export function handleTouchStart(ev) {
     if (_o.selectedObjects.length === 0) {
 
       if (_o.reticle.visible && _o.gltfFlower) {
-        // console.log("makeAHorsey is off");
-
-        makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
-
-        // makeCubey();
+        
+        makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene});
+        
       }
     }
 
@@ -275,10 +297,16 @@ export function handleWhileDown(ev) {
   deltaPos2D.subVectors(pointer2D, horseyPosDown);
   
   
-  if (_o.horseys.length > 0) {
-    pointer3D.copy(_o.horseys[0].position);
-    deltaPos3D.set(deltaPos2D.x, _o.horseys[0].position.y, deltaPos2D.y);
-    _o.horseys[0].position.copy(horseyPosDown).add(deltaPos3D);
+  // if (_o.horseys.length > 0) {
+  //   pointer3D.copy(_o.horseys[0].position);
+  //   deltaPos3D.set(deltaPos2D.x, _o.horseys[0].position.y, deltaPos2D.y);
+  //   _o.horseys[0].position.copy(horseyPosDown).add(deltaPos3D);
+  //   // console.log("deltaPos3D", deltaPos3D);
+  // }
+  if (_o.shoesCache.length > 0) {
+    pointer3D.copy(_o.shoesCache[0].position);
+    deltaPos3D.set(deltaPos2D.x, _o.shoesCache[0].position.y, deltaPos2D.y);
+    _o.shoesCache[0].position.copy(horseyPosDown).add(deltaPos3D);
     // console.log("deltaPos3D", deltaPos3D);
   }
   

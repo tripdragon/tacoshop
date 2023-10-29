@@ -1,5 +1,9 @@
 
 
+/*
+import { APP as _o } from "./app.js";
+*/
+
 import { DeltaFrame } from './tools/deltaFrame.js';
 
 import { Clock } from 'three';
@@ -10,6 +14,7 @@ export const APP = {
   narfs : 2,
   
   container: null,
+  scene : null,
   
   onConsole: null,
   

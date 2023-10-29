@@ -2,7 +2,8 @@
 
 
 import { APP as _o } from "./app.js";
-import { makeAHorsey } from './tools/makeAHorsey.js';
+// import { makeAHorsey } from './tools/makeAHorsey.js';
+import { makeAShoe } from './tools/makeAShoe.js';
 
 
 export function setupKeyboardEvents(){
@@ -17,10 +18,12 @@ export function setupKeyboardEvents(){
         case " ":
           console.log("?space¿");
           _o.reticle.visible = true;
-          for (var i = 0; i < _o.horseys.length; i++) {
-            _o.horseys[i].visible = false;
+          for (var i = 0; i < _o.shoesCache.length; i++) {
+            _o.shoesCache[i].visible = false;
           }
-          makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
+          // makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
+          // makeAShoe(_o.gltfFlower, _o.reticle, _o.scene);
+          makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene});
           break;
         case "a":
           console.log("?a");

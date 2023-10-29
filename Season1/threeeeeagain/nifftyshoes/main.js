@@ -9,7 +9,7 @@ _o.fish = "narfs";
 
 // not sure if this is tree shaking or not
 // import * as THREE from "three";
-import { Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
+import { Object3D, Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
   Plane, MeshStandardMaterial, BoxGeometry, MeshBasicMaterial, RingGeometry, Mesh, PCFSoftShadowMap, 
   WebGLRenderer, Box3, Box3Helper, Scene, Clock, PerspectiveCamera, 
   HemisphereLight, DirectionalLight, SpotLightHelper, DoubleSide } from "three";
@@ -27,13 +27,77 @@ import { OnScreenLogger } from './OnScreenLogger.js';
 import { testIfMobile } from './tools/testIfMobile.js';
 
 import { makeCubey } from './tools/makeCubey.js';
-import { makeAHorsey } from './tools/makeAHorsey.js';
-import { loadShoeOnStart_CM } from './loadShoeOnStart_CM.js';
+// import { makeAHorsey } from './tools/makeAHorsey.js';
+import { makeAShoe } from './tools/makeAShoe.js';
+
+import { loadModelOnStart_CM } from './loadModelOnStart_CM.js';
 
 import { handleTouchStart, handleWhileDown, handleTouchStop } from './touchLogics.js';
 import { RollyController } from './tools/RollyController.js';
 
 import { setupKeyboardEvents } from './setupKeyboardEvents.js';
+
+
+
+// import { WObject3D } from './tools/wobject3D.js';
+
+// Object3D.constructor = WObject3D.constructor;
+
+// Object.setPrototypeOf(Object3D, WObject3D);
+
+// Object3D.prototype.narfs = "moofs222";
+// var aa = 4;
+// Object3D.prototype.moofs = aa++;
+// debugger
+
+// Mesh.prototype.fff = 4;
+// Object3D.prototype.fff = 7;
+// 
+
+
+// THIS IS a shoehorn for holding some data on the objects themselves since
+// we cant mutate the constructor or its methods without lotas work
+
+Object3D.prototype.clone = function(recursive){
+  let yy = new this.constructor().copy( this, recursive );
+  yy.memID = this.id;
+  return yy;
+}
+
+
+// 
+// debugger
+
+// clone( recursive ) {
+//   return new this.constructor().copy( this, recursive );
+// }
+// copy( source, recursive = true ) {
+// 
+//   this.name = source.name;
+// 
+//   this.up.copy( source.up );
+// 
+//   this.position.copy( source.position );
+//   this.rotation.order = source.rotation.order;
+//   this.quaternion.copy( source.quaternion );
+//   this.scale.copy( source.scale );
+// copy( source, recursive ) {
+// 
+//   super.copy( source, recursive );
+// 
+//   this.instanceMatrix.copy( source.instanceMatrix );
+// 
+//   if ( source.instanceColor !== null ) this.instanceColor = source.instanceColor.clone();
+// 
+//   this.count = source.count;
+// 
+//   if ( source.boundingBox !== null ) this.boundingBox = source.boundingBox.clone();
+//   if ( source.boundingSphere !== null ) this.boundingSphere = source.boundingSphere.clone();
+// 
+//   return this;
+// 
+// }
+// 
 
 
 
@@ -44,7 +108,8 @@ import { setupKeyboardEvents } from './setupKeyboardEvents.js';
 let controller; // T : renderer.xr.getController
 
 
-_o.horseys = []; // T : [Mesh]
+// _o.horseys = []; // T : [Mesh]
+_o.shoesCache = []; // T : [Mesh]
 
 
 var spotlight1; // T : Spotlight: Object3D
@@ -60,7 +125,9 @@ var IS_XR_AVAIL = false;
 
 var modes = {
   seek: "seek",
-  moveHorsey : "moveHorsey"
+  moveHorsey : "moveHorsey",
+  moveShoe : "moveShoe",
+  
 }
 var mode = modes.seek;
 
@@ -69,6 +136,9 @@ var mode = modes.seek;
 
 
 _o.onConsole = new OnScreenLogger(document.getElementById("rootlike"));
+
+
+
 
 
 // a basic screen debugger
@@ -126,6 +196,8 @@ function sessionStart() {
 //
 function init() {
 	
+  
+  
   setupKeyboardEvents();
   
   // onConsole.log("int1", "111");
@@ -245,7 +317,7 @@ function init() {
 	  // scene.add( cube );
   }
 
-  loadShoeOnStart_CM(scene, 0.3);
+  loadModelOnStart_CM('shoe02.glb', 'models/', scene, 0.3);
   
 
   window.addEventListener("resize", onWindowResize);
@@ -492,8 +564,11 @@ function render(timestamp, frame) {
   let mixerUpdateDelta = _o.clock.getDelta();
   // todo: not totally sure we cant run one mixer
   // mixer.update( mixerUpdateDelta );
-  for (var i = 0; i < _o.horseys.length; i++) {
-    _o.horseys[i].mixer.update( mixerUpdateDelta );
+  // for (var i = 0; i < _o.horseys.length; i++) {
+  //   _o.horseys[i].mixer.update( mixerUpdateDelta );
+  // }
+  for (var i = 0; i < _o.shoesCache.length; i++) {
+    _o.shoesCache[i].mixer.update( mixerUpdateDelta );
   }
 	
   if (_o.orbitControls) {

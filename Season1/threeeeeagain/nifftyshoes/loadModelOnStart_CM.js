@@ -8,10 +8,13 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ModelWrapper } from './tools/modelWrapper.js';
 
 
-export function loadShoeOnStart_CM(scene, scale = 0.4){
+// this will set the _o.gltfFlower for cloneing from later
 
-  const loader = new GLTFLoader().setPath( 'models/' );
-  loader.load( 'shoe02.glb', function ( gltf ) {
+
+export function loadModelOnStart_CM(filename, path = 'models/', scene, scale = 0.4){
+
+  const loader = new GLTFLoader().setPath( path );
+  loader.load( filename, function ( gltf ) {
 
     // gltf.scene.position.set(0,1,-10);
     // debugger
@@ -48,30 +51,29 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     //   gltf.scene.mixer.clipAction( gltf.animations[ i ] ).play();
     // }
 
-    // gltfFlower = gltf.scene;
-    
-    // 
-    // 
-    // let pp = new Group();
+
     let pp = new ModelWrapper();
     pp.position.set(0,0,0);
-    var ss = 0.4;
+    // var ss = 0.4;
     // pp.scale.set(ss,ss,ss);
-    // scene.add( pp );
+
     
     pp.add(gltf.scene);
+    
+    // this is a visual thing, it futzez with the spring and shadows
     gltf.scene.position.set(0,0.05,0);
+    
     pp.animations = gltf.animations;
     pp.mixer = gltf.scene.mixer;
     // gltf.scene.animations = null;
     // gltf.scene.mixer = null;
     
     // this is hard coded for now
-    pp.boundingObjects.push(gltf.scene.children[0].children[0]);
-    pp.boundingObjects.push(gltf.scene.children[1].children[0]);
-    pp.boundingObjects.push(gltf.scene.children[2].children[0]);
-    
-    // gltfFlower = pp;
+    // pp.boundingObjects.push(gltf.scene.children[0].children[0]);
+    // pp.boundingObjects.push(gltf.scene.children[1].children[0]);
+    // pp.boundingObjects.push(gltf.scene.children[2].children[0]);
+    // 
+
     _o.gltfFlower = pp;
     
     
@@ -88,21 +90,32 @@ export function loadShoeOnStart_CM(scene, scale = 0.4){
     });
     
     
+    // THIS IS a shoehorn for holding some data on the objects themselves since
+    // we cant mutate the constructor or its methods without lotas work
+    gltf.scene.traverse( ( item ) => {
+      item.memID = item.id;
+    });
+    
+    
+    
+    // prepare visually known meshes that will be the seltion volumne
+    pp.selectorObjects.push(gltf.scene);
+    
     
     // TODO:
     // THIS IS EXPENSSIVE need to remove
     {
       //Create a plane that receives shadows (but does not cast them)
-      var pg = new PlaneGeometry( 0.5,0.5, 32, 32 );
-      // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
-      const material = new ShadowMaterial();
-      material.opacity = 0.4;
-      var shadowPlane = new Mesh( pg, material );
-      shadowPlane.receiveShadow = true;
-      // window.shadowPlane = shadowPlane;
-      shadowPlane.rotation.x = -Math.PI/2;
-      // shadowPlane.rotation.
-      // pp.add( shadowPlane );
+      // var pg = new PlaneGeometry( 0.5,0.5, 32, 32 );
+      // // const planeMaterial = new THREE.MeshStandardMaterial( { color: 0xaaaaaa } )
+      // const material = new ShadowMaterial();
+      // material.opacity = 0.4;
+      // var shadowPlane = new Mesh( pg, material );
+      // shadowPlane.receiveShadow = true;
+      // // window.shadowPlane = shadowPlane;
+      // shadowPlane.rotation.x = -Math.PI/2;
+      // // shadowPlane.rotation.
+      // // pp.add( shadowPlane );
       
     }
 
