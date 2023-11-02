@@ -32,6 +32,7 @@ export const APP = {
   renderer : null,
   fish : null,
   gltfFlower: null, // Mesh
+  modelLoaded : false,
   
   reticle: null, // Mesh
   

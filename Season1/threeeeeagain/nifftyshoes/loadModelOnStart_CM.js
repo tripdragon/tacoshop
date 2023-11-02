@@ -1,4 +1,12 @@
 
+
+
+
+// Obsolete for now
+
+
+
+
 import { APP as _o } from "./app.js";
 
 import { Group, PlaneGeometry, ShadowMaterial, Mesh, AnimationMixer } from "three";
@@ -11,19 +19,47 @@ import { ModelWrapper } from './tools/modelWrapper.js';
 // this will set the _o.gltfFlower for cloneing from later
 
 
-export function loadModelOnStart_CM(filename, path = 'models/', scene, scale = 0.4){
+// this is a non composable design
+// it forces a ModelWrapper and not custom
+// It sets an appglobal reference for its self
+//
+// Would be better for a promise system
+// or a subclass¿
+
+
+export async function loadModelOnStart_Async_CM(filename, path = './models/'){
+  const gltfLoader = new GLTFLoader();
+	// gltfLoader.setDRACOLoader( dracoLoader );  
+  // gltfLoader.setPath( path );
+  
+  // const gltf = await gltfLoader.loadAsync( path + filename );
+  // return gltf;
+  
+  return gltfLoader.loadAsync( path + filename );
+  
+}
+
+
+// export function processLoadedModel(){
+//   gg = await load(filename)
+//   then
+//   process model, wrap with custom class with data
+//   then
+//   add gltf to data caches
+// }
+
+
+export async function loadModelOnStart_CM(filename, path = './models/', scene, scale = 0.4){
 
   const loader = new GLTFLoader().setPath( path );
   loader.load( filename, function ( gltf ) {
 
     // gltf.scene.position.set(0,1,-10);
-    // debugger
     
     scale = 0.9;
     gltf.scene.scale.set( scale, scale, scale);
 
-    // onConsole.log("int6b", "6b");
-    
+
     // force shadows but only for the core 3d object
     // for (var i = 0; i < gltf.scene.children.length-1; i++) {
     //   if (gltf.scene.children[0].children[i].type === "Mesh") {
@@ -62,6 +98,7 @@ export function loadModelOnStart_CM(filename, path = 'models/', scene, scale = 0
     
     // this is a visual thing, it futzez with the spring and shadows
     gltf.scene.position.set(0,0.05,0);
+    
     
     pp.animations = gltf.animations;
     pp.mixer = gltf.scene.mixer;

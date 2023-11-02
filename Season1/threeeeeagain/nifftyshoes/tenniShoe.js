@@ -4,7 +4,7 @@ import { ModelWrapper } from './tools/modelWrapper.js';
 
 import { Vector3 } from 'three';
 
-class TenniShoe extends ModelWrapper {
+export class TenniShoe extends ModelWrapper {
   constructor() {
     super();
   }
