@@ -31,7 +31,9 @@ var touchType = "-1";
 
 
 var intersects = [];
+var intersectsInner = [];
 
+const vecTemp = new Vector3();
 
 
 
@@ -109,6 +111,7 @@ export function handleTouchStart(ev) {
   
   // _o.onConsole.log("isdownstart444", "isdownstart444");
   
+  // c
   // we use the box3 to perfrom the raycast since object3ds dont have bounding boxes
   // for (var i = 0; i < _o.horseys.length; i++) {
   //   _o.box.setFromObject (_o.horseys[i]);
@@ -116,19 +119,63 @@ export function handleTouchStart(ev) {
   //     intersects.push(_o.horseys[i]);
   //   }
   // }
+  // b
   // for (var i = 0; i < _o.shoesCache.length; i++) {
   //   _o.box.setFromObject (_o.shoesCache[i]);
   //   if(raycaster.ray.intersectsBox ( _o.box ) ){
   //     intersects.push(_o.shoesCache[i]);
   //   }
   // }
+  
+  // d
+  // for (var i = 0; i < _o.shoesCache.length; i++) {
+  //   _o.box.setFromObject (_o.shoesCache[i].selectorObjects[0]);
+  //   if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //     intersects.push(_o.shoesCache[i]);
+  //   }
+  // }
+  
+  // e
+  // :o
+  // we need to do testing on the SHOE and the Navs
+  // test against the shoes first
+  // but to do that we need the full box bounds so we dont do constant tests
+  // over ALL objects over and over
+  
+  
   for (var i = 0; i < _o.shoesCache.length; i++) {
-    _o.box.setFromObject (_o.shoesCache[i].selectorObjects[0]);
-    if(raycaster.ray.intersectsBox ( _o.box ) ){
+    // _o.box.setFromObject (_o.shoesCache[i].selectorObjects[0]);
+    _o.box.setFromObject (_o.shoesCache[i] );
+    if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
       intersects.push(_o.shoesCache[i]);
     }
   }
   
+  intersectsInner.length = 0;
+  
+  if (intersects.length > 0) {
+    // debugger
+    raycaster.intersectObjects(intersects[0].navBubbles, false, intersectsInner);
+    if (intersectsInner.length > 0) {
+      // debugger
+      console.log("intersectsInner[0].object.data.name", intersectsInner[0].object.data.name);
+      intersects[0].changeTheme(intersectsInner[0].object.data.name)
+    }
+    // for (var i = 0; i < intersects[0].navBubbles.length; i++) {
+    //   // debugger
+    //   // 
+    //   // if(raycaster.ray.intersectSphere( intersects[0].navBubbles[i].getBoundingSphere(), vecTemp ) ){
+    //   if(raycaster.intersectObject( intersects[0].navBubbles[i], false,  ) ){
+    //     intersectsInner.push( intersects[0].navBubbles[i] );
+    //     debugger
+    //   }
+    // }
+  }
+  // :D
+
+  
+  
+  //a
   // for (var i = 0; i < _o.horseys.length; i++) {
   //   // just the first one from selectorObjects for now, will need to run "expandByObjects" later
   //   if (_o.horseys[i].visible === true) {
@@ -140,7 +187,7 @@ export function handleTouchStart(ev) {
   //   }
   // }
 
-// _o.onConsole.log("isdownstart555", "isdownstart555");
+
   if ( intersects.length > 0 ) {
 
     _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
@@ -218,13 +265,13 @@ export function handleTouchStart(ev) {
     // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
     // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
 
-// _o.onConsole.log("isdownstart777aaa", "isdownstart777aaa");
+
 
     if (_o.selectedObjects.length === 0) {
 
       if (_o.reticle.visible && _o.gltfFlower) {
         
-        makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene});
+        makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
         
       }
     }

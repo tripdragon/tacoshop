@@ -11,15 +11,15 @@ let wobject; // Type of ModelWrapper so it can have physics
 import { AnimationMixer, Vector3, MathUtils } from 'three';
 
 import { PhysicsSession, Spring, Force, applySpringForce, applyAngularForce, applyForce } from './physics/physicsMini.js';
-
-import { SphereGeometry, MeshBasicMaterial, Mesh, Box3, Box3Helper} from 'three';
+// 
+// import { SphereGeometry, MeshBasicMaterial, Mesh, Box3, Box3Helper} from 'three';
 
 
 // horseys.push(makeAHorsey())
 
 // @parent is an Scene level Object3D or Scene
-
-export function makeAShoe({sourceWobject, reticle, parent}){
+// @sourceWobject should be type TenniShoe
+export function makeAShoe({sourceWobject, reticle, parent, addNav}){
   
   //pick random item from flowersGltf
   // const flower =
@@ -29,7 +29,8 @@ export function makeAShoe({sourceWobject, reticle, parent}){
   
   // debugger
   // this is a Type : ModelWrapper
-  wobject = sourceWobject.clone();
+  
+  wobject = sourceWobject.clone({uniqueMaterials:true});
   
   // this is a non obvious annoying way to get the XR anchors position
   reticle.matrix.decompose(wobject.position, wobject.quaternion, wobject.scale);
@@ -56,8 +57,13 @@ export function makeAShoe({sourceWobject, reticle, parent}){
   }
 
 
+  
+  // _o.shoesCache.push(wobject);
+  _o.addShoe(wobject);
 
-  _o.shoesCache.push(wobject);
+  if (addNav) {
+    wobject.attachNav();
+  }
 
 
 
@@ -113,7 +119,7 @@ export function makeAShoe({sourceWobject, reticle, parent}){
 
 
 
-  attachNavBobbles(parent);
+  // attachNavBobbles(parent);
 
   return wobject;
 
@@ -215,101 +221,38 @@ function buildAnimation( _p ){
 }
 
 
-
-
-const navConfig = {
-  sizeScalar : 0.016, // meters
-  padding: 0.05,
-  startPosition : new Vector3(),
-  restPosition : new Vector3(0,0.05, 0),
-  objects: [],
-  navs: [
-    {
-      name: "aaa",
-      image: "narf111.png",
-      color: 0xaaff22,
-      ref: null
-    },
-    {
-      name: "bbb",
-      image: "narf222.png",
-      color: 0x33aa22,
-      ref : null
-    },
-    {
-      name: "ccc",
-      image: "narf333.png",
-      color: 0xff11bb,
-      ref: null
-    },
-    {
-      name: "fff",
-      image: "narf444.png",
-      color: 0xffffbb,
-      ref: null
-    }
-  ]
-}
-
-
-function attachNavBobbles(parent) {
-  
-  
-  
-  
-  
-  for (var i = 0; i < navConfig.navs.length; i++) {
-    const geo = new SphereGeometry( 1, 18, 18 );
-    const mat = new MeshBasicMaterial( { color: navConfig.navs[i].color } ); 
-    const sphere = new Mesh( geo, mat ); 
-    navConfig.objects.push();
-    
-  }
-  
 // 
-//   {
-//   const geometry = new SphereGeometry( 1, 18, 18 ); 
-//   const material = new MeshBasicMaterial( { color: 0xffff00 } ); 
-//   const sphere = new Mesh( geometry, material ); 
 // 
-//   // sphere.position.set(0,1,0);
-//   sphere.position.y = 0.22;
-// 
-//   sphere.scale.setScalar(0.016);
-//   // sphere.scale.setScalar(1.27);
-//   shoe.add(sphere);
-// 
-//   window.dfkjgd = sphere;
-//   // debugger
-// 
-//   // window.dfkjgd.position.y = 0.22
-//   window.Box3 = Box3;
-//   window.Box3Helper = Box3Helper;
-//   // window.scene = _o.scene;
+// const navConfig = {
+//   sizeScalar : 0.016, // meters
+//   padding: 0.05,
+//   startPosition : new Vector3(),
+//   restPosition : new Vector3(0,0.05, 0),
+//   objects: [],
+//   navs: [
+//     {
+//       name: "aaa",
+//       image: "narf111.png",
+//       color: 0xaaff22,
+//       ref: null
+//     },
+//     {
+//       name: "bbb",
+//       image: "narf222.png",
+//       color: 0x33aa22,
+//       ref : null
+//     },
+//     {
+//       name: "ccc",
+//       image: "narf333.png",
+//       color: 0xff11bb,
+//       ref: null
+//     },
+//     {
+//       name: "fff",
+//       image: "narf444.png",
+//       color: 0xffffbb,
+//       ref: null
+//     }
+//   ]
 // }
-// 
-//   {
-//   const geometry = new SphereGeometry( 1, 18, 18 ); 
-//   const material = new MeshBasicMaterial( { color: 0xff1100 } ); 
-//   const sphere = new Mesh( geometry, material ); 
-// 
-//   sphere.position.set(0,0.22,0.06);
-//   // sphere.position.y = 0.42;
-// 
-//   sphere.scale.setScalar(0.016);
-//   shoe.add(sphere);
-// }
-// 
-// {
-// const geometry = new SphereGeometry( 1, 18, 18 ); 
-// const material = new MeshBasicMaterial( { color: 0xaabbcc } ); 
-// const sphere = new Mesh( geometry, material ); 
-// 
-// sphere.position.set(0,0.22,0.1);
-// // sphere.position.y = 0.42;
-// 
-// sphere.scale.setScalar(0.016);
-// shoe.add(sphere);
-// }  
-// 
-}

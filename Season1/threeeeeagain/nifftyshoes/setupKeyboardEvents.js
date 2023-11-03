@@ -23,7 +23,7 @@ export function setupKeyboardEvents(){
           }
           // makeAHorsey(_o.gltfFlower, _o.reticle, _o.scene);
           // makeAShoe(_o.gltfFlower, _o.reticle, _o.scene);
-          makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene});
+          makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
           break;
         case "a":
           console.log("?a");

@@ -76,7 +76,7 @@ _o.xrController; // T : renderer.xr.getController
 
 
 // _o.horseys = []; // T : [Mesh]
-_o.shoesCache = []; // T : [Mesh]
+// _o.shoesCache = []; // T : [Mesh]
 
 
 var spotlight1; // T : Spotlight: Object3D
@@ -315,6 +315,9 @@ function setupSelectorBox(){
   _o.selectorBoxHelper = new Box3Helper( _o.box, 0xffff00 );
   _o.scene.add( _o.selectorBoxHelper );
   _o.selectorBoxHelper.visible = false;
+  _o.selectorBoxHelper2 = new Box3Helper( _o.box, 0xffff00 );
+  _o.scene.add( _o.selectorBoxHelper2 );
+  _o.selectorBoxHelper2.visible = false;
   
 }
 
@@ -511,19 +514,19 @@ async function loadShoeAndProcess_CM(){
   const gltf = await gltfLoader.loadAsync( './models/shoe02.glb' );
   console.log("Shoe¿¿????");
   
-  const pp = new TenniShoe();
-  pp.add(gltf.scene);
+  const shoeWrapper = new TenniShoe();
+  shoeWrapper.add(gltf.scene);
   
   // this is a visual thing, it futzez with the spring and shadows
   gltf.scene.position.set(0,0.05,0);
   const scale = 0.9;
   gltf.scene.scale.set( scale, scale, scale);
   
-  pp.animations = gltf.animations;
-  pp.mixer = gltf.scene.mixer;
+  shoeWrapper.animations = gltf.animations;
+  shoeWrapper.mixer = gltf.scene.mixer;
   
   // prepare materials for fade effects
-  preparMatsForFade(pp, gltf.scene);
+  preparMatsForFade(shoeWrapper, gltf.scene);
   
   
   // THIS IS a shoehorn for holding some data on the objects themselves since
@@ -533,14 +536,28 @@ async function loadShoeAndProcess_CM(){
   });
   
   // prepare visually known meshes that will be the seltion volumne
-  pp.selectorObjects.push(gltf.scene);
+  shoeWrapper.selectorObjects.push(gltf.scene);
   
   
-  _o.gltfFlower = pp;
+  _o.gltfFlower = shoeWrapper;
   
   // dont add it, that happens later
-  // _o.scene.add(pp);
+  // _o.scene.add(shoeWrapper);
     
   _o.modelLoaded = true;
 
+  // this could go into a "then()" but ehhhh
+  // buildNavigationOnShoe();
+  
+  // shoeWrapper.attachNav();
+  
+  console.warn("debug showing shoe on load");
+  makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
+
 }
+
+
+// 
+// function buildNavigationOnShoe(){
+//   attachNav
+// }

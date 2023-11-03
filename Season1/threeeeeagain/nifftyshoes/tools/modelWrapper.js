@@ -68,7 +68,7 @@ class ModelWrapper extends Object3D {
   // clone(){
   // 
   // }
-  clone( recursive ) {
+  clone( {recursive, uniqueMaterials} ) {
 		// super.clone( recursive );
 
     const cc = new this.constructor().copy( this, recursive );
@@ -126,7 +126,9 @@ class ModelWrapper extends Object3D {
 	  // pp.selectorObjects.push(wobject);
 
 
-		
+		if (uniqueMaterials) {
+			this.cloneMaterials();
+		}
 		
     return cc;
 
@@ -137,6 +139,37 @@ class ModelWrapper extends Object3D {
 			item.material.opacity = MathUtils.clamp(val, 0, 1);
 		});
 	}
+	
+	
+  randomColor(){
+    this.traverse( ( item ) => {
+     if (item.isMesh) {
+       // _o.shoesCache[0].children[0].children[0].material.color.setHex
+       item.material.color.setHex(Math.random() * 0xffffff);
+     }
+    });
+  }
+  
+  // when cloning we need to unique the materials
+  cloneMaterials(){
+    this.traverse( ( item ) => {
+     if (item.isMesh) {
+       item.material = item.material.clone();
+     }
+    });
+  }
+	
+	// cheap debugger
+	// _o.shoesCache[0].setColorAll(0x00ff00)
+	setColorAll(colorHex){
+		this.traverse( ( item ) => {
+		 if (item.isMesh) {
+			 item.material.color.setHex(colorHex);
+		 }
+		});
+	}
+
+	changeTheme(){}
 
 }
 

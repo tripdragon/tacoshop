@@ -13,6 +13,17 @@ import { RollyController } from './tools/rollyController.js';
 export const APP = {
   narfs : 2,
   
+  // caches
+  shoesCache : [], // T : [Mesh]
+  selectablesCache : [], // [Meshes]
+  addShoe(shoe){
+    this.shoesCache.push(shoe);
+    this.selectablesCache.push(shoe);
+  },
+  addSelectable(shoe){
+    this.selectablesCache.push(shoe);
+  },
+  
   container: null,
   scene : null,
   
@@ -44,7 +55,9 @@ export const APP = {
   raycasterCube: null, // T : Mesh
   // these are for the raycast hit testing
   selectorBoxHelper : null, // box3Helper Object3D
+  selectorBoxHelper2 : null, // box3Helper Object3D
   box : null, // let box = new Box3();
+  box2 : null, // let box = new Box3();
   
   rollyControllers : [], 
   selectedObjects : [],
