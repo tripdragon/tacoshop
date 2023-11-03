@@ -15,32 +15,32 @@ export function renderLoop(timestamp, frame) {
     const referenceSpace = _o.renderer.xr.getReferenceSpace();
     const session = _o.renderer.xr.getSession();
 
-    if (hitTestSourceRequested === false) {
+    if (_o.xr.hitTestSourceRequested === false) {
       session.requestReferenceSpace("viewer").then(function (referenceSpace) {
         session
           .requestHitTestSource({ space: referenceSpace })
           .then(function (source) {
-            hitTestSource = source;
+            _o.xr.hitTestSource = source;
           });
       });
     
       session.addEventListener("end", function () {
-        hitTestSourceRequested = false;
-        hitTestSource = null;
+        _o.xr.hitTestSourceRequested = false;
+        _o.xr.hitTestSource = null;
       });
 
-      hitTestSourceRequested = true;
+      _o.xr.hitTestSourceRequested = true;
     }
 
-    if (hitTestSource) {
+    if (_o.xr.hitTestSource) {
       
-      const hitTestResults = frame.getHitTestResults(hitTestSource);
+      const hitTestResults = frame.getHitTestResults(_o.xr.hitTestSource);
 
       if (hitTestResults.length) {
         
-        if (!planeFound) {
+        if (!_o.xr.planeFound) {
           
-          planeFound = true;
+          _o.xr.planeFound = true;
           //hide #tracking-prompt
           document.getElementById("tracking-prompt").style.display = "none";
           document.getElementById("instructions").style.display = "flex";

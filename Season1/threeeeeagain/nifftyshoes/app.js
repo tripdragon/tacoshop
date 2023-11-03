@@ -13,6 +13,15 @@ import { RollyController } from './tools/rollyController.js';
 export const APP = {
   narfs : 2,
   
+  xr :{
+    IS_XR_AVAIL : false,
+    hitTestSource: null,
+    hitTestSourceRequested : false,
+    planeFound : false,
+    controller : null // T : renderer.xr.getController
+  },
+  // modes
+  
   // caches
   shoesCache : [], // T : [Mesh]
   selectablesCache : [], // [Meshes]

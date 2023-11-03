@@ -72,7 +72,7 @@ Object3D.prototype.clone = function(recursive){
 // this makes it flicker
 // import "./style.css";
 
-_o.xrController; // T : renderer.xr.getController
+// _o.xr.controller; // T : renderer.xr.getController
 
 
 // _o.horseys = []; // T : [Mesh]
@@ -84,19 +84,17 @@ var spotlight1; // T : Spotlight: Object3D
 var shadowPlane; // T: Mesh
 var SHADOW_PLANE_SETUP_AR = false;
 
-let hitTestSource = null;
-let hitTestSourceRequested = false;
-let planeFound = false;
-
-var IS_XR_AVAIL = false;
-
-var modes = {
-  seek: "seek",
-  moveHorsey : "moveHorsey",
-  moveShoe : "moveShoe",
-  
-}
-var mode = modes.seek;
+// let hitTestSource = null;
+// let hitTestSourceRequested = false;
+// let _o.xr.planeFound = false;
+// var IS_XR_AVAIL = false;
+// 
+// var modes = {
+//   seek: "seek",
+//   moveHorsey : "moveHorsey",
+//   moveShoe : "moveShoe",
+// }
+// var mode = modes.seek;
 
 
 
@@ -128,7 +126,7 @@ if ("xr" in navigator) {
 			init();
       animate();
       
-      IS_XR_AVAIL = true;
+      _o.xr.IS_XR_AVAIL = true;
 			
     }
     else {
@@ -145,7 +143,7 @@ if ("xr" in navigator) {
 
 
 function sessionStart() {
-  planeFound = false;
+  _o.xr.planeFound = false;
   //show #tracking-prompt
   document.getElementById("tracking-prompt").style.display = "block";
 }
@@ -456,9 +454,9 @@ function setupXRStuff() {
   );
   
   
-  _o.xrController = _o.renderer.xr.getController(0);
-  _o.xrController.addEventListener("select", onSelect);
-  _o.scene.add(_o.xrController);
+  _o.xr.controller = _o.renderer.xr.getController(0);
+  _o.xr.controller.addEventListener("select", onSelect);
+  _o.scene.add(_o.xr.controller);
 
   _o.reticle = new Mesh(
     new RingGeometry(0.04, 0.052, 32).rotateX(-Math.PI / 2),
@@ -474,7 +472,7 @@ function setupXRStuff() {
 
 function setupOrbitController() {
   
-  if ( ! IS_XR_AVAIL ) {
+  if ( ! _o.xr.IS_XR_AVAIL ) {
   // if ( false ) {
     // we remove the priour renderer.domElement for webxrs overlay requirement
     const mm = document.getElementById("rootlike");
