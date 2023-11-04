@@ -134,6 +134,7 @@ export function handleTouchStart(ev) {
   intersects = selectedArray;
   
   
+  
   // let hp = raycaster.intersectObject(_o.shoesCache[0].selectorObject, false, mm);
   // debugger
   
