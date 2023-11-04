@@ -20,6 +20,7 @@ export const APP = {
     planeFound : false,
     controller : null // T : renderer.xr.getController
   },
+  reticle: null, // Mesh
   // modes
   
   // caches
@@ -54,7 +55,7 @@ export const APP = {
   gltfFlower: null, // Mesh
   modelLoaded : false,
   
-  reticle: null, // Mesh
+  
   
   // touch event logics
   IS_DOWN : false,

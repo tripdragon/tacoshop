@@ -106,55 +106,89 @@ export function handleTouchStart(ev) {
   
   raycaster.setFromCamera( pointer2D, _o.camera );
   
+  
+  
+  // first we need to raycast to the bounding box of the shoe which includes the navs
+  // so we can pick through the shoes, the box will have some empty space
+  // using Box3 is required here since it has no boundinmg box
+  let firstArray = [];
+  for (var i = 0; i < _o.shoesCache.length; i++) {
+    _o.box.setFromObject (_o.shoesCache[i] );
+    if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
+      firstArray.push(_o.shoesCache[i]);
+    }
+  }
+  
+  
+  
 
   // intersects.length = 0;
-  intersects = [];
+  // intersects = [];
   
-  
-  let mm = [];
   let selected = null;
-  let selectedArray = null;
   
-  for (var i = 0; i < _o.shoesCache.length; i++) {
-    for (var gg = 0; gg < _o.shoesCache[i].selectorObjects222.length; gg++) {
-      let hp = raycaster.intersectObject(_o.shoesCache[i].selectorObjects222[gg], false, mm);
-      if(mm.length > 0){
-        selectedArray = mm.slice();
+  if (firstArray.length > 0) {
+    selected = firstArray[0];
+  }
+  
+  let secondArray = [];
+  let thirdArray = [];
+  
+  if (selected !== null) {
+    
+    
+    for (var gg = 0; gg < selected.selectorObjects222.length; gg++) {
+      let hp = raycaster.intersectObject(selected.selectorObjects222[gg], false, secondArray);
+      if(secondArray.length > 0){
+        thirdArray = secondArray.slice();
       }
     }
 
+  
   }
   
   // g
   
 
   // let hp = raycaster.intersectObjects(_o.shoesCache[0].selectorObjects222, false, mm);
-  
-  
-  intersects = selectedArray;
-  
+  // 
+  // if (selectedArray !== null) {
+  //   intersects = selectedArray;
+  // 
+  // }
+  // 
   
   
   // let hp = raycaster.intersectObject(_o.shoesCache[0].selectorObject, false, mm);
   // debugger
   
   // do ontap test here
-  if (intersects.length > 0) {
+  if (thirdArray.length > 0) {
     // debugger
     console.log("vecTemp", vecTemp);
-    _o.hitpointSphere.position.copy(intersects[0].point);
-    selected = intersects[0];
+    _o.hitpointSphere.position.copy(thirdArray[0].point);
+    // selected = intersects[0];
     try {
-      if(intersects[0].object.isSelector){
-        intersects[0].object.pointerWrapper.onTap();
+      if(thirdArray[0].object.isSelector){
+        thirdArray[0].object.pointerWrapper.onTap();
       }
       else {
-        intersects[0].object.onTap();
+        thirdArray[0].object.onTap();
       }
     } catch (e) {}
   }
   
   
+
+  else if (selected === null) {
+
+    if (_o.reticle.visible && _o.gltfFlower) {
+      
+      makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
+      
+    }
+  }
+
   
 return;
   
@@ -162,7 +196,7 @@ return;
   
   if (intersects.length > 0) {
     // debugger
-    raycaster.intersectObjects(intersects[0].navBubbles, false, intersectsInner);
+    raycaster.intersectObjects(intersects[0].object.navBubbles, false, intersectsInner);
     if (intersectsInner.length > 0) {
       // debugger
       console.log("intersectsInner[0].object.data.name", intersectsInner[0].object.data.name);
