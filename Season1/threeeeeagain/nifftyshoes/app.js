@@ -13,7 +13,14 @@ import { RollyController } from './tools/rollyController.js';
 export const APP = {
   narfs : 2,
   
-  xr :{
+  // timers : {
+  //   down: 0,
+  //   startDown : 0,
+  //   pointerDownClock : new Clock(),
+  //   pointer
+  // },
+  
+  xr : {
     IS_XR_AVAIL : false,
     hitTestSource: null,
     hitTestSourceRequested : false,

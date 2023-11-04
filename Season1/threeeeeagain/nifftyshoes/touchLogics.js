@@ -1,7 +1,7 @@
 
 import { APP as _o } from "./app.js";
 
-import { Vector2, Vector3, Raycaster, Plane } from 'three';
+import { Clock, Vector2, Vector3, Raycaster, Plane } from 'three';
 import { testIfMobile } from './tools/testIfMobile.js';
 
 import { GetMousePositionToScreen, GetPositionOfRaycasterFromFloor } from './tools/mouseScreenTools.js';
@@ -23,6 +23,8 @@ var deltaPos3D = new Vector3(0,0,0);
 var pointer3D = new Vector3(0,0,0);
 var horseyPosDown = new Vector3(0,0,0);
 
+
+
 var raycaster = new Raycaster();
 var targetVecOfPlane = new Vector3();
 var floorPlane = new Plane(new Vector3(0,1,0), 0);
@@ -36,6 +38,9 @@ var intersectsInner = [];
 const vecTemp = new Vector3();
 
 
+const pointerDownClock = new Clock();
+const memPointer2D = new Vector2(0,0);
+const memPointer2DUp = new Vector2(0,0);
 
 // ---------------------------
 // 
@@ -51,145 +56,20 @@ export function handleTouchStart(ev) {
   
   touchType = ev.pointerType;
   
-  // _o.onConsole.log("isdownstart111", "isdownstart111");
-          // 
-          // if (testIfMobile() && ev.touches.length > 1) {
-          //   _o.IF_MULTITOUCH_DOWN = true;
-          //   _o.touchesCount = ev.touches.length;
-          // }
+  pointerDownClock.start();
+  memPointer2D.set(ev.clientX, ev.clientY);
+  
 
-  // how to hande each?
-  // android is not ready yet for pointerevents
-  // if ( testIfMobile() ) {
-  //   touchStartPos.x = ev.touches[0].pageX;
-  //   touchStartPos.y = ev.touches[0].pageY;
-  // }
-  // else {
-  //   touchStartPos.x = ev.pageX;
-  //   touchStartPos.y = ev.pageY;
-  // }
-  // console.log(touchStartPos);
 
   touchStartPos.x = ev.clientX;
   touchStartPos.y = ev.clientY;
   
-  // _o.onConsole.log("isdownstart222", "isdownstart222");
-  
-  // 
-  // _o.onConsole.log("touchStartPos.x", touchStartPos.x);
-  // _o.onConsole.log("touchStartPos.y", touchStartPos.y);
-  // 
-  // _o.onConsole.log("isdownAaa", "isdownAaa");
-  
-  //
-  // :o begin raycasting
-  //
-  // raycasterCube
-  // note targetVecOfPlane is mutated here
-  GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
-  // _o.onConsole.log("isdownBbb", "isdownBbb");
-  _o.raycasterCube.position.copy(targetVecOfPlane);
-  
-  
-  // _o.onConsole.log("isdownstart333", "isdownstart333");
-  
-  // _o.debugPlane.translate(targetVecOfPlane);
-  _o.debugPlane.translate(new Vector3(1, 0, 1));
-  // _o.debugPlane.constant = 0.2;
-  _o.debugPlaneHelper.updateMatrixWorld(true);
-  
-  // missing rotation
-  _o.debugMousePlane.position.copy(targetVecOfPlane);
-  
 
-  GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
-  
-  raycaster.setFromCamera( pointer2D, _o.camera );
-  
-  
-  
-  // first we need to raycast to the bounding box of the shoe which includes the navs
-  // so we can pick through the shoes, the box will have some empty space
-  // using Box3 is required here since it has no boundinmg box
-  let firstArray = [];
-  for (var i = 0; i < _o.shoesCache.length; i++) {
-    _o.box.setFromObject (_o.shoesCache[i] );
-    if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
-      firstArray.push(_o.shoesCache[i]);
-    }
-  }
-  
-  
-  
 
-  // intersects.length = 0;
-  // intersects = [];
-  
-  let selected = null;
-  
-  if (firstArray.length > 0) {
-    selected = firstArray[0];
-  }
-  
-  let secondArray = [];
-  let thirdArray = [];
-  
-  if (selected !== null) {
-    
-    
-    for (var gg = 0; gg < selected.selectorObjects222.length; gg++) {
-      let hp = raycaster.intersectObject(selected.selectorObjects222[gg], false, secondArray);
-      if(secondArray.length > 0){
-        thirdArray = secondArray.slice();
-      }
-    }
 
-  
-  }
-  
-  // g
-  
 
-  // let hp = raycaster.intersectObjects(_o.shoesCache[0].selectorObjects222, false, mm);
-  // 
-  // if (selectedArray !== null) {
-  //   intersects = selectedArray;
-  // 
-  // }
-  // 
-  
-  
-  // let hp = raycaster.intersectObject(_o.shoesCache[0].selectorObject, false, mm);
-  // debugger
-  
-  // do ontap test here
-  if (thirdArray.length > 0) {
-    // debugger
-    console.log("vecTemp", vecTemp);
-    _o.hitpointSphere.position.copy(thirdArray[0].point);
-    // selected = intersects[0];
-    try {
-      if(thirdArray[0].object.isSelector){
-        thirdArray[0].object.pointerWrapper.onTap();
-      }
-      else {
-        thirdArray[0].object.onTap();
-      }
-    } catch (e) {}
-  }
-  
-  
 
-  else if (selected === null) {
 
-    if (_o.reticle.visible && _o.gltfFlower) {
-      
-      makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
-      
-    }
-  }
-
-  
 return;
   
   intersectsInner.length = 0;
@@ -337,6 +217,150 @@ export function handleTouchStop(ev) {
   // _o.onConsole.log("isdown2", "isdown2 no");
   
   _o.IS_DOWN = false;
+  
+  
+  // tap event of such
+  const tt = pointerDownClock.getElapsedTime();
+  console.log("tt", tt);
+  memPointer2DUp.set(ev.clientX, ev.clientY);
+  let dis = memPointer2D.distanceTo(memPointer2DUp);
+  console.log("dis", dis);
+  
+  
+  if (tt <= 0.5 || dis < 5) {
+    console.log("tap!?!?!?");
+    
+    
+    
+    
+    
+    
+    
+      //
+      // :o begin raycasting
+      //
+      // raycasterCube
+      // note targetVecOfPlane is mutated here
+      GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
+      // _o.onConsole.log("isdownBbb", "isdownBbb");
+      _o.raycasterCube.position.copy(targetVecOfPlane);
+      
+
+      // _o.debugPlane.translate(targetVecOfPlane);
+      _o.debugPlane.translate(new Vector3(1, 0, 1));
+      // _o.debugPlane.constant = 0.2;
+      _o.debugPlaneHelper.updateMatrixWorld(true);
+      
+      // missing rotation
+      _o.debugMousePlane.position.copy(targetVecOfPlane);
+      
+
+      GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
+      
+      raycaster.setFromCamera( pointer2D, _o.camera );
+      
+      
+      
+      // first we need to raycast to the bounding box of the shoe which includes the navs
+      // so we can pick through the shoes, the box will have some empty space
+      // using Box3 is required here since it has no boundinmg box
+      let firstArray = [];
+      for (var i = 0; i < _o.shoesCache.length; i++) {
+        if (_o.shoesCache[i].visible) {
+          
+          _o.box.setFromObject (_o.shoesCache[i] );
+          if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
+            firstArray.push(_o.shoesCache[i]);
+          }
+        }
+      }
+      
+      
+      
+
+      // intersects.length = 0;
+      // intersects = [];
+      
+      let selected = null;
+      
+      if (firstArray.length > 0) {
+        selected = firstArray[0];
+      }
+      
+      let secondArray = [];
+      let thirdArray = [];
+      
+      if (selected !== null) {
+        
+        
+        for (var gg = 0; gg < selected.selectorObjects222.length; gg++) {
+          let hp = raycaster.intersectObject(selected.selectorObjects222[gg], false, secondArray);
+          if(secondArray.length > 0){
+            thirdArray = secondArray.slice();
+          }
+        }
+
+      
+      }
+      
+      // g
+      
+
+      // let hp = raycaster.intersectObjects(_o.shoesCache[0].selectorObjects222, false, mm);
+      // 
+      // if (selectedArray !== null) {
+      //   intersects = selectedArray;
+      // 
+      // }
+      // 
+      
+      
+      // let hp = raycaster.intersectObject(_o.shoesCache[0].selectorObject, false, mm);
+      // debugger
+      
+      // do ontap test here
+      if (thirdArray.length > 0) {
+        // debugger
+        console.log("vecTemp", vecTemp);
+        _o.hitpointSphere.position.copy(thirdArray[0].point);
+        // selected = intersects[0];
+        try {
+          if(thirdArray[0].object.isSelector){
+            thirdArray[0].object.pointerWrapper.onTap();
+          }
+          else {
+            thirdArray[0].object.onTap();
+          }
+        } catch (e) {}
+      }
+      
+      
+
+      else if (selected === null) {
+
+        if (_o.reticle.visible && _o.gltfFlower) {
+          
+          makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
+          
+        }
+      }
+
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  }
   
   if(_o.orbitControls) _o.orbitControls.enabled = true;
   
