@@ -41,6 +41,14 @@ const vecTemp = new Vector3();
 const pointerDownClock = new Clock();
 const memPointer2D = new Vector2(0,0);
 const memPointer2DUp = new Vector2(0,0);
+const tempDrag = new Vector2(0,0);
+
+let secondArray = [];
+let thirdArray = [];
+let firstArray = [];
+let selected = null;
+
+let hasStartedDrag = false;
 
 // ---------------------------
 // 
@@ -66,7 +74,21 @@ export function handleTouchStart(ev) {
   
 
 
+  updateRaycasts(ev);
 
+  
+  // 
+  // let dis = memPointer2D.distanceTo( tempDrag.set(ev.clientX, ev.clientY) );
+  // if (dis > 0.1) {
+  //   hasStartedDrag = true;
+  // }
+  // if (hasStartedDrag) {
+  //   setupRolly(ev);
+  // }
+  // 
+
+    
+    // now assign the drag
 
 
 
@@ -108,98 +130,7 @@ return;
   //   }
   // }
 
-
-  if ( intersects.length > 0 ) {
-
-    _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
-    _o.rollyControllers[0].useDebugMode = true;
-    
-    // this gets deleted once the above reference gets replaced anyway
-    _o.rollyControllers[0].addEventListener( 'pointerMove', function ( event ) {
-
-      // event.object.material.emissive.set( 0xaaaaaa );
-      // console.log("slides");
-      if (_o.selectorBoxHelper.visible === true) {
-        // _o.box.setFromObject ( intersects[ 0 ] );
-        _o.box.setFromObject ( intersects[ 0 ].selectorObjects[0]);
-        _o.selectorBoxHelper.box = _o.box;
-      }
-
-    } );
-    
-
-
-    console.log("NEAT!!!");
-    const intersect = intersects[ 0 ];
-    
-    // _o.onConsole.log("isdownstart555bbb", "isdownstart555bbb");
-    
-    // not working right now
-    // if (intersect.boundingObjects && intersect.boundingObjects.length > 0) {
-    //   for (var i = 0; i < intersect.boundingObjects.length-1; i++) {
-    //     if (i === 0) {
-    //       _o.box.setFromObject ( intersect.boundingObjects[0] );
-    //     }
-    //     else {
-    //       _o.box.expandByObject  ( intersect.boundingObjects[i] );
-    //     }
-    //   }
-    // }
-    // else {
-    //   _o.box.setFromObject ( intersect );
-    // }
-    
-    // _o.box.setFromObject ( intersect );
-    _o.box.setFromObject ( intersect.selectorObjects[0]);
-    
-    _o.selectorBoxHelper.box = _o.box;
-    _o.selectorBoxHelper.visible = true;
-    _o.selectorBoxHelper.updateMatrixWorld();
-  					// rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-  					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
-
-    _o.selectedObjects.length = 0;
-    
-    _o.rollyControllers[0].attach(intersect);
-    _o.selectedObjects.push(intersect);
-    //horseyPosDown.copy(_o.horseys[0].position);
-    
-    if(_o.orbitControls) _o.orbitControls.enabled = false;
-
-
-  }
-  else {
-    _o.selectorBoxHelper.visible = false;
-  }
-
-    // raycaster.setFromCamera( pointer2Db, camera );
-    // raycaster.ray.intersectPlane ( floorPlane, vectorin);
-    // 
-    // raycasterCube.position.copy(targetVecOfPlane);
-    // return targetVecOfPlane;
-
-    // test raycasting
-      
-    //   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
-    // x = ( x / this.container.clientWidth ) * 2 - 1;
-    // y = - ( y / this.container.clientHeight ) * 2 + 1;
-    // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
-    // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
-
-
-
-    if (_o.selectedObjects.length === 0) {
-
-      if (_o.reticle.visible && _o.gltfFlower) {
-        
-        makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
-        
-      }
-    }
-
-
-// _o.onConsole.log("isdownstart888aaa", "isdownstart888aaa");
-
+  
 }
 // handleTouchStart
 
@@ -217,7 +148,7 @@ export function handleTouchStop(ev) {
   // _o.onConsole.log("isdown2", "isdown2 no");
   
   _o.IS_DOWN = false;
-  
+  hasStartedDrag = false;
   
   // tap event of such
   const tt = pointerDownClock.getElapsedTime();
@@ -235,74 +166,7 @@ export function handleTouchStop(ev) {
     
     
     
-    
-      //
-      // :o begin raycasting
-      //
-      // raycasterCube
-      // note targetVecOfPlane is mutated here
-      GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
-      // _o.onConsole.log("isdownBbb", "isdownBbb");
-      _o.raycasterCube.position.copy(targetVecOfPlane);
-      
 
-      // _o.debugPlane.translate(targetVecOfPlane);
-      _o.debugPlane.translate(new Vector3(1, 0, 1));
-      // _o.debugPlane.constant = 0.2;
-      _o.debugPlaneHelper.updateMatrixWorld(true);
-      
-      // missing rotation
-      _o.debugMousePlane.position.copy(targetVecOfPlane);
-      
-
-      GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
-      
-      raycaster.setFromCamera( pointer2D, _o.camera );
-      
-      
-      
-      // first we need to raycast to the bounding box of the shoe which includes the navs
-      // so we can pick through the shoes, the box will have some empty space
-      // using Box3 is required here since it has no boundinmg box
-      let firstArray = [];
-      for (var i = 0; i < _o.shoesCache.length; i++) {
-        if (_o.shoesCache[i].visible) {
-          
-          _o.box.setFromObject (_o.shoesCache[i] );
-          if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
-            firstArray.push(_o.shoesCache[i]);
-          }
-        }
-      }
-      
-      
-      
-
-      // intersects.length = 0;
-      // intersects = [];
-      
-      let selected = null;
-      
-      if (firstArray.length > 0) {
-        selected = firstArray[0];
-      }
-      
-      let secondArray = [];
-      let thirdArray = [];
-      
-      if (selected !== null) {
-        
-        
-        for (var gg = 0; gg < selected.selectorObjects222.length; gg++) {
-          let hp = raycaster.intersectObject(selected.selectorObjects222[gg], false, secondArray);
-          if(secondArray.length > 0){
-            thirdArray = secondArray.slice();
-          }
-        }
-
-      
-      }
-      
       // g
       
 
@@ -370,7 +234,9 @@ export function handleTouchStop(ev) {
 
   _o.touchesCount = "NOT";
   
-  _o.selectedObjects.length = 0;
+  // _o.selectedObjects.length = 0;
+  
+  _o.selected = null;
   
   // this wrecks multiselect if we dont have a proper cache
   for (var i = 0; i < _o.rollyControllers.length; i++) {
@@ -386,8 +252,24 @@ export function handleTouchStop(ev) {
 // moving logics
 export function handleWhileDown(ev) {
   
-  return;
+  
   ev.preventDefault();
+  
+  
+  if (_o.IS_DOWN === true && hasStartedDrag === false && selected !== null) {
+    let dis = memPointer2D.distanceTo( tempDrag.set(ev.clientX, ev.clientY) );
+    if (dis > 0.5) {
+      hasStartedDrag = true;
+      console.log("setupRolly");
+      setupRolly(ev);
+    }
+    
+  }
+
+    
+    
+  
+  return;
   
   // _o.onConsole.log("handleWhileDown111", "handleWhileDown111");
   
@@ -477,41 +359,161 @@ export function handleWhileDown(ev) {
 
 
 
-// 
-// 
-// 
-// 
-// 
-// function debugUpdateDisplayBox(index = 0){
-// 
-// }
-// 
 
-// 
-// 
-// raycaster = new THREE.Raycaster();
-// 				pointer = new THREE.Vector2();
-//         pointer.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
-// 
-// 				raycaster.setFromCamera( pointer, camera );
-//         const intersects = raycaster.intersectObjects( objects, false );
-// 
-//         .intersectPlane ( plane : Plane, target : Vector3 ) : Vector3
-// plane - the Plane to intersect with.
-// target — the result will be copied into this Vector3.
-// 
-// Intersect this Ray with a Plane, returning the intersection point or null if there is no intersection.
-// 
-// 
-// 
-// 
-// 				if ( intersects.length > 0 ) {
-// 
-// 					const intersect = intersects[ 0 ];
-// 
-// 					rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
-// 					rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
-// 
-// 					render();
-// 
-// 				}
+function updateRaycasts(ev){
+  
+    
+      //
+      // :o begin raycasting
+      //
+      
+      firstArray.length = 0;
+      secondArray.length = 0;
+      thirdArray.length = 0;
+      selected = null;
+      
+      // raycasterCube
+      // note targetVecOfPlane is mutated here
+      GetPositionOfRaycasterFromFloor({domElement:_o.renderer.domElement, ev:ev, camera: _o.camera, floorPlane:floorPlane, vector3in: targetVecOfPlane});
+      // _o.onConsole.log("isdownBbb", "isdownBbb");
+      _o.raycasterCube.position.copy(targetVecOfPlane);
+      
+
+      // _o.debugPlane.translate(targetVecOfPlane);
+      _o.debugPlane.translate(new Vector3(1, 0, 1));
+      // _o.debugPlane.constant = 0.2;
+      _o.debugPlaneHelper.updateMatrixWorld(true);
+      
+      // missing rotation
+      _o.debugMousePlane.position.copy(targetVecOfPlane);
+      
+
+      GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
+      
+      raycaster.setFromCamera( pointer2D, _o.camera );
+
+      // first we need to raycast to the bounding box of the shoe which includes the navs
+      // so we can pick through the shoes, the box will have some empty space
+      // using Box3 is required here since it has no boundinmg box
+      // let firstArray = [];
+      for (var i = 0; i < _o.shoesCache.length; i++) {
+        if (_o.shoesCache[i].visible) {
+          
+          _o.box.setFromObject (_o.shoesCache[i] );
+          if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
+            firstArray.push(_o.shoesCache[i]);
+          }
+        }
+      }
+
+      if (firstArray.length > 0) {
+        selected = firstArray[0];
+      }
+      
+      if (selected !== null) {
+        
+        for (var gg = 0; gg < selected.selectorObjects222.length; gg++) {
+          let hp = raycaster.intersectObject(selected.selectorObjects222[gg], false, secondArray);
+          if(secondArray.length > 0){
+            thirdArray = secondArray.slice();
+          }
+        }
+
+      }
+}
+
+
+
+function setupRolly(ev) {
+  
+    // if ( intersects.length > 0 ) {
+    if ( selected) {
+
+      _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
+      _o.rollyControllers[0].useDebugMode = true;
+      
+      // this gets deleted once the above reference gets replaced anyway
+      _o.rollyControllers[0].addEventListener( 'pointerMove', function ( event ) {
+
+        // event.object.material.emissive.set( 0xaaaaaa );
+        // console.log("slides");
+        if (_o.selectorBoxHelper.visible === true) {
+          // _o.box.setFromObject ( intersects[ 0 ] );
+          // _o.box.setFromObject ( intersects[ 0 ].selectorObjects[0]);
+          _o.box.setFromObject ( selected );
+          _o.selectorBoxHelper.box = _o.box;
+        }
+
+      } );
+
+      console.log("NEAT!!!");
+      // const intersect = intersects[ 0 ];
+      
+      // _o.onConsole.log("isdownstart555bbb", "isdownstart555bbb");
+      
+      // not working right now
+      // if (intersect.boundingObjects && intersect.boundingObjects.length > 0) {
+      //   for (var i = 0; i < intersect.boundingObjects.length-1; i++) {
+      //     if (i === 0) {
+      //       _o.box.setFromObject ( intersect.boundingObjects[0] );
+      //     }
+      //     else {
+      //       _o.box.expandByObject  ( intersect.boundingObjects[i] );
+      //     }
+      //   }
+      // }
+      // else {
+      //   _o.box.setFromObject ( intersect );
+      // }
+      
+      // _o.box.setFromObject ( intersect );
+      // _o.box.setFromObject ( intersect.selectorObjects[0]);
+      _o.box.setFromObject ( selected );
+      
+      _o.selectorBoxHelper.box = _o.box;
+      _o.selectorBoxHelper.visible = true;
+      _o.selectorBoxHelper.updateMatrixWorld();
+    					// rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
+    					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
+
+      _o.selectedObjects.length = 0;
+      
+      // _o.rollyControllers[0].attach(intersect);
+      _o.rollyControllers[0].attach(selected);
+      // _o.selectedObjects.push(intersect);
+      _o.selectedObjects.push(selected);
+      //horseyPosDown.copy(_o.horseys[0].position);
+      
+      if(_o.orbitControls) _o.orbitControls.enabled = false;
+
+
+    }
+    else {
+      _o.selectorBoxHelper.visible = false;
+    }
+
+    // raycaster.setFromCamera( pointer2Db, camera );
+    // raycaster.ray.intersectPlane ( floorPlane, vectorin);
+    // 
+    // raycasterCube.position.copy(targetVecOfPlane);
+    // return targetVecOfPlane;
+
+    // test raycasting
+      
+    //   this.plane = new THREE.Plane(new THREE.Vector3(0,0,1), 0);
+    // x = ( x / this.container.clientWidth ) * 2 - 1;
+    // y = - ( y / this.container.clientHeight ) * 2 + 1;
+    // this.re.raycaster.setFromCamera(new THREE.Vector2(x, y), this.re.camera);
+    // return this.re.raycaster.ray.intersectPlane(this.plane, new THREE.Vector3());
+
+    if (_o.selectedObjects.length === 0) {
+
+      if (_o.reticle.visible && _o.gltfFlower) {
+        
+        makeAShoe({sourceWobject:_o.gltfFlower, reticle:_o.reticle, parent:_o.scene, addNav: true});
+        
+      }
+      
+    }
+
+}
