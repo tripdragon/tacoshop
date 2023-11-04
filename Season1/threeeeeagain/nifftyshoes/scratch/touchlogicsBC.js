@@ -105,43 +105,81 @@ export function handleTouchStart(ev) {
   GetMousePositionToScreen(touchStartPos.x, touchStartPos.y, _o.renderer.domElement,  pointer2D);
   
   raycaster.setFromCamera( pointer2D, _o.camera );
-  
+  // const intersects = raycaster.intersectObjects( horseys, false );
 
   intersects.length = 0;
   
+  // _o.onConsole.log("isdownstart444", "isdownstart444");
   
+  // c
+  // we use the box3 to perfrom the raycast since object3ds dont have bounding boxes
+  // for (var i = 0; i < _o.horseys.length; i++) {
+  //   _o.box.setFromObject (_o.horseys[i]);
+  //   if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //     intersects.push(_o.horseys[i]);
+  //   }
+  // }
+  // b
+  // for (var i = 0; i < _o.shoesCache.length; i++) {
+  //   _o.box.setFromObject (_o.shoesCache[i]);
+  //   if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //     intersects.push(_o.shoesCache[i]);
+  //   }
+  // }
   
-  let selected = null;
+  // d
+  // for (var i = 0; i < _o.shoesCache.length; i++) {
+  //   _o.box.setFromObject (_o.shoesCache[i].selectorObjects[0]);
+  //   if(raycaster.ray.intersectsBox ( _o.box ) ){
+  //     intersects.push(_o.shoesCache[i]);
+  //   }
+  // }
+  
+  // e
+  // :o
+  // we need to do testing on the SHOE and the Navs
+  // test against the shoes first
+  // but to do that we need the full box bounds so we dont do constant tests
+  // over ALL objects over and over
+  
+  // 
+  // for (var i = 0; i < _o.shoesCache.length; i++) {
+  //   // _o.box.setFromObject (_o.shoesCache[i].selectorObjects[0]);
+  //   _o.box.setFromObject (_o.shoesCache[i] );
+  //   if(raycaster.ray.intersectsBox ( _o.box,  vecTemp ) ){
+  //     intersects.push(_o.shoesCache[i]);
+  //   }
+  // }
+  // 
+  
+  // f
+  // let mm = [];
+  // for (var i = 0; i < _o.shoesCache.length; i++) {
+  //   _o.box.setFromObject (_o.shoesCache[i] );
+  //   let hp = raycaster.ray.intersectBox(_o.box,  vecTemp);
+  //   if (hp !== null) {
+  //     intersects.push(_o.shoesCache[i]);
+  //   }
+  // }
   
   // g
   let mm = [];
 
-  let hp = raycaster.intersectObjects(_o.shoesCache[0].selectorObjects222, false, mm);
+  let hp = raycaster.intersectObjects(_o.shoesCache, true, mm);
   intersects = mm;
   
   
   // let hp = raycaster.intersectObject(_o.shoesCache[0].selectorObject, false, mm);
   // debugger
-  
-  // do ontap test here
   if (intersects.length > 0) {
     // debugger
     console.log("vecTemp", vecTemp);
     _o.hitpointSphere.position.copy(intersects[0].point);
-    selected = intersects[0];
-    try {
-      if(intersects[0].object.isSelector){
-        intersects[0].object.pointerWrapper.onTap();
-      }
-      else {
-        intersects[0].object.onTap();
-      }
-    } catch (e) {}
   }
   
   
   
-return;
+
   
   intersectsInner.length = 0;
   

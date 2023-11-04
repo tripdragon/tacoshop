@@ -91,12 +91,12 @@ export class RollyController extends EventDispatcher {
 
     wobject.getWorldPosition(worldPos);
     
-    console.log("worldPos", worldPos);
+    // console.log("worldPos", worldPos);
     
     this.plane.set(wobject.up,0); // not sure this is world up, docs are not clear
     
     // this.plane.translate(wobject.position); // this is not checking for world position yet
-    console.log("wobject.position", wobject.position);
+    // console.log("wobject.position", wobject.position);
     // this.plane.translate(worldPos);
     this.plane.translate(wobject.position);
     // this.plane.translate(new Vector3(1,1,1));
@@ -138,7 +138,7 @@ export class RollyController extends EventDispatcher {
 
   
   onPointerMove(ev){
-    console.log("rollllly");
+    // console.log("rollllly");
     
     // // we dont actually need testIfMobile for one touch
     // if ( testIfMobile() ) {

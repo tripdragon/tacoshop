@@ -1,4 +1,17 @@
 
+let nn = null;
+// _o.gltfFlower.traverse( ( item ) => {
+_o.shoesCache[0].traverse( ( item ) => {
+ if (item.isMesh) {
+   console.log("name", item.name);
+   if (item.name === "selector_mesh") {
+     nn = item;
+   }
+ }
+});
+
+
+
 
 for (var i = 0; i < _o.shoesCache[0].meshes.length; i++) {
   console.log(_o.shoesCache[0].meshes[i].name);
@@ -52,7 +65,8 @@ _o.shoesCache[0].traverse( ( item ) => {
  if (item.isMesh) {
    // item.material.
    // _o.shoesCache[0].children[0].children[0].material.color.setHex
-   item.material.color.setHex(Math.random() * 0xffffff)
+   // item.material.color.setHex(Math.random() * 0xffffff)
+   item.material.color.setHex(0x0000ff)
  }
 });
 

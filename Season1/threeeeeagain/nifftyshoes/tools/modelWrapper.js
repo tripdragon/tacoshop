@@ -7,7 +7,8 @@ import { applySpringForce, applyForce, Spring } from './physics/physicsMini.js';
 
 class ModelWrapper extends Object3D {
 	
-	constructor() {
+	// NOTE!!!! selectorName space will have _ its name!!! so no spaces!!!
+	constructor(selectorName) {
 
 		super();
 
@@ -15,6 +16,8 @@ class ModelWrapper extends Object3D {
 		this.isModelWrapper = true;
 
 		this.type = 'Group';
+		
+		if (selectorName) this.selectorName = selectorName;
     
 	}
 	
@@ -28,7 +31,32 @@ class ModelWrapper extends Object3D {
 	// the core selectable volume
 	// CLONING however will be problematic, nested items and by name etc
 	// so its not referencing the original objects
+	//
+	// Ehhhhhhh thats no good. The box is not in rotation space knew this already
+	// but did not really work it out until testing
+	// So we need a special modeled object now
 	selectorObjects = [];
+	selectorObjects222 = [];
+	
+	selectorObject = null;
+	selectorName = null;
+	getSelector(selectorName, hide){
+		if (selectorName) this.selectorName = selectorName;
+		this.selectorObject = this.getObjectByName(this.selectorName);
+		if (this.selectorObject !== null){
+			this.selectorObjects222.push(this.selectorObject);
+			this.selectorObject.isSelector = true;// we dont have a class for this, so we just jam it here
+			this.selectorObject.pointerWrapper = this;
+			if (hide === true) this.selectorObject.visible = false;
+		} 
+		return this.selectorObject;
+	}
+	setSelector(selectorName, hide){
+		// this.selectorName = selectorName;
+		// this.selectorObject = this.getObjectByName(this.selectorName);
+		this.getSelector(selectorName, hide);
+	}
+	
 	// some models need only select objects for its selectors
 	// this is hard to assign dynamicly in app
 	// this.boundingObjects = [];
@@ -74,7 +102,9 @@ class ModelWrapper extends Object3D {
     const cc = new this.constructor().copy( this, recursive );
     
 		cc.memID = this.id;
-														
+		
+		cc.setSelector(this.selectorName, true);
+		
 		// this is no good, it will retain wrong links
     // cc.boundingObjects = this.boundingObjects.slice(0);
 		// cc.selectorObjects.length = 0;
@@ -170,7 +200,9 @@ class ModelWrapper extends Object3D {
 	}
 
 	changeTheme(){}
-
+	
+	onTap(ev){}
+	
 }
 
 export { ModelWrapper };

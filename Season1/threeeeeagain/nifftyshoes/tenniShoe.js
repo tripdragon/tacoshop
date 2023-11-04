@@ -5,8 +5,14 @@ import { ModelWrapper } from './tools/modelWrapper.js';
 import { Vector3, SphereGeometry, MeshBasicMaterial, Mesh, Box3, Box3Helper  } from 'three';
 
 export class TenniShoe extends ModelWrapper {
-  constructor() {
-    super();
+  constructor(selectorName) {
+    super(selectorName);
+    
+    // this.addEventListener( 'start', function ( event ) {
+    // 	// alert( event.message );
+    //   console.log("Here???", event.message);
+    //   this.randomColor();
+    // } );
   }
 
   isShoe = true;
@@ -14,6 +20,7 @@ export class TenniShoe extends ModelWrapper {
   navBubbles = [];
   addNavBubble(item){
     this.navBubbles.push(item);
+    this.selectorObjects222.push(item);
   }
   resetNav(){
     this.navBubbles.length = 0;
@@ -24,6 +31,10 @@ export class TenniShoe extends ModelWrapper {
       }
     });
   }
+  
+  // dothing(){
+  //   this.dispatchEvent( { type: 'start', message: 'vroom vroom!' } );
+  // }
 
   navConfig = {
     sizeScalar : 0.016, // meters not used yet
@@ -63,6 +74,8 @@ export class TenniShoe extends ModelWrapper {
     ]
   }
   
+  // NOTE!!!! names from export with spaces will have _ in its name!!! so no spaces!!!
+  // No thats only for objects
   themes = {
     refs: {
       // and and pointer is the mesh not the material, cause the mat names
@@ -148,6 +161,20 @@ export class TenniShoe extends ModelWrapper {
     }
   }
 
+  
+  onTap(){
+    this.meshes.forEach((item, i) => {
+      item.material.color.setHex(Math.random() * 0xffffff);
+    });
+  }
+  
+  // this gets added to the mesh somewhere
+  // onTapForSelector(){
+  //   this.meshes.forEach((item, i) => {
+  //     item.material.color.setHex(Math.random() * 0xffffff);
+  //   });
+  // }
+
 
 }
 
@@ -175,5 +202,9 @@ class NavBubble extends Mesh{
       this.computeBounds();
     }
     return this.geometry.boundingSphere;
+  }
+  
+  onTap(ev){
+    this.shoeWrapperPointer.changeTheme(this.data.name);
   }
 }

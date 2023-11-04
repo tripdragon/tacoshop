@@ -8,7 +8,7 @@ _o.fish = "narfs";
 
 // not sure if this is tree shaking or not
 // import * as THREE from "three";
-import { Object3D, Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
+import { SphereGeometry, Object3D, Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
   Plane, MeshStandardMaterial, BoxGeometry, MeshBasicMaterial, RingGeometry, Mesh, PCFSoftShadowMap, 
   WebGLRenderer, Box3, Box3Helper, Scene, Clock, PerspectiveCamera, 
   HemisphereLight, DirectionalLight, SpotLightHelper, DoubleSide } from "three";
@@ -238,7 +238,8 @@ function init() {
   // loadModelOnStart_CM('shoe02.glb', './models/', scene, 0.3);
   
   loadShoeAndProcess_CM();
-
+  
+  setupDebuggerHitPoint();
   
 }
 // init()
@@ -274,7 +275,14 @@ function onSelect() {
 }
 
 
-
+function setupDebuggerHitPoint(){
+  const geo = new SphereGeometry( 1, 18, 18 );
+  const mat = new MeshBasicMaterial( { color: 0xcc44ff } ); 
+  const sphere = new Mesh( geo, mat );
+  sphere.scale.setScalar(0.01);
+  _o.scene.add(sphere);
+  _o.hitpointSphere = sphere;
+}
 
 
 function setupGridHelper(){
@@ -509,10 +517,11 @@ async function loadShoeAndProcess_CM(){
   
   const gltfLoader = new GLTFLoader();
   // gltfLoader.setDRACOLoader( dracoLoader );  
-  const gltf = await gltfLoader.loadAsync( './models/shoe02.glb' );
+  // const gltf = await gltfLoader.loadAsync( './models/shoe02.glb' );
+  const gltf = await gltfLoader.loadAsync( './models/shoe02withselectormesh.glb' );
   console.log("Shoe¿¿????");
   
-  const shoeWrapper = new TenniShoe();
+  const shoeWrapper = new TenniShoe("selector_mesh");
   shoeWrapper.add(gltf.scene);
   
   // this is a visual thing, it futzez with the spring and shadows
