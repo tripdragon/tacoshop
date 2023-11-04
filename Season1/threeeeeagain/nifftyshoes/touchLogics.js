@@ -107,17 +107,31 @@ export function handleTouchStart(ev) {
   raycaster.setFromCamera( pointer2D, _o.camera );
   
 
-  intersects.length = 0;
+  // intersects.length = 0;
+  intersects = [];
   
   
-  
+  let mm = [];
   let selected = null;
+  let selectedArray = null;
+  
+  for (var i = 0; i < _o.shoesCache.length; i++) {
+    for (var gg = 0; gg < _o.shoesCache[i].selectorObjects222.length; gg++) {
+      let hp = raycaster.intersectObject(_o.shoesCache[i].selectorObjects222[gg], false, mm);
+      if(mm.length > 0){
+        selectedArray = mm.slice();
+      }
+    }
+
+  }
   
   // g
-  let mm = [];
+  
 
-  let hp = raycaster.intersectObjects(_o.shoesCache[0].selectorObjects222, false, mm);
-  intersects = mm;
+  // let hp = raycaster.intersectObjects(_o.shoesCache[0].selectorObjects222, false, mm);
+  
+  
+  intersects = selectedArray;
   
   
   // let hp = raycaster.intersectObject(_o.shoesCache[0].selectorObject, false, mm);
