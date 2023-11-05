@@ -26,6 +26,29 @@ class ModelWrapper extends Object3D {
 	// used for material effects like fade in
 	meshes = [];
 	
+	// used for swaping the themes maybe
+	// holds each material by string name
+	materials = {};
+	mapMaterials(){
+		this.traverse( ( item ) => {
+			if ( item.isMesh ) {
+				// this with no mat in the gltf are supplied a blank name material
+		     if (item.material.name === "") {
+					 this.materials[item.name] = item.material;
+		     }
+				 else {
+					 this.materials[item.material.name] = item.material;
+				 }
+			}
+		});
+	}
+	// _o.shoesCache[0].printMaterialNames()
+	printMaterialNames(){
+		for (const propname in this.materials) {
+			console.log(propname);
+		}
+	}
+	
 	// used to build a box3 bounds from for raycasting selecting and moving
 	// as some meshes before and later added might not fit visually what should be
 	// the core selectable volume
@@ -93,9 +116,7 @@ class ModelWrapper extends Object3D {
 	
 
   
-  // clone(){
-  // 
-  // }
+  // This does ALOT of work
   clone( {recursive, uniqueMaterials} ) {
 		// super.clone( recursive );
 
@@ -157,8 +178,14 @@ class ModelWrapper extends Object3D {
 
 
 		if (uniqueMaterials) {
-			this.cloneMaterials();
+			// this.cloneMaterials();
+			cc.cloneMaterials();
 		}
+		
+		// this.mapMaterials();
+		cc.mapMaterials();
+		
+		// cc.assignThemeOriginal();
 		
     return cc;
 

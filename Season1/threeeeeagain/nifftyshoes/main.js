@@ -40,7 +40,7 @@ import { setupKeyboardEvents } from './setupKeyboardEvents.js';
 
 import { TenniShoe } from './tenniShoe.js';
 
-import { preparMatsForFade } from './tools/utilites.js';
+import { prepareMatsForFade } from './tools/utilites.js';
 
 
 // import { WObject3D } from './tools/wobject3D.js';
@@ -521,6 +521,11 @@ async function loadShoeAndProcess_CM(){
   const gltf = await gltfLoader.loadAsync( './models/shoe02withselectormesh.glb' );
   console.log("Shoe¿¿????");
   
+  // this is very specific but we would like to have a more proper 
+  // class based file for the selector mesh
+  // find by name selector
+  // geometry.clone
+  
   const shoeWrapper = new TenniShoe("selector_mesh");
   shoeWrapper.add(gltf.scene);
   
@@ -533,7 +538,7 @@ async function loadShoeAndProcess_CM(){
   shoeWrapper.mixer = gltf.scene.mixer;
   
   // prepare materials for fade effects
-  preparMatsForFade(shoeWrapper, gltf.scene);
+  prepareMatsForFade(shoeWrapper, gltf.scene);
   
   
   // THIS IS a shoehorn for holding some data on the objects themselves since

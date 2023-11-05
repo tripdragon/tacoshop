@@ -1,5 +1,5 @@
 
-export function preparMatsForFade(parent, model) {
+export function prepareMatsForFade(parent, model) {
   model.traverse( ( item ) => {
     if ( item.isMesh ) {
       console.log(item.material.type);

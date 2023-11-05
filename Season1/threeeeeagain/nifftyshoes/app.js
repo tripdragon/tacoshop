@@ -13,6 +13,12 @@ import { RollyController } from './tools/rollyController.js';
 export const APP = {
   narfs : 2,
   
+  // these are by id as threejs keeps a unique id
+  texturesCache: {},
+  registerTexture(tex){
+    this.texturesCache[tex.id] = tex;
+  },
+  
   // timers : {
   //   down: 0,
   //   startDown : 0,

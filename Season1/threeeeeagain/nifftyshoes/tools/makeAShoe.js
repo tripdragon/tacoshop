@@ -1,21 +1,13 @@
 
 import { APP as _o } from '../app';
 
-// this is an artifact from the old demo code
-// it has hard sizing things, so its not really a good conpositional function like
-
-
 
 let wobject; // Type of ModelWrapper so it can have physics
 
 import { AnimationMixer, Vector3, MathUtils } from 'three';
 
 import { PhysicsSession, Spring, Force, applySpringForce, applyAngularForce, applyForce } from './physics/physicsMini.js';
-// 
-// import { SphereGeometry, MeshBasicMaterial, Mesh, Box3, Box3Helper} from 'three';
 
-
-// horseys.push(makeAHorsey())
 
 // @parent is an Scene level Object3D or Scene
 // @sourceWobject should be type TenniShoe
@@ -27,28 +19,22 @@ export function makeAShoe({sourceWobject, reticle, parent, addNav}){
   //     Math.floor(Math.random() * flowersGltf.children.length)
   //   ];
   
-  // debugger
+  
   // this is a Type : ModelWrapper
   
   wobject = sourceWobject.clone({uniqueMaterials:true});
   
   // this is a non obvious annoying way to get the XR anchors position
   reticle.matrix.decompose(wobject.position, wobject.quaternion, wobject.scale);
-  
-  // const scale = Math.random() * 0.4 + 0.25;
-  
+
   //random rotation
+  // this effect belongs out of it
   wobject.rotateY(Math.random() * Math.PI * 2);
   
   
   parent.add(wobject);
-
-
-  // const box = new THREE.Box3();
-  // box.setFromObject (wobject);
-  // 
-  // const helper = new THREE.Box3Helper( box, 0xffff00 );
-  // scene.add( helper );
+  
+  
 
 
   wobject.mixer = new AnimationMixer( wobject );
@@ -57,8 +43,7 @@ export function makeAShoe({sourceWobject, reticle, parent, addNav}){
   }
 
 
-  
-  // _o.shoesCache.push(wobject);
+
   _o.addShoe(wobject);
 
   if (addNav) {
@@ -118,13 +103,10 @@ export function makeAShoe({sourceWobject, reticle, parent, addNav}){
   buildAnimation(gg);
 
 
-
-  // attachNavBobbles(parent);
-
   return wobject;
 
 
-} // makeAHorsey
+}
 
 
 
@@ -219,40 +201,3 @@ function buildAnimation( _p ){
   
   
 }
-
-
-// 
-// 
-// const navConfig = {
-//   sizeScalar : 0.016, // meters
-//   padding: 0.05,
-//   startPosition : new Vector3(),
-//   restPosition : new Vector3(0,0.05, 0),
-//   objects: [],
-//   navs: [
-//     {
-//       name: "aaa",
-//       image: "narf111.png",
-//       color: 0xaaff22,
-//       ref: null
-//     },
-//     {
-//       name: "bbb",
-//       image: "narf222.png",
-//       color: 0x33aa22,
-//       ref : null
-//     },
-//     {
-//       name: "ccc",
-//       image: "narf333.png",
-//       color: 0xff11bb,
-//       ref: null
-//     },
-//     {
-//       name: "fff",
-//       image: "narf444.png",
-//       color: 0xffffbb,
-//       ref: null
-//     }
-//   ]
-// }
