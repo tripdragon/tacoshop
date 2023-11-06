@@ -50,5 +50,10 @@ export class MaterialData {
       mat.parentPointer.renderOrder = this.renderOrder;
       console.log("this.renderOrder", this.renderOrder);
     }
+    
+    // just mashing this in here for now cause its pretty
+    console.log("// just mashing this in here for now cause its pretty");
+    mat.metalness = 0.5;
+    mat.roughness = 0.04;
   }
 }
