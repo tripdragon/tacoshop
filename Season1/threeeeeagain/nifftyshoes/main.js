@@ -518,6 +518,7 @@ async function loadShoeAndProcess_CM(){
   const gltfLoader = new GLTFLoader();
   // gltfLoader.setDRACOLoader( dracoLoader );  
   // const gltf = await gltfLoader.loadAsync( './models/shoe02.glb' );
+  // const gltf = await gltfLoader.loadAsync( './models/shoe02withselectormesh.glb' );
   const gltf = await gltfLoader.loadAsync( './models/shoe02withselectormesh.glb' );
   console.log("Shoe¿¿????");
   
@@ -528,6 +529,8 @@ async function loadShoeAndProcess_CM(){
   
   const shoeWrapper = new TenniShoe("selector_mesh");
   shoeWrapper.add(gltf.scene);
+  
+  
   
   // this is a visual thing, it futzez with the spring and shadows
   gltf.scene.position.set(0,0.05,0);
