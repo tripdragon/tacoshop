@@ -10,7 +10,7 @@ export class MaterialData {
   color = new Color(1,1,1);
   emissive = new Color(0,0,0);
   
-  constructor({name = "", color, colorHex, emissive, emissiveHex, roughness = 0, metalness = 0, map = null, renderOrder = 0}) {
+  constructor({name = "", color, colorHex, emissive, emissiveHex, roughness = 0, metalness = 0.5, map = null, renderOrder = 0}) {
     this.name = name;
     if(color) this.color.copy(color);
     if(colorHex) this.color.setHex(colorHex);

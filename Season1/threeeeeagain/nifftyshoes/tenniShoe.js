@@ -115,6 +115,13 @@ export class TenniShoe extends ModelWrapper {
     // },
     
     // type : MaterialData is set from cacheThemeOriginal()
+    // these should beable to be default overrides as blender and import have difs
+    // original : {
+    //   "rivits": new MaterialData({ colorHex: 0xffffff, metalness: 1.0, roughness: 0 }),
+    //   "logo": new MaterialData({ colorHex: 0x0000bb}),
+    //   "over cloth": new MaterialData({ renderOrder: -1 }),
+    //   "under cloth": new MaterialData({ metalness: 1.0, roughness: 0 })
+    // },
     original : {},
     // the others should follow this type
     dif1 : {
