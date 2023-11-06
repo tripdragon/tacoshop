@@ -10,7 +10,7 @@ export class MaterialData {
   color = new Color(1,1,1);
   emissive = new Color(0,0,0);
   
-  constructor({name = "", color, colorHex, emissive, emissiveHex, roughness = 0, metalness = 0, map = null}) {
+  constructor({name = "", color, colorHex, emissive, emissiveHex, roughness = 0, metalness = 0, map = null, renderOrder = 0}) {
     this.name = name;
     if(color) this.color.copy(color);
     if(colorHex) this.color.setHex(colorHex);
@@ -19,6 +19,7 @@ export class MaterialData {
     if(emissive) this.emissive.copy(emissive);
     if(emissiveHex) this.emissive.setHex(emissiveHex);
     this.map = map;
+    this.renderOrder = renderOrder;
   }
   
   copyMaterial(mat){
@@ -27,7 +28,9 @@ export class MaterialData {
     this.roughness = mat.roughness || 0;
     this.metalness = mat.metalness || 0;
     this.emissive.copy(mat.emissive);
+    // this.renderOrder = mat.renderOrder;
     // map is the name for texture prop in threejs
+    // debugger
     if (mat.map) {
       _o.registerTexture(mat.map);
       this.map = mat.map;
@@ -39,6 +42,13 @@ export class MaterialData {
     mat.emissive.copy(this.emissive);
     mat.roughness = this.roughness;
     mat.metalness = this.metalness;
+    mat.renderOrder = this.renderOrder;
     mat.map = this.map;
+    // debugger
+    if (mat.parentPointer) {
+      // debugger
+      mat.parentPointer.renderOrder = this.renderOrder;
+      console.log("this.renderOrder", this.renderOrder);
+    }
   }
 }

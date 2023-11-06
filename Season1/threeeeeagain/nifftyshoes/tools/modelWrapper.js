@@ -39,6 +39,8 @@ class ModelWrapper extends Object3D {
 				 else {
 					 this.materials[item.material.name] = item.material;
 				 }
+				 // this is jammed in
+				 item.material.parentPointer = item;
 			}
 		});
 	}
@@ -126,6 +128,8 @@ class ModelWrapper extends Object3D {
 		
 		cc.setSelector(this.selectorName, true);
 		
+		cc.renderOrder = this.renderOrder;
+		
 		// this is no good, it will retain wrong links
     // cc.boundingObjects = this.boundingObjects.slice(0);
 		// cc.selectorObjects.length = 0;
@@ -212,6 +216,8 @@ class ModelWrapper extends Object3D {
     this.traverse( ( item ) => {
      if (item.isMesh) {
        item.material = item.material.clone();
+			 // this is jammed in
+			 item.material.parentPointer = item;
      }
     });
   }

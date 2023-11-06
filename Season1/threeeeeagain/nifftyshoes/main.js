@@ -8,12 +8,13 @@ _o.fish = "narfs";
 
 // not sure if this is tree shaking or not
 // import * as THREE from "three";
-import { SphereGeometry, Object3D, Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
+import { EquirectangularReflectionMapping, SphereGeometry, Object3D, Vector3, ShadowMaterial, PlaneGeometry, GridHelper, PlaneHelper, 
   Plane, MeshStandardMaterial, BoxGeometry, MeshBasicMaterial, RingGeometry, Mesh, PCFSoftShadowMap, 
   WebGLRenderer, Box3, Box3Helper, Scene, Clock, PerspectiveCamera, 
   HemisphereLight, DirectionalLight, SpotLightHelper, DoubleSide } from "three";
 
 import { XREstimatedLight } from 'three/addons/webxr/XREstimatedLight.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 
 import { renderLoop } from "./animationLoop.js";
@@ -127,7 +128,7 @@ if ("xr" in navigator) {
       
 			init();
       animate();
-      // setupXRLighting();
+      setupXRLighting();
       _o.xr.IS_XR_AVAIL = true;
 			
     }
@@ -211,6 +212,8 @@ function init() {
     // spotlight1.shadow.camera.near = 0.5; // default
     // spotlight1.shadow.camera.far = 500; // default
   }
+
+  setupHDRLighting();
 
   setupOrbitController();
 
@@ -581,6 +584,19 @@ async function loadShoeAndProcess_CM(){
 //   attachNav
 // }
 
+function setupHDRLighting(){
+  new RGBELoader()
+	// .setPath( './models/' )
+	.load( './models/royal_esplanade_1k.hdr', function ( texture ) {
+
+		texture.mapping = EquirectangularReflectionMapping;
+
+		_o.defaultEnvironment = texture;
+
+		_o.scene.environment = _o.defaultEnvironment;
+
+	} );
+}
 
 
 function setupXRLighting(){

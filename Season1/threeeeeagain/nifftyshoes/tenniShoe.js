@@ -123,7 +123,7 @@ export class TenniShoe extends ModelWrapper {
       "logo": new MaterialData({ colorHex: 0xffffff, texture: null }),
       "laces": new MaterialData({ colorHex: 0xffaaff, texture: null }),
       "under cloth": new MaterialData({ colorHex: 0xff00ff }),
-      "over cloth": new MaterialData({ colorHex: 0xff00ff, visible: true }),
+      "over cloth": new MaterialData({ colorHex: 0xff00ff, visible: true, renderOrder: -1 }),
       "rubber": new MaterialData({ colorHex: 0xeeeeee }),
       "bottom sole": new MaterialData({ colorHex: 0x2222222, texture: "bottom1" }),
       "inner soles": new MaterialData({ colorHex: 0x111111 }),
@@ -139,6 +139,12 @@ export class TenniShoe extends ModelWrapper {
       let matd = new MaterialData(mat);
       this.themes.original[mat.name] = matd;
     }
+    // UGH we dont have ANY way without saving a custom prop in the gltf
+    // to tell what is an overlay, so we HAVE to select by name and set its renderorder
+    // debugger
+    this.themes.original['under cloth'].renderOrder = -1;
+    let gg = this.getObjectByName('over_cloth');
+    gg.renderOrder = -1;
   }
   
   attachNav() {

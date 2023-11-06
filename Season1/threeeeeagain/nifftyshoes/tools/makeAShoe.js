@@ -101,7 +101,9 @@ export function makeAShoe({sourceWobject, reticle, parent, addNav}){
   // start auto wraps the logic into a rafqlooooop
   // gg.start();
   buildAnimation(gg);
-
+  
+  wobject.changeTheme('original');
+  
 
   return wobject;
 
