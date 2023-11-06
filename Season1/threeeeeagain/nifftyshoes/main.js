@@ -128,7 +128,7 @@ if ("xr" in navigator) {
       
 			init();
       animate();
-      setupXRLighting();
+      // setupXRLighting();
       _o.xr.IS_XR_AVAIL = true;
 			
     }
