@@ -287,6 +287,8 @@ function setupDebuggerHitPoint(){
   sphere.scale.setScalar(0.01);
   _o.scene.add(sphere);
   _o.hitpointSphere = sphere;
+  _o.hitpointSphere.visible = false;
+  
 }
 
 

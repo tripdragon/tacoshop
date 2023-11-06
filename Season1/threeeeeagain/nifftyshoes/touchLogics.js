@@ -187,6 +187,8 @@ export function handleTouchStop(ev) {
         // debugger
         console.log("vecTemp", vecTemp);
         _o.hitpointSphere.position.copy(thirdArray[0].point);
+        _o.hitpointSphere.visible = false;
+        
         // selected = intersects[0];
         try {
           if(thirdArray[0].object.isSelector){
@@ -430,7 +432,8 @@ function setupRolly(ev) {
     if ( selected) {
 
       _o.rollyControllers[0] = new RollyController(_o.renderer, _o.camera, _o.scene);
-      _o.rollyControllers[0].useDebugMode = true;
+      // _o.rollyControllers[0].useDebugMode = true;
+      _o.rollyControllers[0].useDebugMode = false;
       
       // this gets deleted once the above reference gets replaced anyway
       _o.rollyControllers[0].addEventListener( 'pointerMove', function ( event ) {
@@ -442,6 +445,7 @@ function setupRolly(ev) {
           // _o.box.setFromObject ( intersects[ 0 ].selectorObjects[0]);
           _o.box.setFromObject ( selected );
           _o.selectorBoxHelper.box = _o.box;
+          
         }
 
       } );
@@ -472,6 +476,7 @@ function setupRolly(ev) {
       
       _o.selectorBoxHelper.box = _o.box;
       _o.selectorBoxHelper.visible = true;
+      _o.selectorBoxHelper.visible = false;
       _o.selectorBoxHelper.updateMatrixWorld();
     					// rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
     					// rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );

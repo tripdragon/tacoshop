@@ -67,13 +67,13 @@ export class TenniShoe extends ModelWrapper {
         ref : null,
         restPosition : new Vector3()
       },
-      {
-        name: "red",
-        image: "narf333.png",
-        color: 0xff11bb,
-        ref: null,
-        restPosition : new Vector3()
-      },
+      // {
+      //   name: "red",
+      //   image: "narf333.png",
+      //   color: 0xff11bb,
+      //   ref: null,
+      //   restPosition : new Vector3()
+      // },
       {
         name: "original",
         image: "narf444.png",

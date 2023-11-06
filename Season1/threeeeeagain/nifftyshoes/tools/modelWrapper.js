@@ -207,6 +207,8 @@ class ModelWrapper extends Object3D {
      if (item.isMesh) {
        // _o.shoesCache[0].children[0].children[0].material.color.setHex
        item.material.color.setHex(Math.random() * 0xffffff);
+			 // item.material.roughness = Math.random();
+			 // item.material.metalness = Math.random();
      }
     });
   }
