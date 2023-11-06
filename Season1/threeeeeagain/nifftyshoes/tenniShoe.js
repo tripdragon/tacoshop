@@ -119,7 +119,7 @@ export class TenniShoe extends ModelWrapper {
     // the others should follow this type
     dif1 : {
       "tounge": new MaterialData({ colorHex: 0x0000ff }),
-      "rivits": new MaterialData({ colorHex: 0xcccccc, metalness: 0.7 }),
+      "rivits": new MaterialData({ colorHex: 0xffffff, metalness: 1.0, roughness: 0 }),
       "logo": new MaterialData({ colorHex: 0xffffff, texture: null }),
       "laces": new MaterialData({ colorHex: 0xffaaff, texture: null }),
       "under cloth": new MaterialData({ colorHex: 0xff00ff }),

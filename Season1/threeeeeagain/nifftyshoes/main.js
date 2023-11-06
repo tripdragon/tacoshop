@@ -13,6 +13,8 @@ import { SphereGeometry, Object3D, Vector3, ShadowMaterial, PlaneGeometry, GridH
   WebGLRenderer, Box3, Box3Helper, Scene, Clock, PerspectiveCamera, 
   HemisphereLight, DirectionalLight, SpotLightHelper, DoubleSide } from "three";
 
+import { XREstimatedLight } from 'three/addons/webxr/XREstimatedLight.js';
+
 
 import { renderLoop } from "./animationLoop.js";
 
@@ -125,7 +127,7 @@ if ("xr" in navigator) {
       
 			init();
       animate();
-      
+      setupXRLighting();
       _o.xr.IS_XR_AVAIL = true;
 			
     }
@@ -458,9 +460,11 @@ function setupXRStuff() {
       // domOverlay: { root: document.querySelector("#overlay") },
       domOverlay: { root: document.getElementById("rootlike") },
       // domOverlay: { root: document },
+      // In order for lighting estimation to work, 'light-estimation' must be included as either an optional or required feature.
+      optionalFeatures: [ 'light-estimation' ]
     })
   );
-  
+
   
   _o.xr.controller = _o.renderer.xr.getController(0);
   _o.xr.controller.addEventListener("select", onSelect);
@@ -576,3 +580,39 @@ async function loadShoeAndProcess_CM(){
 // function buildNavigationOnShoe(){
 //   attachNav
 // }
+
+
+
+function setupXRLighting(){
+  
+		// Don't add the XREstimatedLight to the scene initially.
+		// It doesn't have any estimated lighting values until an AR session starts.
+
+		_o.xrLight = new XREstimatedLight( _o.renderer );
+
+		_o.xrLight.addEventListener( 'estimationstart', () => {
+
+			// Swap the default light out for the estimated one one we start getting some estimated values.
+			_o.scene.add( _o.xrLight );
+      // _o.scene.remove( defaultLight );
+
+			// The estimated lighting also provides an environment cubemap, which we can apply here.
+			if ( _o.xrLight.environment ) {
+
+				_o.scene.environment = _o.xrLight.environment;
+
+			}
+
+		} );
+
+		_o.xrLight.addEventListener( 'estimationend', () => {
+
+			// Swap the lights back when we stop receiving estimated values.
+			// _o.scene.add( defaultLight );
+			_o.scene.remove( _o.xrLight );
+
+			// Revert back to the default environment.
+			// _o.scene.environment = defaultEnvironment;
+
+		} );
+}
