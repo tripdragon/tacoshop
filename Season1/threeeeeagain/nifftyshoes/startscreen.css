@@ -21,7 +21,7 @@
 }
 
 #start-screen #start-logo{
-  background: url("./logo3a.png") center center/contain no-repeat;
+  background: url("./public/logo3a.png") center center/contain no-repeat;
   width: 400px;
   height: 100%;
   width: 100%;
