@@ -1,0 +1,53 @@
+
+
+#start-screen{
+  position: fixed;
+  display: grid;
+  /* border-style: solid; */
+  /* border-color: green; */
+  /* grid-template-columns: repeat(3, 1fr); */
+  /* grid-template-rows: repeat(3, 1fr); */
+  /* grid-gap: 10px; */
+  width: 100vw;
+  height: 100vh;
+  /* background-color: orange; */
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  box-sizing: border-box;
+  justify-items: center;
+  align-items: center;
+  padding: 2em;
+  z-index: 102;
+}
+
+#start-screen #start-logo{
+  background: url("./logo3a.png") center center/contain no-repeat;
+  width: 400px;
+  height: 100%;
+  width: 100%;
+  /* background-color: green; */
+  /* padding: 2em; */
+}
+
+
+/* <a href="#" class="myButton">LAUNCH ARrrr!</a> */
+#start-screen #launch-button{
+	background-color:#b5e6c238;
+	border-radius:34px;
+	border:3px solid #a8db0075;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #68ab5e;
+}
+/* .myButton:hover {
+	background-color:#e5ede1;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+} */

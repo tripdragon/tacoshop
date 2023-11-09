@@ -43,7 +43,7 @@ export function renderLoop(timestamp, frame) {
           _o.xr.planeFound = true;
           //hide #tracking-prompt
           document.getElementById("tracking-prompt").style.display = "none";
-          document.getElementById("instructions").style.display = "flex";
+          // document.getElementById("instructions").style.display = "flex";
           
         }
         const hit = hitTestResults[0];

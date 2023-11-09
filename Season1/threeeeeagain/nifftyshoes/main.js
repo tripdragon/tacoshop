@@ -19,7 +19,8 @@ import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 import { renderLoop } from "./animationLoop.js";
 
-import { ARButtonAlternative as ARButton } from "./ARButtonAlternative.js";
+// import { ARButtonAlternative as ARButton } from "./ARButtonAlternative.js";
+import setupARButton from "./ARButtonAlternative222.js";
 
 
 
@@ -75,9 +76,6 @@ Object3D.prototype.clone = function(recursive){
 // this makes it flicker
 // import "./style.css";
 
-// _o.xr.controller; // T : renderer.xr.getController
-
-
 // _o.horseys = []; // T : [Mesh]
 // _o.shoesCache = []; // T : [Mesh]
 
@@ -87,21 +85,6 @@ var spotlight1; // T : Spotlight: Object3D
 var shadowPlane; // T: Mesh
 var SHADOW_PLANE_SETUP_AR = false;
 
-// let hitTestSource = null;
-// let hitTestSourceRequested = false;
-// let _o.xr.planeFound = false;
-// var IS_XR_AVAIL = false;
-// 
-// var modes = {
-//   seek: "seek",
-//   moveHorsey : "moveHorsey",
-//   moveShoe : "moveShoe",
-// }
-// var mode = modes.seek;
-
-
-
-
 
 _o.onConsole = new OnScreenLogger(document.getElementById("rootlike"));
 
@@ -109,14 +92,14 @@ _o.onConsole = new OnScreenLogger(document.getElementById("rootlike"));
 
 
 
-// a basic screen debugger
-var updateInterval = 1;
-var intervalID = setInterval( () =>{
-  // onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
-  _o.onConsole.log("fish", Date.now());
-  _o.onConsole.log("touchesCount", _o.touchesCount);
-
-}, updateInterval);
+// // a basic screen debugger
+// var updateInterval = 1;
+// var intervalID = setInterval( () =>{
+//   // onConsole.log("IF_MULTITOUCH_DOWN", IF_MULTITOUCH_DOWN);
+//   _o.onConsole.log("fish", Date.now());
+//   _o.onConsole.log("touchesCount", _o.touchesCount);
+// 
+// }, updateInterval);
 
 
 // check for webxr session support
@@ -126,7 +109,7 @@ if ("xr" in navigator) {
       //hide "ar-not-supported"
       document.getElementById("ar-not-supported").style.display = "none";
       
-			init();
+      init();
       animate();
       // setupXRLighting();
       _o.xr.IS_XR_AVAIL = true;
@@ -134,15 +117,12 @@ if ("xr" in navigator) {
     }
     else {
       // // run these here to debug otherwise run them in the above if
-      init();
-      animate();
+      // init();
+      // animate();
     }
   });
 }
 
-// // // run these here to debug otherwise run them in the above if
-// init();
-// animate();
 
 
 function sessionStart() {
@@ -155,7 +135,7 @@ function sessionStart() {
 //
 //
 function init() {
-	
+	// debugger
 	_o.clock = new Clock();
 	
   _o.container = document.createElement("div");
@@ -375,31 +355,31 @@ function setupEvents(){
    mm.addEventListener("pointermove", handleWhileDown);
    mm.addEventListener("pointerup", handleTouchStop);
    
-   const renderer = _o.renderer;
-   
-   var gg = 0;
-    renderer.domElement.addEventListener("pointerdown", function(ev){
-      gg++;
-      var bb = gg + " Down??¿¿¿?";
-      _o.onConsole.log("gggggg111", `pointerdown ${bb}`);
-      // debugger
-    });
-  
-
-   renderer.domElement.addEventListener("mousedown", function(ev){
-     gg++;
-     var bb = gg + " Down??¿¿¿?";
-     _o.onConsole.log("gggggg2222", `mousedown main ${bb}`);
-     // debugger
-   });
-    
- 
-  renderer.domElement.addEventListener("touchstart", function(ev){
-    gg++;
-    var bb = gg + " Down??¿¿¿?";
-    _o.onConsole.log("gggggg3333", `touchstart main ${bb}`);
-    // debugger
-  });
+   // const renderer = _o.renderer;
+  // 
+  //  var gg = 0;
+  //   renderer.domElement.addEventListener("pointerdown", function(ev){
+  //     gg++;
+  //     var bb = gg + " Down??¿¿¿?";
+  //     _o.onConsole.log("gggggg111", `pointerdown ${bb}`);
+  //     // debugger
+  //   });
+  // 
+  // 
+  //  renderer.domElement.addEventListener("mousedown", function(ev){
+  //    gg++;
+  //    var bb = gg + " Down??¿¿¿?";
+  //    _o.onConsole.log("gggggg2222", `mousedown main ${bb}`);
+  //    // debugger
+  //  });
+  // 
+  // 
+  // renderer.domElement.addEventListener("touchstart", function(ev){
+  //   gg++;
+  //   var bb = gg + " Down??¿¿¿?";
+  //   _o.onConsole.log("gggggg3333", `touchstart main ${bb}`);
+  //   // debugger
+  // });
 
 
 }
@@ -458,8 +438,19 @@ function setupXRStuff() {
 
   // AR button
   // https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession
-  document.body.appendChild(
-    ARButton.createButton(_o.renderer, {
+  // document.body.appendChild(
+  //   ARButton.createButton(_o.renderer, {
+  //     requiredFeatures: ["local", "hit-test", "dom-overlay"],
+  //     // this somewhere in the chain replaces the dom stuff with this selector
+  //     // domOverlay: { root: document.querySelector("#overlay") },
+  //     domOverlay: { root: document.getElementById("rootlike") },
+  //     // domOverlay: { root: document },
+  //     // In order for lighting estimation to work, 'light-estimation' must be included as either an optional or required feature.
+  //     optionalFeatures: [ 'light-estimation' ]
+  //   })
+  // );
+  
+  setupARButton( document.getElementById("launch-button"), _o.renderer, {
       requiredFeatures: ["local", "hit-test", "dom-overlay"],
       // this somewhere in the chain replaces the dom stuff with this selector
       // domOverlay: { root: document.querySelector("#overlay") },
@@ -467,8 +458,9 @@ function setupXRStuff() {
       // domOverlay: { root: document },
       // In order for lighting estimation to work, 'light-estimation' must be included as either an optional or required feature.
       optionalFeatures: [ 'light-estimation' ]
-    })
+    }
   );
+  
 
   
   _o.xr.controller = _o.renderer.xr.getController(0);
